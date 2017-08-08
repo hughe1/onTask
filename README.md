@@ -12,14 +12,16 @@ Install `pip`.
 
 VirtualEnv is a way to create isolated Python environments for every project and VirtualEnvWrapper "wraps" the virtualenv API to make it more user friendly.
 
-```pip install pip --upgrade
+```
+pip install pip --upgrade
 pip install virtualenv
 pip install virtualenvwrapper
 ```
 
 To complete the virtualenv setup process, put the following in you ~/.bash_profile
 
-```export WORKON_HOME=$HOME/.virtualenvs
+```
+export WORKON_HOME=$HOME/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 ```
 
@@ -27,7 +29,8 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 Run the following in the root folder of the cloned repo:
 
-```mkvirtualenv job-bilby --python=python3
+```
+mkvirtualenv job-bilby --python=python3
 workon job-bilby
 pip install pip --upgrade
 pip install -r requirements.txt
