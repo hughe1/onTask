@@ -76,9 +76,9 @@ WSGI_APPLICATION = 'job_bilby.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jobsdb',
-        'USER': 'Hugo',
-        'PASSWORD': 'booky',
+        'NAME': 'job_db',
+        'USER': 'job_user',
+        'PASSWORD': 'bilby',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
