@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Task(models.Model):
     INCOMPLETE = 'IC'
@@ -14,6 +16,7 @@ class Task(models.Model):
     points = models.IntegerField()
     location = models.CharField(max_length=128)
     isRemote = models.BooleanField
+    user = models.ForeignKey(User)
     
     # TODO question1, question2 etc - might be better with a many-to-many field
     # instead of hard-code attributes
@@ -22,6 +25,9 @@ class Task(models.Model):
         choices = STATUS_CHOICES,
         default=INCOMPLETE
     )
+    
+    def __str__(self):
+        return self.title
     
 
 class Skill(models.Model):
@@ -65,8 +71,8 @@ class Comment(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=128) # could update to choices
-    description = models.TextField(max_length=2000)
+    location = models.CharField(max_length=128, blank=True) # could update to choices
+    description = models.TextField(max_length=2000, blank=True)
     photo = models.ImageField(blank=True)
     
     def get_points():
@@ -74,7 +80,17 @@ class Profile(models.Model):
         
     def get_rating():
         pass
-    
+
+# Ensures that a Profile instance is created each time a User is created   
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+# Ensures that the Profile is saved when a User is saved
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 # TODO work out how we handle notifications
 class Notification(models.Model):
