@@ -5,8 +5,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-# TODO add datetimes (date joined, date commented, etc)
-
 class Task(models.Model):
     INCOMPLETE = 'IC'
     COMPLETE = 'C'
@@ -18,7 +16,7 @@ class Task(models.Model):
     description = models.TextField(max_length=2000)
     points = models.IntegerField()
     location = models.CharField(max_length=128)
-    isRemote = models.BooleanField
+    is_remote = models.BooleanField
     user = models.ForeignKey(User)
     date_posted = models.DateTimeField(auto_now=True)
     
