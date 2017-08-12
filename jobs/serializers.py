@@ -8,3 +8,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username')
+
+class ProfileSerializer(serializers.ModelSerializer):
+    #snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
+
+    class Meta:
+        model = Profile
+        fields = ('user','location', 'description','photo','date_created')
