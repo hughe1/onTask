@@ -1,0 +1,49 @@
+
+1)
+a: POST /auth/login
+{
+  "user" : "pass",
+  "return": "token"
+}
+
+2)
+a: GET /jobs/
+{
+  "filter": "false",
+  "sort": [
+    "recent",
+    "skills",
+    "..."
+  ]
+}
+
+b: POST /jobs/<id>/accept
+c: POST /jobs/<id>/reject
+{
+
+}
+
+3)
+a: GET /shortlist/
+{
+  "token": "token"
+}
+
+4)
+a: GET /jobs/<id>
+{
+  
+}
+b: DELETE /shortlist/<id>/
+
+5)
+a: GET /jobs/<id>/questions
+b: POST /jobs/<id>/application
+{
+  "user": ,
+  "answer1": ,
+  "answer2": ,
+  "answer3": 
+}
+
+6)
