@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 class Task(models.Model):
     INCOMPLETE = 'IC'
     COMPLETE = 'C'
@@ -15,8 +16,9 @@ class Task(models.Model):
     description = models.TextField(max_length=2000)
     points = models.IntegerField()
     location = models.CharField(max_length=128)
-    isRemote = models.BooleanField
+    is_remote = models.BooleanField
     user = models.ForeignKey(User)
+    date_posted = models.DateTimeField(auto_now=True)
     
     # TODO question1, question2 etc - might be better with a many-to-many field
     # instead of hard-code attributes
@@ -34,12 +36,18 @@ class Skill(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2000)
     image = models.ImageField(blank=True)
+
+    def __str__(self):
+        return self.title
     
 
 class UserSkill(models.Model):
     skills = models.ForeignKey('jobs.Skill')
     user = models.ForeignKey(User)
     rating = models.FloatField()
+
+    def __str__(self):
+        return "UserSkill: "+self.skills.title +" ("+ self.user.username + ")"
 
 
 # TODO - discuss whether this needs to be split up in to HelperJob and PosterJob
@@ -61,12 +69,20 @@ class UserJob(models.Model):
     )
     task = models.ForeignKey('jobs.Task')
     user = models.ForeignKey(User)
+
+    def __str__(self):
+        return "UserJob: "+self.task.title +" ("+ self.user.username + ")"
     
 
 class Comment(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey('jobs.Task')
     text = models.TextField(max_length=1000)
+    date_posted = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return "Comment: "+self.task.title +" ("+ self.user.username + ")"
 
 
 class Profile(models.Model):
@@ -74,6 +90,11 @@ class Profile(models.Model):
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
     photo = models.ImageField(blank=True)
+    date_created = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return self.user.username
     
     def get_points():
         pass
