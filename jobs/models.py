@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
+# TODO add datetimes (date joined, date commented, etc)
+
 class Task(models.Model):
     INCOMPLETE = 'IC'
     COMPLETE = 'C'
@@ -34,12 +37,18 @@ class Skill(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2000)
     image = models.ImageField(blank=True)
+
+    def __str__(self):
+        return self.title
     
 
 class UserSkill(models.Model):
     skills = models.ForeignKey('jobs.Skill')
     user = models.ForeignKey(User)
     rating = models.FloatField()
+
+    def __str__(self):
+        return "UserSkill: "+self.skills.title +" ("+ self.user.username + ")"
 
 
 # TODO - discuss whether this needs to be split up in to HelperJob and PosterJob
@@ -61,6 +70,9 @@ class UserJob(models.Model):
     )
     task = models.ForeignKey('jobs.Task')
     user = models.ForeignKey(User)
+
+    def __str__(self):
+        return "UserJob: "+self.task.title +" ("+ self.user.username + ")"
     
 
 class Comment(models.Model):
@@ -68,12 +80,18 @@ class Comment(models.Model):
     task = models.ForeignKey('jobs.Task')
     text = models.TextField(max_length=1000)
 
+    def __str__(self):
+        return "Comment: "+self.task.title +" ("+ self.user.username + ")"
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
     photo = models.ImageField(blank=True)
+
+    def __str__(self):
+        return self.user.username
     
     def get_points():
         pass
