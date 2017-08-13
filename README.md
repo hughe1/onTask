@@ -21,12 +21,12 @@ Set up Postgres User and DB
 
 1. Assign yourself as a super user for PostgreSQL
    `sudo su - postgres` to change to the postgres user
-2. Create a new user with the same name as your login and assign it super user 
+2. Create a new user with the same name as your login and assign it super user
    status `createuser <username> -s --no-password`
 3. Exit out (`exit`) and perform the rest of the commands from your user
-4. Create a new db user for the app 
+4. Create a new db user for the app
    `createuser job_user --no-password --createdb`
-5. Create a new db and add the user as the owner 
+5. Create a new db and add the user as the owner
    `createdb job_db --owner=job_user`
 
 **MacOS**
@@ -67,6 +67,25 @@ pip install -r requirements.txt
 
 To deactivate the virtual environment, use `deactivate`.
 
+## Adding the required environmental variables
+
+For local development, the following environmental variables are required:
+ - DJANGO_SECRET_KEY
+ - DB_NAME
+ - DB_USERNAME
+ - DB_PASSWORD
+
+The recommended way of having these set is via the `postactivate` shell script that is executed whenever a virtualenv is activated.
+
+Presuming you're using virtualenvwrapper and have named your virtualenv `job-bilby`, edit the file at `~/.virtualenvs/job-bilby/bin/postactivate` and add the following:  
+
+    export DJANGO_ENV='dev'
+    export DJANGO_DEBUG='True'
+    export DJANGO_SECRET_KEY=')61qil2+l+j7*xz3!mr1w44(x&3xe+bsx4^bi^4h(tu8yn&8(h'
+    export DB_NAME='job_db'
+    export DB_USERNAME='job_user'
+    export DB_PASSWORD='bilby'
+
 ### Migrate Database
 
 ```
@@ -96,14 +115,14 @@ Merge your branch into `dev` with the pull request:
 
 A good naming structure for your own branch might be `<name>-<feature>`.
 
-**NOTE** 
+**NOTE**
 
 * Remember to activate your venv
 * Remember to run `pip install -r requirements.txt` each time you start work,
   especially at the start. We might be adding new packages to the venv as we go
 * If you `pip install` something, make sure you `pip freeze > requirements.txt`
   and commit your changes, so everyone has the same environment
-  
+
   **TODO**
 
 - [ ] Add fixtures to load testing data locally
