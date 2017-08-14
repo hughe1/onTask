@@ -47,7 +47,7 @@ class Task(BaseModel):
     points = models.IntegerField()
     location = models.CharField(max_length=128)
     is_remote = models.BooleanField
-    user = models.ForeignKey(Profile)
+    owner = models.ForeignKey(Profile)
     date_posted = models.DateTimeField(auto_now=True)
 
     # TODO question1, question2 etc - might be better with a many-to-many field
@@ -81,7 +81,7 @@ class UserSkill(BaseModel):
 
 
 # TODO - discuss whether this needs to be split up in to HelperJob and PosterJob
-class UserJob(BaseModel):
+class UserTask(BaseModel):
     OPEN = 'O'
     SHORTLISTED = 'SL'
     ASSIGNED = 'A'

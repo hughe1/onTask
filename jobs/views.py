@@ -29,3 +29,7 @@ class TaskDetail(generics.RetrieveAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
+#def swipeTask(request, user_id, task_id, swipe_direction):
+#
+#	task = Task.objects.get(pk= task_id)
+#	user_task = 
