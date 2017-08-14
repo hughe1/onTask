@@ -2,6 +2,8 @@ from jobs.models import *
 from jobs.serializers import *
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
+from django.http import HttpResponse
+
 #from jobs.permissions import IsOwnerOrReadOnly
 
 
@@ -29,7 +31,14 @@ class TaskDetail(generics.RetrieveAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-#def swipeTask(request, user_id, task_id, swipe_direction):
-#
-#	task = Task.objects.get(pk= task_id)
-#	user_task = 
+def swipe_task(request, profile_id, task_id):#, is_right):
+
+	task = Task.objects.get(pk= task_id)
+	profile = Profile.objects.get(pk= profile_id)
+
+	user_task = UserTask.objects.create(profile=profile,task=task)
+	user_task.save()
+
+	
+	return HttpResponse("hello")
+

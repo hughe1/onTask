@@ -80,7 +80,7 @@ class UserSkill(BaseModel):
         return "UserSkill: "+self.skills.title +" ("+ self.user.username + ")"
 
 
-# TODO - discuss whether this needs to be split up in to HelperJob and PosterJob
+# TODO - add an override create method to prevent duplicates of the same usertask being created
 class UserTask(BaseModel):
     OPEN = 'O'
     SHORTLISTED = 'SL'
@@ -98,10 +98,10 @@ class UserTask(BaseModel):
         default=OPEN
     )
     task = models.ForeignKey('jobs.Task')
-    user = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile)
 
     def __str__(self):
-        return "UserJob: "+self.task.title +" ("+ self.user.username + ")"
+        return "UserJob: "+self.task.title +" ("+ self.profile.user.username + ")"
 
 
 class Comment(BaseModel):
