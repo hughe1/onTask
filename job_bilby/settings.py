@@ -82,7 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'job_bilby.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -127,6 +126,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Authentication system used by default
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -147,3 +154,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+
+
+
+        
