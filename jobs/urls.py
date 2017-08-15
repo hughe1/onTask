@@ -20,5 +20,4 @@ urlpatterns = format_suffix_patterns(urlpatterns)
 
 urlpatterns += [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api-token-auth/', authtoken.views.obtain_auth_token), # for clients to obtain their token
 ]
