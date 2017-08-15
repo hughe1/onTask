@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,7 +48,7 @@ class Task(BaseModel):
     points = models.IntegerField()
     location = models.CharField(max_length=128)
     is_remote = models.BooleanField
-    user = models.ForeignKey(Profile)
+    owner = models.ForeignKey(Profile)
     date_posted = models.DateTimeField(auto_now=True)
 
     # TODO question1, question2 etc - might be better with a many-to-many field
@@ -80,8 +81,8 @@ class UserSkill(BaseModel):
         return "UserSkill: "+self.skills.title +" ("+ self.user.username + ")"
 
 
-# TODO - discuss whether this needs to be split up in to HelperJob and PosterJob
-class UserJob(BaseModel):
+# TODO - add an override create method to prevent duplicates of the same usertask being created
+class UserTask(BaseModel):
     OPEN = 'O'
     SHORTLISTED = 'SL'
     ASSIGNED = 'A'
@@ -98,10 +99,10 @@ class UserJob(BaseModel):
         default=OPEN
     )
     task = models.ForeignKey('jobs.Task')
-    user = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile)
 
     def __str__(self):
-        return "UserJob: "+self.task.title +" ("+ self.user.username + ")"
+        return "UserJob: "+self.task.title +" ("+ self.profile.user.username + ")"
 
 
 class Comment(BaseModel):
