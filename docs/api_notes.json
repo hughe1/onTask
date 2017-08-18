@@ -47,3 +47,13 @@ b: POST /jobs/<id>/application
 }
 
 6)
+
+b: POST /profiles/create
+
+{
+  "username" : "john",
+  "email" : "john@gmail.com",
+  "password": "johnpassword",
+  "location" : "some location",
+  "description" : "some description"
+}

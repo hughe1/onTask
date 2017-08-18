@@ -45,7 +45,31 @@ def shortlist_task(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         
-        
+# This accepts user  and profileinfo through POST data instead of through URL
+@api_view(['POST'])
+def create_profile(request):
+    if request.method == 'POST':
+
+        #make the user
+        user_serializer = UserSerializer(data=request.data)
+        if not user_serializer.is_valid():
+            return Response(user_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        user = user_serializer.save()
+
+        #set user password (needs to be done separately from serializer)
+        password = request.data["password"]
+        user.set_password(password)
+        user.save()
+
+        #update attached profile with serializer data
+        request.data["user"] = user.id
+        profile = Profile.objects.get(user=user.id)
+        profile_serializer = ProfileSerializer(profile,data=request.data)
+        if not profile_serializer.is_valid():
+            return Response(profile_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        profile_serializer.save()
+
+        return Response(user_serializer.data, status=status.HTTP_201_CREATED)        
         
         
         
