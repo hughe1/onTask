@@ -87,11 +87,16 @@ class UserTask(BaseModel):
     SHORTLISTED = 'SL'
     ASSIGNED = 'A'
     COMPLETE = 'C'
+    DISCARDED = 'D'
+    REJECTED = 'R'
     STATUS_CHOICES = (
         (OPEN, 'Open'),
         (SHORTLISTED, 'Shortlisted'),
         (ASSIGNED, 'Assigned'),
-        (COMPLETE, 'Complete')
+        (COMPLETE, 'Complete'),
+        (DISCARDED, 'Discarded'),
+        (REJECTED, 'Rejected')
+
     )
     status = models.CharField(
         max_length=2,
@@ -100,6 +105,10 @@ class UserTask(BaseModel):
     )
     task = models.ForeignKey('jobs.Task')
     profile = models.ForeignKey(Profile)
+    question1_answer = models.CharField(max_length=300,blank=True)
+    question2_answer = models.CharField(max_length=300,blank=True)
+    question3_answer = models.CharField(max_length=300,blank=True)
+
 
     def __str__(self):
         return "UserJob: "+self.task.title +" ("+ self.profile.user.username + ")"
