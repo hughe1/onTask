@@ -85,13 +85,15 @@ class UserSkill(BaseModel):
 class UserTask(BaseModel):
     OPEN = 'O'
     SHORTLISTED = 'SL'
-    ASSIGNED = 'A'
+    APPLIED = 'AP'
+    ASSIGNED = 'AS'
     COMPLETE = 'C'
     DISCARDED = 'D'
     REJECTED = 'R'
     STATUS_CHOICES = (
         (OPEN, 'Open'),
         (SHORTLISTED, 'Shortlisted'),
+        (APPLIED, 'Applied'),
         (ASSIGNED, 'Assigned'),
         (COMPLETE, 'Complete'),
         (DISCARDED, 'Discarded'),

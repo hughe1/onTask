@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 
 from jobs.models import *
 from jobs.serializers import *
@@ -32,20 +33,54 @@ class TaskDetail(generics.RetrieveAPIView):
     serializer_class = TaskSerializer
 
 
-# UPDATE from swipe_task
-# This accepts task and user through POST data instead of through URL
-# TODO - Get or Create logic for if UserTask has already been created
+# Permission classes disabled for testing purposes. Need to re-enable 
 @api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
+#@permission_classes((IsAuthenticated, ))
 def shortlist_task(request):
     if request.method == 'POST':
+
+        #checks to see if usertask already exists
+        profile = request.data['profile']
+        task = request.data['task']
+        if (UserTask.objects.filter(profile=profile, task=task).count()>0):
+            return Response({"error":"UserTask already exists"}, status=status.HTTP_400_BAD_REQUEST)
+
+        #create and save serializer
         serializer = UserTaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         
-# This accepts user  and profileinfo through POST data instead of through URL
+# Permission classes disabled for testing purposes. Need to re-enable 
+@api_view(['POST'])
+#@permission_classes((IsAuthenticated, ))
+def apply_task(request):
+    if request.method == 'POST':
+
+        #returns 404 if no such usertask exists
+        user_task = get_object_or_404(UserTask, pk=request.data["usertask_id"])
+
+        # if task has already been assigned or rejected, return an error
+        if user_task.status =='R' or user_task.status == "AS":
+            return Response({"error":"task has already been assigned/rejected"}, status=status.HTTP_400_BAD_REQUEST)
+
+        #set status to 'applied'
+        request.data["status"] = "AP"
+
+        #set compulsory fields in the serializer
+        request.data["task"] = user_task.task.id
+        request.data["profile"] = user_task.profile.id
+
+        serializer = UserTaskSerializer(user_task,data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['POST'])
 def create_profile(request):
     if request.method == 'POST':
@@ -71,8 +106,6 @@ def create_profile(request):
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)        
 
-
-# This accepts task info through POST data instead of through URL
 @api_view(['POST'])
 def create_task(request):
     if request.method == 'POST':
