@@ -57,3 +57,16 @@ b: POST /profiles/create
   "location" : "some location",
   "description" : "some description"
 }
+
+7)
+
+b: POST /tasks/create
+
+{
+  "title" : "Some Title",
+  "description" : "Some Description",
+  "points" : "50",
+  "location" : "Some Location",
+  "is_remote" : "True",
+  "owner" : "1"
+}

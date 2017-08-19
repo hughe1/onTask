@@ -70,6 +70,18 @@ def create_profile(request):
         profile_serializer.save()
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)        
+
+
+# This accepts task info through POST data instead of through URL
+@api_view(['POST'])
+def create_task(request):
+    if request.method == 'POST':
+
+        serializer = TaskSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)    
         
         
         

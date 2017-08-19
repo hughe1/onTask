@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^profiles/(?P<pk>[0-9]+)/$', views.ProfileDetail.as_view()),
     url(r'^tasks/$', views.TaskList.as_view()),
     url(r'^tasks/(?P<pk>[0-9]+)/$', views.TaskDetail.as_view()),
+    url(r'^tasks/create$', views.create_task),
     url(r'^shortlist/$', views.shortlist_task),
 ]
 
