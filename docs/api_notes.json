@@ -7,7 +7,7 @@ a: POST /auth/login
 }
 
 2)
-a: GET /jobs/
+a: GET /tasks
 {
   "filter": "false",
   "sort": [
@@ -24,10 +24,11 @@ c: POST /jobs/<id>/reject
 }
 
 3)
-a: GET /shortlist/
+a: GET tasks/shortlist/
 {
   "token": "token"
 }
+
 
 4)
 a: GET /jobs/<id>
@@ -36,14 +37,55 @@ a: GET /jobs/<id>
 }
 b: DELETE /shortlist/<id>/
 
-5)
-a: GET /jobs/<id>/questions
-b: POST /jobs/<id>/application
-{
-  "user": ,
-  "answer1": ,
-  "answer2": ,
-  "answer3": 
-}
+//5)
+//a: GET /jobs/<id>/questions
+//b: POST /jobs/<id>/application
+//{
+//  "user": ,
+//  "answer1": ,
+//  "answer2": ,
+//  "answer3": 
+//}
 
 6)
+
+b: POST /profiles/create
+
+{
+  "username" : "john",
+  "email" : "john@gmail.com",
+  "password": "johnpassword",
+  "location" : "some location",
+  "description" : "some description"
+}
+
+7)
+
+b: POST /tasks/create
+
+{
+  "title" : "Some Title",
+  "description" : "Some Description",
+  "points" : "50",
+  "location" : "Some Location",
+  "is_remote" : "True",
+  "owner" : "1"
+}
+
+
+b: POST /tasks/apply
+
+{
+  "usertask_id" : "3",
+  "question1_answer" : "Some answer",
+  "question2_answer" : "Some answer",
+  "question3_answer" : "Some answer"
+}
+
+
+8)
+a: POST tasks/shortlist/
+{
+  "profile" : "1",
+  "task" : "1"
+}

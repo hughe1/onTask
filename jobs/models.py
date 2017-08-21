@@ -18,6 +18,8 @@ class BaseModel(models.Model):
     def time_since_create(self):
         return timesince(self.created_at).split(',')[0]
 
+
+# TODO - default photo
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=128, blank=True) # could update to choices
@@ -36,6 +38,7 @@ class Profile(BaseModel):
         pass
 
 
+# TODO - default photo
 class Task(BaseModel):
     INCOMPLETE = 'IC'
     COMPLETE = 'C'
@@ -50,6 +53,8 @@ class Task(BaseModel):
     is_remote = models.BooleanField
     owner = models.ForeignKey(Profile)
     date_posted = models.DateTimeField(auto_now=True)
+    photo = models.ImageField(blank=True)
+
 
     # TODO question1, question2 etc - might be better with a many-to-many field
     # instead of hard-code attributes
@@ -85,13 +90,20 @@ class UserSkill(BaseModel):
 class UserTask(BaseModel):
     OPEN = 'O'
     SHORTLISTED = 'SL'
-    ASSIGNED = 'A'
+    APPLIED = 'AP'
+    ASSIGNED = 'AS'
     COMPLETE = 'C'
+    DISCARDED = 'D'
+    REJECTED = 'R'
     STATUS_CHOICES = (
         (OPEN, 'Open'),
         (SHORTLISTED, 'Shortlisted'),
+        (APPLIED, 'Applied'),
         (ASSIGNED, 'Assigned'),
-        (COMPLETE, 'Complete')
+        (COMPLETE, 'Complete'),
+        (DISCARDED, 'Discarded'),
+        (REJECTED, 'Rejected')
+
     )
     status = models.CharField(
         max_length=2,
@@ -100,6 +112,10 @@ class UserTask(BaseModel):
     )
     task = models.ForeignKey('jobs.Task')
     profile = models.ForeignKey(Profile)
+    question1_answer = models.CharField(max_length=300,blank=True)
+    question2_answer = models.CharField(max_length=300,blank=True)
+    question3_answer = models.CharField(max_length=300,blank=True)
+
 
     def __str__(self):
         return "UserJob: "+self.task.title +" ("+ self.profile.user.username + ")"
