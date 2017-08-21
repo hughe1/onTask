@@ -18,6 +18,8 @@ class BaseModel(models.Model):
     def time_since_create(self):
         return timesince(self.created_at).split(',')[0]
 
+
+# TODO - default photo
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=128, blank=True) # could update to choices
@@ -36,6 +38,7 @@ class Profile(BaseModel):
         pass
 
 
+# TODO - default photo
 class Task(BaseModel):
     INCOMPLETE = 'IC'
     COMPLETE = 'C'
@@ -50,6 +53,8 @@ class Task(BaseModel):
     is_remote = models.BooleanField
     owner = models.ForeignKey(Profile)
     date_posted = models.DateTimeField(auto_now=True)
+    photo = models.ImageField(blank=True)
+
 
     # TODO question1, question2 etc - might be better with a many-to-many field
     # instead of hard-code attributes

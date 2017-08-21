@@ -7,7 +7,7 @@ a: POST /auth/login
 }
 
 2)
-a: GET /jobs/
+a: GET /tasks
 {
   "filter": "false",
   "sort": [
