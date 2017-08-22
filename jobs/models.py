@@ -98,7 +98,6 @@ class ProfileTask(BaseModel):
     DISCARDED = 'D'
     REJECTED = 'R'
     STATUS_CHOICES = (
-        (OPEN, 'Open'),
         (SHORTLISTED, 'Shortlisted'),
         (APPLIED, 'Applied'),
         (ASSIGNED, 'Assigned'),
@@ -109,7 +108,7 @@ class ProfileTask(BaseModel):
     status = models.CharField(
         max_length=2,
         choices=STATUS_CHOICES,
-        default=OPEN
+        default=SHORTLISTED
     )
     answer1 = models.CharField(max_length=300,blank=True)
     answer2 = models.CharField(max_length=300,blank=True)
