@@ -111,23 +111,35 @@ Example post data:
   "task" : "1"
 }
 
-================================================================================
-==================================== ERRORS ====================================
-================================================================================
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Create Profile ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 POST /profiles/create
 Post body:
 {
   "username" : "john",
   "email" : "john@gmail.com",
+  "first_name" : "john",
+  "last_name" : "smith",
   "password": "johnpassword",
   "location" : "some location",
   "description" : "some description"
 }
 Return:
-
-**Error: This QueryDict instance is immutable**
+{
+  "id": 17,
+  "password": "pbkdf2_sha256$36000$CXrGxe35Dcnh$Fr4nJPlE2MuVzj4znhlrxM9YG4rhRqLi0NI9ORE48Dw=",
+  "last_login": null,
+  "is_superuser": false,
+  "username": "john",
+  "first_name": "john",
+  "last_name": "smith",
+  "email": "john@gmail.com",
+  "is_staff": false,
+  "is_active": true,
+  "date_joined": "2017-08-22T05:20:06.526168Z",
+  "groups": [],
+  "user_permissions": []
+}
+Note: Must use `Content-Type: application/json`
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Apply for Task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 POST /tasks/apply/
@@ -138,7 +150,20 @@ Example post data:
   "answer2" : "Some answer",
   "answer3" : "Some answer"
 }
-**Error: This QueryDict instance is immutable**
+Return:
+{
+  "id": 2,
+  "created_at": "2017-08-22T03:58:39.816274Z",
+  "updated_at": "2017-08-22T05:21:54.842082Z",
+  "enabled": true,
+  "status": "AP",
+  "answer1": "Some answer",
+  "answer2": "Some answer",
+  "answer3": "Some answer",
+  "task": 8,
+  "profile": 1
+}
+Note: Must use `Content-Type: application/json`
 
 ================================================================================
 ==================================== TODO ======================================
