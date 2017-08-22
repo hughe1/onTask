@@ -39,14 +39,14 @@ class TaskDetail(generics.RetrieveAPIView):
 def shortlist_task(request):
     if request.method == 'POST':
 
-        #checks to see if usertask already exists
+        #checks to see if ProfileTask already exists
         profile = request.data['profile']
         task = request.data['task']
-        if (UserTask.objects.filter(profile=profile, task=task).count()>0):
-            return Response({"error":"UserTask already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        if (ProfileTask.objects.filter(profile=profile, task=task).count()>0):
+            return Response({"error":"ProfileTask already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
         #create and save serializer
-        serializer = UserTaskSerializer(data=request.data)
+        serializer = ProfileTaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -58,21 +58,21 @@ def shortlist_task(request):
 def apply_task(request):
     if request.method == 'POST':
 
-        #returns 404 if no such usertask exists
-        user_task = get_object_or_404(UserTask, pk=request.data["usertask_id"])
+        #returns 404 if no such ProfileTask exists
+        profile_task = get_object_or_404(ProfileTask, pk=request.data["profiletask_id"])
 
         # if task has already been assigned or rejected, return an error
-        if user_task.status =='R' or user_task.status == "AS":
+        if profile_task.status =='R' or profile_task.status == "AS":
             return Response({"error":"task has already been assigned/rejected"}, status=status.HTTP_400_BAD_REQUEST)
 
         #set status to 'applied'
         request.data["status"] = "AP"
 
         #set compulsory fields in the serializer
-        request.data["task"] = user_task.task.id
-        request.data["profile"] = user_task.profile.id
+        request.data["task"] = profile_task.task.id
+        request.data["profile"] = profile_task.profile.id
 
-        serializer = UserTaskSerializer(user_task,data=request.data)
+        serializer = ProfileTaskSerializer(profile_task,data=request.data)
 
         if serializer.is_valid():
             serializer.save()
