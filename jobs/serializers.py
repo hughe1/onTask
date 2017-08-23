@@ -26,8 +26,8 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = "__all__"
 
-class UserTaskSerializer(serializers.ModelSerializer):
+class ProfileTaskSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = UserTask
+        model = ProfileTask
         fields = "__all__"

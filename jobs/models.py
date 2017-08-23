@@ -51,13 +51,14 @@ class Task(BaseModel):
     points = models.IntegerField()
     location = models.CharField(max_length=128)
     is_remote = models.BooleanField
-    owner = models.ForeignKey(Profile)
+    owner = models.ForeignKey('jobs.Profile')
     date_posted = models.DateTimeField(auto_now=True)
     photo = models.ImageField(blank=True)
-
-
     # TODO question1, question2 etc - might be better with a many-to-many field
     # instead of hard-code attributes
+    question1 = models.CharField(max_length=300,blank=True)
+    question2 = models.CharField(max_length=300,blank=True)
+    question3 = models.CharField(max_length=300,blank=True)
     status = models.CharField(
         max_length=2,
         choices = STATUS_CHOICES,
@@ -77,18 +78,19 @@ class Skill(BaseModel):
         return self.title
 
 
-class UserSkill(BaseModel):
-    skills = models.ForeignKey('jobs.Skill')
-    user = models.ForeignKey(Profile)
+class ProfileSkill(BaseModel):
+    skill = models.ForeignKey('jobs.Skill')
+    profile = models.ForeignKey('jobs.Profile')
+    # TODO - Discuss whether this should be a list of ratings
     rating = models.FloatField()
 
     def __str__(self):
-        return "UserSkill: "+self.skills.title +" ("+ self.user.username + ")"
+        return "ProfileSkill: "+self.skills.title +" ("+ self.user.username + ")"
 
 
-# TODO - add an override create method to prevent duplicates of the same usertask being created
-class UserTask(BaseModel):
-    OPEN = 'O'
+class ProfileTask(BaseModel):
+    task = models.ForeignKey('jobs.Task')
+    profile = models.ForeignKey('jobs.Profile')
     SHORTLISTED = 'SL'
     APPLIED = 'AP'
     ASSIGNED = 'AS'
@@ -96,37 +98,31 @@ class UserTask(BaseModel):
     DISCARDED = 'D'
     REJECTED = 'R'
     STATUS_CHOICES = (
-        (OPEN, 'Open'),
         (SHORTLISTED, 'Shortlisted'),
         (APPLIED, 'Applied'),
         (ASSIGNED, 'Assigned'),
         (COMPLETE, 'Complete'),
         (DISCARDED, 'Discarded'),
         (REJECTED, 'Rejected')
-
     )
     status = models.CharField(
         max_length=2,
         choices=STATUS_CHOICES,
-        default=OPEN
+        default=SHORTLISTED
     )
-    task = models.ForeignKey('jobs.Task')
-    profile = models.ForeignKey(Profile)
-    question1_answer = models.CharField(max_length=300,blank=True)
-    question2_answer = models.CharField(max_length=300,blank=True)
-    question3_answer = models.CharField(max_length=300,blank=True)
-
+    answer1 = models.CharField(max_length=300,blank=True)
+    answer2 = models.CharField(max_length=300,blank=True)
+    answer3 = models.CharField(max_length=300,blank=True)
 
     def __str__(self):
-        return "UserJob: "+self.task.title +" ("+ self.profile.user.username + ")"
+        return "ProfileTask: "+self.task.title +" ("+ self.profile.user.username + ")"
 
 
 class Comment(BaseModel):
-    user = models.ForeignKey(Profile)
+    profile = models.ForeignKey('jobs.Profile')
     task = models.ForeignKey('jobs.Task')
     text = models.TextField(max_length=1000)
     date_posted = models.DateTimeField(auto_now=True)
-
 
     def __str__(self):
         return "Comment: "+self.task.title +" ("+ self.user.username + ")"

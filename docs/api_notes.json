@@ -1,91 +1,210 @@
+================================================================================
+=================================== SUMMARY ====================================
+================================================================================
 
-1)
-a: POST /auth/login
+Done:
+POST /auth/
+POST /auth/login/
+GET /profiles/
+POST /tasks/create/
+POST /profiles/create/
+POST /tasks/apply/
+
+Todo:
+GET /tasks/
+POST /tasks/shortlist/
+DELETE /shortlist/<id>/
+GET /jobs/<id>/questions
+POST /jobs/<id>/application
+POST /jobs/<id>/accept
+POST /jobs/<id>/reject
+
+================================================================================
+==================================== DONE ======================================
+================================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Obtain auth token ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /auth/
+Example post data:
 {
-  "user" : "pass",
-  "return": "token"
+  "username" : "job_user",
+  "password": "qwerty1234"
+}
+Return:
+{
+  "token" : "e61a63c66028f44e4ae448d16d5ddc656eb825ea"
 }
 
-2)
-a: GET /tasks
+Note: Include this token in "Authorization" header of requests that require
+authentication.
+e.g. HTTP:
+"
+POST /auth/ HTTP/1.1
+Authorization: Token e61a63c66028f44e4ae448d16d5ddc656eb825ea
+
+username=job_user&password=qwerty1234
+"
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Login ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /auth/login/
+Example post data:
 {
-  "filter": "false",
-  "sort": [
-    "recent",
-    "skills",
-    "..."
-  ]
+  "username" : "job_user",
+  "password": "qwerty1234"
+}
+Return:
+{
+  "token" : "e61a63c66028f44e4ae448d16d5ddc656eb825ea"
 }
 
-b: POST /jobs/<id>/accept
-c: POST /jobs/<id>/reject
-{
+~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get list of all profiles ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GET /profiles/
+return:
+[
+  {
+      "user": 14,
+      "location": "",
+      "description": "",
+      "photo": null,
+      "date_created": "2017-08-22T00:48:20.868569Z"
+  },
+  "..."
+]
 
-}
-
-3)
-a: GET tasks/shortlist/
-{
-  "token": "token"
-}
-
-
-4)
-a: GET /jobs/<id>
-{
-  
-}
-b: DELETE /shortlist/<id>/
-
-//5)
-//a: GET /jobs/<id>/questions
-//b: POST /jobs/<id>/application
-//{
-//  "user": ,
-//  "answer1": ,
-//  "answer2": ,
-//  "answer3": 
-//}
-
-6)
-
-b: POST /profiles/create
-
-{
-  "username" : "john",
-  "email" : "john@gmail.com",
-  "password": "johnpassword",
-  "location" : "some location",
-  "description" : "some description"
-}
-
-7)
-
-b: POST /tasks/create
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Create Task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /tasks/create/
+Example post data:
 {
   "title" : "Some Title",
   "description" : "Some Description",
   "points" : "50",
   "location" : "Some Location",
-  "is_remote" : "True",
+  "is_remote" : "False",
   "owner" : "1"
 }
-
-
-b: POST /tasks/apply
-
+Return:
 {
-  "usertask_id" : "3",
-  "question1_answer" : "Some answer",
-  "question2_answer" : "Some answer",
-  "question3_answer" : "Some answer"
+    "id": 11,
+    "created_at": "2017-08-22T01:33:27.499084Z",
+    "updated_at": "2017-08-22T01:33:27.499110Z",
+    "enabled": false,
+    "title": "some title",
+    "description": "some desc",
+    "points": 50,
+    "location": "some loc",
+    "date_posted": "2017-08-22T01:33:27.499166Z",
+    "photo": null,
+    "question1": "",
+    "question2": "",
+    "question3": "",
+    "status": "IC",
+    "owner": 2
 }
+TODO: 
+* Remove /create/ (good API practice)
+* Set location (href) in response
 
-
-8)
-a: POST tasks/shortlist/
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Shortlist a task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST tasks/shortlist/
+Example post data:
 {
   "profile" : "1",
   "task" : "1"
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Create Profile ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /profiles/create
+Post body:
+{
+  "username" : "john",
+  "email" : "john@gmail.com",
+  "first_name" : "john",
+  "last_name" : "smith",
+  "password": "johnpassword",
+  "location" : "some location",
+  "description" : "some description"
+}
+Return:
+{
+  "id": 17,
+  "password": "pbkdf2_sha256$36000$CXrGxe35Dcnh$Fr4nJPlE2MuVzj4znhlrxM9YG4rhRqLi0NI9ORE48Dw=",
+  "last_login": null,
+  "is_superuser": false,
+  "username": "john",
+  "first_name": "john",
+  "last_name": "smith",
+  "email": "john@gmail.com",
+  "is_staff": false,
+  "is_active": true,
+  "date_joined": "2017-08-22T05:20:06.526168Z",
+  "groups": [],
+  "user_permissions": []
+}
+Note: Must use `Content-Type: application/json`
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Apply for Task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /tasks/apply/
+Example post data:
+{
+  "profiletask_id" : "3",
+  "answer1" : "Some answer",
+  "answer2" : "Some answer",
+  "answer3" : "Some answer"
+}
+Return:
+{
+  "id": 2,
+  "created_at": "2017-08-22T03:58:39.816274Z",
+  "updated_at": "2017-08-22T05:21:54.842082Z",
+  "enabled": true,
+  "status": "AP",
+  "answer1": "Some answer",
+  "answer2": "Some answer",
+  "answer3": "Some answer",
+  "task": 8,
+  "profile": 1
+}
+Note: Must use `Content-Type: application/json`
+
+================================================================================
+==================================== TODO ======================================
+================================================================================
+
+DELETE /shortlist/<id>/
+GET /jobs/<id>/questions/
+POST /jobs/<id>/application/
+POST /jobs/<id>/accept/
+POST /jobs/<id>/reject/
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get Tasks ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GET /tasks/
+Return:
+[
+  {
+      "id": 16,
+      "created_at": "2017-08-22T02:11:53.625317Z",
+      "updated_at": "2017-08-22T02:11:53.625342Z",
+      "enabled": false,
+      "title": "some title",
+      "description": "some desc",
+      "points": 50,
+      "location": "some loc",
+      "date_posted": "2017-08-22T02:11:53.625427Z",
+      "photo": null,
+      "question1": "",
+      "question2": "",
+      "question3": "",
+      "status": "IC",
+      "owner": 2
+  },
+  "..."
+]
+**TODO: Handle the querystring**
+Querystring:
+?sort=<sort_value>
+{
+  "sort_value": [
+    "recent",
+    "skills"
+  ]
 }

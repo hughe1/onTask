@@ -7,12 +7,12 @@ from jobs import views
 urlpatterns = [
 
     url(r'^profiles/$', views.ProfileList.as_view()),
-    url(r'^profiles/create$', views.create_profile),
+    url(r'^profiles/create/$', views.create_profile),
     url(r'^profiles/(?P<pk>[0-9]+)/$', views.ProfileDetail.as_view()),
     url(r'^tasks/$', views.TaskList.as_view()),
     url(r'^tasks/(?P<pk>[0-9]+)/$', views.TaskDetail.as_view()),
-    url(r'^tasks/create$', views.create_task),
-    url(r'^tasks/apply$', views.apply_task),
+    url(r'^tasks/create/$', views.create_task),
+    url(r'^tasks/apply/$', views.apply_task),
     url(r'^tasks/shortlist/$', views.shortlist_task),
 ]
 
