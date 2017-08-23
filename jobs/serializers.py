@@ -8,11 +8,6 @@ from django.contrib.auth.models import User
  #       model = User
  #       fields = ('id', 'username')
 
-class ProfileSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Profile
-        fields = ('user','location', 'description','photo','date_created')
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -20,7 +15,18 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = "__all__"
 
+class ProfileSerializer(serializers.ModelSerializer):
+    
+    user = UserSerializer()
+    
+    class Meta:
+        model = Profile
+        # fields = ('user','location', 'description','photo','date_created')
+        fields = "__all__"
+        
 class TaskSerializer(serializers.ModelSerializer):
+    
+    owner = ProfileSerializer()
 
     class Meta:
         model = Task
