@@ -7,8 +7,6 @@ POST /auth/
 POST /auth/login/
 GET /profiles/
 POST /tasks/create/
-
-Errors:
 POST /profiles/create/
 POST /tasks/apply/
 
@@ -102,6 +100,9 @@ Return:
     "status": "IC",
     "owner": 2
 }
+TODO: 
+* Remove /create/ (good API practice)
+* Set location (href) in response
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Shortlist a task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 POST tasks/shortlist/
