@@ -112,6 +112,18 @@ Example post data:
   "task" : "1"
 }
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Discard a task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Removes a task from the list of tasks displayed to a given user
+
+POST tasks/discard/
+Example post data:
+{
+  "profile" : "1",
+  "task" : "1"
+}
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Create Profile ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 POST /profiles/create
 Post body:

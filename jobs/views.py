@@ -59,6 +59,37 @@ def shortlist_task(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Permission classes disabled for testing purposes. Need to re-enable
+# Written so that any task can be discarded, regardless of status. 
+# May need to be updated if we want 'in progress' tasks to not be discarded. 
+@api_view(['POST'])
+#@permission_classes((IsAuthenticated, ))
+def discard_task(request):
+    if request.method == 'POST':
+
+        #checks to see if ProfileTask already exists
+        profile = request.data['profile']
+        task = request.data['task']
+
+        # set status of profiletask to 'discarded'
+        request.data['status']=ProfileTask.DISCARDED
+
+        #if a profileTask already exists for the given profile and task, get it
+        # otherwise, create a new profiletask
+        if (ProfileTask.objects.filter(profile=profile, task=task).count()>0):
+
+            profileTask = ProfileTask.objects.filter(profile=profile, task=task)[0]
+            serializer = ProfileTaskSerializer(profileTask, data=request.data)
+        else:
+            serializer = ProfileTaskSerializer(data=request.data)
+
+        #save the serializer
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         
 # Permission classes disabled for testing purposes. Need to re-enable 
 @api_view(['POST'])
