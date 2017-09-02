@@ -14,6 +14,9 @@ urlpatterns = [
     url(r'^tasks/create/$', views.create_task),
     url(r'^tasks/apply/$', views.apply_task),
     url(r'^tasks/shortlist/$', views.shortlist_task),
+    url(r'^profiletasks/$', views.ProfileTaskList.as_view()),
+    url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view()),
+
 ]
 
 

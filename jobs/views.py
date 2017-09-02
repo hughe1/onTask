@@ -22,6 +22,14 @@ class ProfileDetail(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
+class ProfileTaskList(generics.ListAPIView):
+    queryset = ProfileTask.objects.all()
+    serializer_class = ProfileTaskSerializer
+
+class ProfileTaskDetail(generics.RetrieveAPIView):
+    queryset = ProfileTask.objects.all()
+    serializer_class = ProfileTaskSerializer
+
 
 class TaskList(generics.ListAPIView):
     queryset = Task.objects.all()
