@@ -108,7 +108,6 @@ TODO:
 POST tasks/shortlist/
 Example post data:
 {
-  "profile" : "1",
   "task" : "1"
 }
 
