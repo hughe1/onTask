@@ -55,8 +55,8 @@ class Task(BaseModel):
     points = models.IntegerField()
     location = models.CharField(max_length=128)
     is_remote = models.BooleanField
-    owner = models.ForeignKey('jobs.Profile')
-    helper = models.ForeignKey('jobs.Profile',blank=True)
+    owner = models.ForeignKey('jobs.Profile',related_name="poster")
+    helper = models.ForeignKey('jobs.Profile',related_name="helper",blank=True,null=True)
     date_posted = models.DateTimeField(auto_now=True)
     photo = models.ImageField(blank=True)
     # TODO question1, question2 etc - might be better with a many-to-many field
@@ -67,7 +67,7 @@ class Task(BaseModel):
     status = models.CharField(
         max_length=2,
         choices = STATUS_CHOICES,
-        default=INCOMPLETE
+        default=OPEN
     )
 
     def __str__(self):
