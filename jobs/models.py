@@ -40,11 +40,11 @@ class Profile(BaseModel):
 
 # TODO - default photo
 class Task(BaseModel):
-    INCOMPLETE = 'IC'
-    IN_PROGRESS = 'IP'
+    OPEN = 'O'
+    IN_PROGRESS = 'I'
     COMPLETE = 'C'
     STATUS_CHOICES = (
-        (INCOMPLETE, 'Incomplete'),
+        (OPEN, 'Open'),
         (IN_PROGRESS, 'In Progress'),
         (COMPLETE, 'Complete')
     )
@@ -54,6 +54,7 @@ class Task(BaseModel):
     location = models.CharField(max_length=128)
     is_remote = models.BooleanField
     owner = models.ForeignKey('jobs.Profile')
+    helper = models.ForeignKey('jobs.Profile',blank=True)
     date_posted = models.DateTimeField(auto_now=True)
     photo = models.ImageField(blank=True)
     # TODO question1, question2 etc - might be better with a many-to-many field
