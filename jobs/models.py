@@ -42,10 +42,12 @@ class Profile(BaseModel):
 
 # TODO - default photo
 class Task(BaseModel):
-    INCOMPLETE = 'IC'
+    OPEN = 'O'
+    IN_PROGRESS = 'I'
     COMPLETE = 'C'
     STATUS_CHOICES = (
-        (INCOMPLETE, 'Incomplete'),
+        (OPEN, 'Open'),
+        (IN_PROGRESS, 'In Progress'),
         (COMPLETE, 'Complete')
     )
     title = models.CharField(max_length=128)
@@ -54,6 +56,7 @@ class Task(BaseModel):
     location = models.CharField(max_length=128)
     is_remote = models.BooleanField
     owner = models.ForeignKey('jobs.Profile')
+    helper = models.ForeignKey('jobs.Profile',blank=True)
     date_posted = models.DateTimeField(auto_now=True)
     photo = models.ImageField(blank=True)
     # TODO question1, question2 etc - might be better with a many-to-many field
@@ -95,15 +98,11 @@ class ProfileTask(BaseModel):
     profile = models.ForeignKey('jobs.Profile')
     SHORTLISTED = 'SL'
     APPLIED = 'AP'
-    ASSIGNED = 'AS'
-    COMPLETE = 'C'
     DISCARDED = 'D'
     REJECTED = 'R'
     STATUS_CHOICES = (
         (SHORTLISTED, 'Shortlisted'),
         (APPLIED, 'Applied'),
-        (ASSIGNED, 'Assigned'),
-        (COMPLETE, 'Complete'),
         (DISCARDED, 'Discarded'),
         (REJECTED, 'Rejected')
     )
