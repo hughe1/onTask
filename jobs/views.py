@@ -41,7 +41,6 @@ class TaskDetail(generics.RetrieveAPIView):
     serializer_class = TaskGetSerializer
 
 
-# Permission classes disabled for testing purposes. Need to re-enable 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def shortlist_task(request):
@@ -61,7 +60,6 @@ def shortlist_task(request):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Permission classes disabled for testing purposes. Need to re-enable
 # Written so that any task can be discarded, regardless of status. 
 # May need to be updated if we want 'in progress' tasks to not be discarded. 
 @api_view(['POST'])
