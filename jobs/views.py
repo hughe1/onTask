@@ -15,16 +15,18 @@ from jobs.serializers import *
 
 class ProfileList(generics.ListAPIView):
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileUserSerializer
 
 
 class ProfileDetail(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileUserSerializer
+
 
 class ProfileTaskList(generics.ListAPIView):
     queryset = ProfileTask.objects.all()
     serializer_class = ProfileTaskSerializer
+
 
 class ProfileTaskDetail(generics.RetrieveAPIView):
     queryset = ProfileTask.objects.all()

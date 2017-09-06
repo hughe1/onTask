@@ -21,6 +21,14 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = "__all__"
         
+class ProfileUserSerializer(serializers.ModelSerializer):
+    
+    user = UserSerializer()
+    
+    class Meta:
+        model = Profile
+        fields = "__all__"
+        
 class TaskGetSerializer(serializers.ModelSerializer):
     
     owner = ProfileSerializer()
