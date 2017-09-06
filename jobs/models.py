@@ -41,9 +41,11 @@ class Profile(BaseModel):
 # TODO - default photo
 class Task(BaseModel):
     INCOMPLETE = 'IC'
+    IN_PROGRESS = 'IP'
     COMPLETE = 'C'
     STATUS_CHOICES = (
         (INCOMPLETE, 'Incomplete'),
+        (IN_PROGRESS, 'In Progress'),
         (COMPLETE, 'Complete')
     )
     title = models.CharField(max_length=128)
@@ -93,15 +95,11 @@ class ProfileTask(BaseModel):
     profile = models.ForeignKey('jobs.Profile')
     SHORTLISTED = 'SL'
     APPLIED = 'AP'
-    ASSIGNED = 'AS'
-    COMPLETE = 'C'
     DISCARDED = 'D'
     REJECTED = 'R'
     STATUS_CHOICES = (
         (SHORTLISTED, 'Shortlisted'),
         (APPLIED, 'Applied'),
-        (ASSIGNED, 'Assigned'),
-        (COMPLETE, 'Complete'),
         (DISCARDED, 'Discarded'),
         (REJECTED, 'Rejected')
     )
