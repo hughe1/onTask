@@ -9,11 +9,14 @@ GET /profiles/
 POST /tasks/create/
 POST /profiles/create/
 POST /tasks/apply/
+GET /profiletasks/
+GET /profiletasks/<id>
+POST /tasks/discard/
+POST /tasks/shortlist/
+GET /tasks/
+
 
 Todo:
-GET /tasks/
-POST /tasks/shortlist/
-DELETE /shortlist/<id>/
 GET /jobs/<id>/questions
 POST /jobs/<id>/application
 POST /jobs/<id>/accept
@@ -112,6 +115,33 @@ Example post data:
   "task" : "1"
 }
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Discard a task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Removes a task from the list of tasks displayed to a given user
+
+POST tasks/discard/
+Example post data:
+{
+  "profile" : "1",
+  "task" : "1"
+}
+
+Return:
+
+{
+    "id": 1,
+    "created_at": "2017-09-02T00:55:11.029324Z",
+    "updated_at": "2017-09-02T01:25:33.957014Z",
+    "enabled": true,
+    "status": "D",
+    "answer1": "",
+    "answer2": "",
+    "answer3": "",
+    "task": 1,
+    "profile": 1
+}
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Create Profile ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 POST /profiles/create
 Post body:
@@ -166,15 +196,6 @@ Return:
 }
 Note: Must use `Content-Type: application/json`
 
-================================================================================
-==================================== TODO ======================================
-================================================================================
-
-DELETE /shortlist/<id>/
-GET /jobs/<id>/questions/
-POST /jobs/<id>/application/
-POST /jobs/<id>/accept/
-POST /jobs/<id>/reject/
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get Tasks ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 GET /tasks/
@@ -208,3 +229,65 @@ Querystring:
     "skills"
   ]
 }
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get ProfileTasks ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ProfileTasks contain information about whether a task has been shortlisted, discarded, 
+applied, completed, etc, by a profile
+
+GET /profiletasks/
+Return:
+
+[
+  {
+    "id": 5,
+    "created_at": "2017-09-02T01:15:42.401416Z",
+    "updated_at": "2017-09-02T01:15:42.401447Z",
+    "enabled": true,
+    "status": "D",
+    "answer1": "",
+    "answer2": "",
+    "answer3": "",
+    "task": 3,
+    "profile": 1
+  },
+  "..."
+]
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get A ProfileTask ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Gets a specific profiletask by primary key
+
+GET /profiletasks/1
+Return:
+
+[
+  {
+    "id": 1,
+    "created_at": "2017-09-02T00:55:11.029324Z",
+    "updated_at": "2017-09-02T01:17:57.413499Z",
+    "enabled": true,
+    "status": "D",
+    "answer1": "",
+    "answer2": "",
+    "answer3": "",
+    "task": 1,
+    "profile": 1
+  },
+  "..."
+]
+
+
+
+================================================================================
+==================================== TODO ======================================
+================================================================================
+
+GET /jobs/<id>/questions/
+POST /jobs/<id>/application/
+POST /jobs/<id>/accept/
+POST /jobs/<id>/reject/
+
+
