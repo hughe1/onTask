@@ -43,12 +43,12 @@ class TaskDetail(generics.RetrieveAPIView):
 
 # Permission classes disabled for testing purposes. Need to re-enable 
 @api_view(['POST'])
-#@permission_classes((IsAuthenticated, ))
+@permission_classes((IsAuthenticated, ))
 def shortlist_task(request):
     if request.method == 'POST':
 
         #checks to see if ProfileTask already exists
-        profile = request.data['profile']
+        profile = request.user.profile
         task = request.data['task']
         if (ProfileTask.objects.filter(profile=profile, task=task).count()>0):
             return Response({"error":"ProfileTask already exists"}, status=status.HTTP_400_BAD_REQUEST)
@@ -93,7 +93,7 @@ def discard_task(request):
         
 # Permission classes disabled for testing purposes. Need to re-enable 
 @api_view(['POST'])
-#@permission_classes((IsAuthenticated, ))
+@permission_classes((IsAuthenticated, ))
 def apply_task(request):
     if request.method == 'POST':
 
@@ -146,6 +146,7 @@ def create_profile(request):
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)        
 
 @api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
 def create_task(request):
     if request.method == 'POST':
 
