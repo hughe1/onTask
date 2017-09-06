@@ -24,9 +24,17 @@ class ProfileSerializer(serializers.ModelSerializer):
         # fields = ('user','location', 'description','photo','date_created')
         fields = "__all__"
         
-class TaskSerializer(serializers.ModelSerializer):
+class TaskGetSerializer(serializers.ModelSerializer):
     
     owner = ProfileSerializer()
+
+    class Meta:
+        model = Task
+        fields = "__all__"
+        
+class TaskPostSerializer(serializers.ModelSerializer):
+    
+    # owner = ProfileSerializer()
 
     class Meta:
         model = Task

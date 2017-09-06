@@ -33,12 +33,12 @@ class ProfileTaskDetail(generics.RetrieveAPIView):
 
 class TaskList(generics.ListAPIView):
     queryset = Task.objects.all()
-    serializer_class = TaskSerializer
+    serializer_class = TaskGetSerializer
 
 
 class TaskDetail(generics.RetrieveAPIView):
     queryset = Task.objects.all()
-    serializer_class = TaskSerializer
+    serializer_class = TaskGetSerializer
 
 
 # Permission classes disabled for testing purposes. Need to re-enable 
@@ -150,11 +150,12 @@ def create_profile(request):
 def create_task(request):
     if request.method == 'POST':
 
-        serializer = TaskSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)    
+        request.data["owner"] = request.user.profile.id
+        task_serializer = TaskPostSerializer(data=request.data)
+        if not task_serializer.is_valid():
+            return Response(task_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        task_serializer.save()
+        return Response(task_serializer.data, status=status.HTTP_201_CREATED)    
         
         
         
