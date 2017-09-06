@@ -150,11 +150,14 @@ def create_profile(request):
 def create_task(request):
     if request.method == 'POST':
 
-        serializer = TaskSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)    
+        # request.data["owner"] = "2"
+        task_serializer = TaskSerializer(data=request.data)
+        if not task_serializer.is_valid():
+            print(task_serializer.errors)
+            print(task_serializer.data)
+            return Response(task_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        task_serializer.save()
+        return Response(task_serializer.data, status=status.HTTP_201_CREATED)    
         
         
         
