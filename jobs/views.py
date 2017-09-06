@@ -47,7 +47,8 @@ def shortlist_task(request):
     if request.method == 'POST':
 
         #checks to see if ProfileTask already exists
-        profile = request.user.profile
+        profile = request.user.profile.id
+        request.data["profile"] = profile
         task = request.data['task']
         if (ProfileTask.objects.filter(profile=profile, task=task).count()>0):
             return Response({"error":"ProfileTask already exists"}, status=status.HTTP_400_BAD_REQUEST)
@@ -57,6 +58,8 @@ def shortlist_task(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if not serializer.is_valid():
+            return Response({"error":"Serializer not valid"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -21,8 +21,6 @@ class BaseModel(models.Model):
 
 # TODO - default photo
 class Profile(BaseModel):
-    first_name = models.CharField(max_length=128)
-    last_name = models.CharField(max_length=128)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
