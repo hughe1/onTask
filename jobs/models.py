@@ -52,7 +52,7 @@ class Task(BaseModel):
     description = models.TextField(max_length=2000)
     points = models.IntegerField()
     location = models.CharField(max_length=128)
-    is_remote = models.BooleanField
+    is_remote = models.BooleanField(default=False)
     owner = models.ForeignKey('jobs.Profile',related_name="poster")
     helper = models.ForeignKey('jobs.Profile',related_name="helper",blank=True,null=True)
     date_posted = models.DateTimeField(auto_now=True)
