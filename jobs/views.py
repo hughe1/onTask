@@ -142,7 +142,7 @@ def create_profile(request):
         #update attached profile with serializer data
         request.data["user"] = user.id
         profile = Profile.objects.get(user=user.id)
-        profile_serializer = ProfileSerializer(profile,data=request.data)
+        profile_serializer = ProfileSerializer(profile,data=request.data)   
         if not profile_serializer.is_valid():
             return Response(profile_serializer.data, status=status.HTTP_400_BAD_REQUEST)
         profile_serializer.save()

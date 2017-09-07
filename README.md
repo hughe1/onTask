@@ -123,6 +123,12 @@ A good naming structure for your own branch might be `<name>-<feature>`.
 * If you `pip install` something, make sure you `pip freeze > requirements.txt`
   and commit your changes, so everyone has the same environment
 
+## Testing
+
+The test suite can be run with the following command:
+
+`./manage.py test`
+
   **TODO**
 
 - [ ] Add fixtures to load testing data locally
