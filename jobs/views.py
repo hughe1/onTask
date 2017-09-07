@@ -204,7 +204,7 @@ def complete_task(request):
         #returns 404 if no such task exists
         task = get_object_or_404(Task, pk=request.data["task_id"])
 
-        # if task is not currently open, return an error
+        # if task is not currently in progress, return an error
         if task.status != Task.IN_PROGRESS:
             return Response({"error":"Task is not In Progress and cannot be Completed"}, status=status.HTTP_400_BAD_REQUEST)
         #ensures correct user is starting the task
@@ -221,7 +221,6 @@ def complete_task(request):
         serializer = TaskPostSerializer(task,data=new_data)
         if serializer.is_valid():
             serializer.save()
-            print(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
