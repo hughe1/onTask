@@ -192,6 +192,38 @@ def start_task(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+
+# Sets the status of task to "completed"
+# Called when the Poster judges that the task is done
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def complete_task(request):
+    if request.method == 'POST':
+
+        #returns 404 if no such task exists
+        task = get_object_or_404(Task, pk=request.data["task_id"])
+
+        # if task is not currently in progress, return an error
+        if task.status != Task.IN_PROGRESS:
+            return Response({"error":"Task is not In Progress and cannot be Completed"}, status=status.HTTP_400_BAD_REQUEST)
+        #ensures correct user is starting the task
+        if task.owner.id != request.user.id:
+            return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
+
+        #makes a serializer from the existing task
+        old_serializer = TaskPostSerializer(task)
+
+        #creates new serializer data based on old task with a new status
+        new_data = old_serializer.data
+        new_data["status"] = Task.COMPLETE
+
+        serializer = TaskPostSerializer(task,data=new_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
         
         
         
