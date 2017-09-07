@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^profiletasks/$', views.ProfileTaskList.as_view(), name='profiletask-list'),
     url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view(), name='profiletask-detail'),
 
+
 ]
 
 

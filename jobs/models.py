@@ -56,7 +56,13 @@ class Task(BaseModel):
     owner = models.ForeignKey('jobs.Profile',related_name="poster")
     helper = models.ForeignKey('jobs.Profile',related_name="helper",blank=True,null=True)
     date_posted = models.DateTimeField(auto_now=True)
-    photo = models.ImageField(blank=True)
+
+    ####
+    # Null photo is temporary allowed (until Baz susses photos) so that task_start works
+    # REMOVE null=true EVENTUALLY (and test that task_start works)
+    ####
+
+    photo = models.ImageField(blank=True,null=True)
     # TODO question1, question2 etc - might be better with a many-to-many field
     # instead of hard-code attributes
     question1 = models.CharField(max_length=300,blank=True)
