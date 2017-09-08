@@ -146,7 +146,7 @@ def reject_application(request):
             and task.status == 'O'):
             return Response({"error":"profileTask status must be (Applied or Application_Shortlisted), and task status must be Open"}, status=status.HTTP_400_BAD_REQUEST)
 
-        #set status to 'applied'
+        #set status to 'Rejected'
         request.data["status"] = "R"
 
         #set compulsory fields in the serializer
@@ -178,7 +178,7 @@ def shortlist_application(request):
         if not (profile_task.status == ProfileTask.APPLIED and task.status == 'O'):
             return Response({"error":"profileTask status must be Applied, and task status must be Open"}, status=status.HTTP_400_BAD_REQUEST)
 
-        #set status to 'applied'
+        #set status to 'Application shortlisted'
         request.data["status"] = "ASL"
 
         #set compulsory fields in the serializer
