@@ -24,7 +24,7 @@ class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
-    photo = models.ImageField(blank=True)
+    photo = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
 
 
     def __str__(self):
