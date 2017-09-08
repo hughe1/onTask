@@ -25,7 +25,6 @@ class Profile(BaseModel):
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
     photo = models.ImageField(blank=True)
-    date_created = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
@@ -55,7 +54,6 @@ class Task(BaseModel):
     is_remote = models.BooleanField(default=False)
     owner = models.ForeignKey('jobs.Profile',related_name="poster")
     helper = models.ForeignKey('jobs.Profile',related_name="helper",blank=True,null=True)
-    date_posted = models.DateTimeField(auto_now=True)
 
     ####
     # Null photo is temporary allowed (until Baz susses photos) so that task_start works
@@ -127,7 +125,6 @@ class Comment(BaseModel):
     profile = models.ForeignKey('jobs.Profile')
     task = models.ForeignKey('jobs.Task')
     text = models.TextField(max_length=1000)
-    date_posted = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "Comment: "+self.task.title +" ("+ self.user.username + ")"
