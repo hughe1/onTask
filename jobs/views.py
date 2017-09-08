@@ -99,7 +99,8 @@ def discard_task(request):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         
-
+# TODO:
+#need to check here that the user is the logged in user
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def apply_task(request):
@@ -115,6 +116,38 @@ def apply_task(request):
 
         #set status to 'applied'
         request.data["status"] = "AP"
+
+        #set compulsory fields in the serializer
+        request.data["task"] = profile_task.task.id
+        request.data["profile"] = profile_task.profile.id
+
+        serializer = ProfileTaskSerializer(profile_task,data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        print(serializer.errors)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+#reject a task application
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def reject_application(request):
+    if request.method == 'POST':
+
+        #returns 404 if no such ProfileTask exists
+        profile_task = get_object_or_404(ProfileTask, pk=request.data["profiletask_id"])
+        task = profile_task.task
+
+        if task.owner.id != request.user.id:
+            return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # if task has already been assigned or rejected, return an error
+        if not (profile_task.status == 'AP' and task.status == 'O'):
+            return Response({"error":"profileTask status must be Applied and task status must be Open"}, status=status.HTTP_400_BAD_REQUEST)
+
+        #set status to 'applied'
+        request.data["status"] = "R"
 
         #set compulsory fields in the serializer
         request.data["task"] = profile_task.task.id
