@@ -136,7 +136,7 @@ def create_profile(request):
         #make the user
         user_serializer = UserSerializer(data=request.data)
         if not user_serializer.is_valid():
-            return Response(user_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         user = user_serializer.save()
 
         #set user password (needs to be done separately from serializer)
@@ -147,12 +147,13 @@ def create_profile(request):
         #update attached profile with serializer data
         request.data["user"] = user.id
         profile = Profile.objects.get(user=user.id)
-        profile_serializer = ProfileSerializer(profile,data=request.data)   
+        profile_serializer = ProfileSerializer(profile,data=request.data)
         if not profile_serializer.is_valid():
-            return Response(profile_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            user.delete()
+            return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         profile_serializer.save()
 
-        return Response(user_serializer.data, status=status.HTTP_201_CREATED)        
+        return Response(user_serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
@@ -196,7 +197,7 @@ def start_task(request):
             print(serializer.data)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Sets the status of task to "completed"
@@ -228,13 +229,4 @@ def complete_task(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
