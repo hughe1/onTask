@@ -48,3 +48,12 @@ class ProfileTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileTask
         fields = "__all__"
+
+# To serialize ProfileTasks into just the list of Profiles
+class ApplicantSerializer(serializers.ModelSerializer):
+    
+    profile = ProfileUserSerializer()
+    
+    class Meta:
+        model = ProfileTask
+        fields = ['profile',]

@@ -225,11 +225,21 @@ def complete_task(request):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
         
+
+# View all applicants of a task
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def view_applicants(request, task_id):
+    if request.method == 'GET':
+        
+        # Get the Profile Tasks for the task, where the status is "applied"
+        profile_tasks = ProfileTask.objects.filter(task=task_id, status=ProfileTask.APPLIED)
+        
+        # Use applicant serializer to just serializer the profile attribute from ProfileTask
+        serializer = ApplicantSerializer(profile_tasks, many=True)
+        
+        # Return the list of Profiles that have applied for the task
+        return Response(serializer.data)
         
         
-        
-        
-        
-        
-        
-        
+

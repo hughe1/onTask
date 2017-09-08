@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^tasks/apply/$', views.apply_task, name='task-apply'),
     url(r'^tasks/shortlist/$', views.shortlist_task, name='task-shortlist'),
     url(r'^tasks/discard/$', views.discard_task, name='task-discard'),
+    url(r'^tasks/(?P<task_id>[0-9]+)/applicants/$', views.view_applicants, name='task-view-applicants'),
     url(r'^profiletasks/$', views.ProfileTaskList.as_view(), name='profiletask-list'),
     url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view(), name='profiletask-detail'),
 
