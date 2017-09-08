@@ -68,14 +68,14 @@ def shortlist_task(request):
 # Written so that any task can be discarded, regardless of status. 
 # May need to be updated if we want 'in progress' tasks to not be discarded. 
 @api_view(['POST'])
-#@permission_classes((IsAuthenticated, ))
+@permission_classes((IsAuthenticated, ))
 def discard_task(request):
     if request.method == 'POST':
 
         #checks to see if ProfileTask already exists
-        profile = request.data['profile']
+        profile = request.user.profile.id
+        request.data["profile"] = profile
         task = request.data['task']
-
         # set status of profiletask to 'discarded'
         request.data['status']=ProfileTask.DISCARDED
 
@@ -85,17 +85,21 @@ def discard_task(request):
 
             profileTask = ProfileTask.objects.filter(profile=profile, task=task)[0]
             serializer = ProfileTaskSerializer(profileTask, data=request.data)
+            alreadyExists = True
         else:
             serializer = ProfileTaskSerializer(data=request.data)
+            alreadyExists = False
 
         #save the serializer
         if serializer.is_valid():
             serializer.save()
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            if alreadyExists:
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         
-# Permission classes disabled for testing purposes. Need to re-enable 
+
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def apply_task(request):
@@ -103,10 +107,11 @@ def apply_task(request):
 
         #returns 404 if no such ProfileTask exists
         profile_task = get_object_or_404(ProfileTask, pk=request.data["profiletask_id"])
+        task = profile_task.task
 
         # if task has already been assigned or rejected, return an error
-        if profile_task.status =='R' or profile_task.status == "AS":
-            return Response({"error":"task has already been assigned/rejected"}, status=status.HTTP_400_BAD_REQUEST)
+        if not (profile_task.status == 'SL' and task.status == 'O'):
+            return Response({"error":"Task isn't available to apply for."}, status=status.HTTP_400_BAD_REQUEST)
 
         #set status to 'applied'
         request.data["status"] = "AP"
@@ -119,7 +124,7 @@ def apply_task(request):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         print(serializer.errors)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -189,7 +194,7 @@ def start_task(request):
         if serializer.is_valid():
             serializer.save()
             print(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
