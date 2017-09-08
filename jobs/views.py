@@ -85,17 +85,21 @@ def discard_task(request):
 
             profileTask = ProfileTask.objects.filter(profile=profile, task=task)[0]
             serializer = ProfileTaskSerializer(profileTask, data=request.data)
+            alreadyExists = True
         else:
             serializer = ProfileTaskSerializer(data=request.data)
+            alreadyExists = False
 
         #save the serializer
         if serializer.is_valid():
             serializer.save()
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            if alreadyExists:
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         
-# Permission classes disabled for testing purposes. Need to re-enable 
+
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def apply_task(request):
@@ -119,7 +123,7 @@ def apply_task(request):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         print(serializer.errors)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -189,7 +193,7 @@ def start_task(request):
         if serializer.is_valid():
             serializer.save()
             print(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
