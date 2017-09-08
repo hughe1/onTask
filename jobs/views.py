@@ -68,14 +68,14 @@ def shortlist_task(request):
 # Written so that any task can be discarded, regardless of status. 
 # May need to be updated if we want 'in progress' tasks to not be discarded. 
 @api_view(['POST'])
-#@permission_classes((IsAuthenticated, ))
+@permission_classes((IsAuthenticated, ))
 def discard_task(request):
     if request.method == 'POST':
 
         #checks to see if ProfileTask already exists
-        profile = request.data['profile']
+        profile = request.user.profile.id
+        request.data["profile"] = profile
         task = request.data['task']
-
         # set status of profiletask to 'discarded'
         request.data['status']=ProfileTask.DISCARDED
 
