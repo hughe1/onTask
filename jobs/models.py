@@ -101,14 +101,17 @@ class ProfileTask(BaseModel):
     APPLIED = 'AP'
     DISCARDED = 'D'
     REJECTED = 'R'
+    APPLICATION_SHORTLISTED = 'ASL'
     STATUS_CHOICES = (
         (SHORTLISTED, 'Shortlisted'),
         (APPLIED, 'Applied'),
         (DISCARDED, 'Discarded'),
-        (REJECTED, 'Rejected')
+        (REJECTED, 'Rejected'),
+        (APPLICATION_SHORTLISTED, 'Application Shortlisted')
+
     )
     status = models.CharField(
-        max_length=2,
+        max_length=3,
         choices=STATUS_CHOICES,
         default=SHORTLISTED
     )

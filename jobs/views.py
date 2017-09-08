@@ -129,10 +129,6 @@ def apply_task(request):
         print(serializer.errors)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
-#TODO:
-# Make this work for applicants shortlisted by the POSTER 
-# This is once we add this as a status
-#reject a task application
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def reject_application(request):
@@ -145,9 +141,10 @@ def reject_application(request):
         if task.owner.id != request.user.id:
             return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # if task has already been assigned or rejected, return an error
-        if not (profile_task.status == 'AP' and task.status == 'O'):
-            return Response({"error":"profileTask status must be Applied and task status must be Open"}, status=status.HTTP_400_BAD_REQUEST)
+        # profileTask must be either applied or application_shortlisted, and task must be open
+        if not ((profile_task.status == ProfileTask.APPLIED or profile_task.status == ProfileTask.APPLICATION_SHORTLISTED)
+            and task.status == 'O'):
+            return Response({"error":"profileTask status must be (Applied or Application_Shortlisted), and task status must be Open"}, status=status.HTTP_400_BAD_REQUEST)
 
         #set status to 'applied'
         request.data["status"] = "R"
