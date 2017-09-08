@@ -107,10 +107,11 @@ def apply_task(request):
 
         #returns 404 if no such ProfileTask exists
         profile_task = get_object_or_404(ProfileTask, pk=request.data["profiletask_id"])
+        task = profile_task.task
 
         # if task has already been assigned or rejected, return an error
-        if profile_task.status =='R' or profile_task.status == "AS":
-            return Response({"error":"task has already been assigned/rejected"}, status=status.HTTP_400_BAD_REQUEST)
+        if not (profile_task.status == 'SL' and task.status == 'O'):
+            return Response({"error":"Task isn't available to apply for."}, status=status.HTTP_400_BAD_REQUEST)
 
         #set status to 'applied'
         request.data["status"] = "AP"
