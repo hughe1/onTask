@@ -129,6 +129,9 @@ def apply_task(request):
         print(serializer.errors)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
+#TODO:
+# Make this work for applicants shortlisted by the POSTER 
+# This is once we add this as a status
 #reject a task application
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
