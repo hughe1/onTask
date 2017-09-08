@@ -19,7 +19,6 @@ class BaseModel(models.Model):
         return timesince(self.created_at).split(',')[0]
 
 
-# TODO - default photo
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=128, blank=True) # could update to choices
@@ -60,7 +59,7 @@ class Task(BaseModel):
     # REMOVE null=true EVENTUALLY (and test that task_start works)
     ####
 
-    photo = models.ImageField(blank=True,null=True)
+    photo = models.ImageField(upload_to='%Y/%m/%d/', blank=True,null=True)
     # TODO question1, question2 etc - might be better with a many-to-many field
     # instead of hard-code attributes
     question1 = models.CharField(max_length=300,blank=True)
