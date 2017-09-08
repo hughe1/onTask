@@ -1,7 +1,10 @@
 from django.contrib import admin
 from jobs.models import *
 
-admin.site.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('title', 'pk')
+
+admin.site.register(Task, TaskAdmin)
 admin.site.register(Skill)
 admin.site.register(ProfileSkill)
 admin.site.register(ProfileTask)

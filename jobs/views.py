@@ -232,6 +232,17 @@ def complete_task(request):
 def view_applicants(request, task_id):
     if request.method == 'GET':
         
+        # Return 404 if doesn't doesn't exists
+        task = get_object_or_404(Task, pk=task_id)
+        
+        # Get the profile of requester and profile of task owner
+        requester = request.user.profile
+        owner = Task.objects.get(pk=task_id).owner
+        
+        # Check requester is the task owner
+        if not requester == owner:
+            return Response({"error":"Cannot view applicants as not task owner"}, status=status.HTTP_400_BAD_REQUEST)
+        
         # Get the Profile Tasks for the task, where the status is "applied"
         profile_tasks = ProfileTask.objects.filter(task=task_id, status=ProfileTask.APPLIED)
         
@@ -239,7 +250,7 @@ def view_applicants(request, task_id):
         serializer = ApplicantSerializer(profile_tasks, many=True)
         
         # Return the list of Profiles that have applied for the task
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
-        
+
 
