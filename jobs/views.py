@@ -253,4 +253,39 @@ def view_applicants(request, task_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
         
 
+# TODO Provide Helper object in response, not just ID
+# Accept an applicant and start the task         
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def accept_applicant(request, task_id):
+
+    task = get_object_or_404(Task, pk=task_id)
+    print(task)
+    applicant = get_object_or_404(Profile, pk=request.data["profile"])
+    print(applicant)
+    
+    #makes a serializer from the existing task
+    old_serializer = TaskPostSerializer(task)
+
+    new_data = old_serializer.data
+    print(new_data)
+    # change task status
+    new_data["status"] = Task.IN_PROGRESS
+    
+    profile_serializer = ProfileSerializer(applicant)
+    
+    new_data["helper"] = applicant.pk
+    # new_data["helper"] = profile_serializer.data
+    
+    print(new_data)
+
+    #creates new serializer data based on old task with a new status
+    serializer = TaskPostSerializer(task, data=new_data)
+    # serializer = TaskHelperSerializer(data=new_data)
+    
+    print(serializer)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
