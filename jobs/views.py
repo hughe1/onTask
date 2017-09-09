@@ -67,6 +67,7 @@ def shortlist_task(request):
 
 # Written so that any task can be discarded, regardless of status. 
 # May need to be updated if we want 'in progress' tasks to not be discarded. 
+# need to add permission integrity
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def discard_task(request):
@@ -78,6 +79,12 @@ def discard_task(request):
         task = request.data['task']
         # set status of profiletask to 'discarded'
         request.data['status']=ProfileTask.DISCARDED
+
+        # if task is already discarded, return bad response
+        if (ProfileTask.objects.filter(profile=profile, task=task).count()>0):
+            profile_task = ProfileTask.objects.filter(profile=profile, task=task)[0]
+            if (profile_task.status == 'D'):
+                return Response({"error":"ProfileTask has already been discarded."}, status=status.HTTP_400_BAD_REQUEST)
 
         #if a profileTask already exists for the given profile and task, get it
         # otherwise, create a new profiletask
@@ -97,7 +104,7 @@ def discard_task(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
 @api_view(['POST'])

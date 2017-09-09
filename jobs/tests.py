@@ -165,7 +165,51 @@ class TestShortlist(APITestCase):
         
     # Ensure a user cannot shortlist a task they have already shortlisted    
     def test_shortlist_already_shortlisted(self):
-        pass
+        token = api_login(self.profile1.user)
+        url = reverse('task-shortlist')
+        data = {'task': self.task1.id}
+        response1 = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        response2 = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+
+        #first response should be success, second failure
+        self.assertEqual(response2.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(ProfileTask.objects.count(), 1)
+
+
+
+class TestDiscardTask(APITestCase):
+    
+    def setUp(self):
+        self.profile1 = create_profile(1)
+        self.task1 = create_task(self.profile1, 1)
+        self.profile2 = create_profile(2)
+        self.task2 = create_task(self.profile2, 2)
+        
+    # Ensure a user can discard a task they have not already discarded
+    def test_discard_not_already_discarded(self):
+        token = api_login(self.profile1.user)
+        url = reverse('task-discard')
+        data = {'task': self.task1.id}
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ProfileTask.objects.count(), 1)
+        
+    # Ensure a user cannot discard a task they have already discarded    
+    def test_discard_already_discarded(self):
+        token = api_login(self.profile1.user)
+        url = reverse('task-discard')
+        data = {'task': self.task1.id}
+        response1 = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        response2 = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+
+        #first response should be success, second failure
+        self.assertEqual(response2.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(ProfileTask.objects.count(), 1)
+        #pass        
         
         
 
