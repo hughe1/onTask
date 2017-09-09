@@ -61,7 +61,7 @@ def shortlist_task(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         if not serializer.is_valid():
-            return Response({"error":"Serializer not valid"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -167,6 +167,11 @@ def create_task(request):
         task_serializer.save()
         return Response(task_serializer.data, status=status.HTTP_201_CREATED)
 
+
+########
+### DEPRECATED METHOD - NOW ALL DONE IN ACCEPT_APPLICANT
+#######
+
 # Sets the status of task to "in progress"
 # Should be called as soon as applicant is accepted
 @api_view(['POST'])
@@ -261,36 +266,44 @@ def view_applicants(request, task_id):
         
 
 # TODO Provide Helper object in response, not just ID
-# Accept an applicant and start the task         
+# Accept an applicant and start the task 
+
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def accept_applicant(request, task_id):
 
     task = get_object_or_404(Task, pk=task_id)
-    print(task)
     applicant = get_object_or_404(Profile, pk=request.data["profile"])
-    print(applicant)
     
+    #ensures correct user is accepting applicant
+    if task.owner.id != request.user.id:
+        return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
+
+    #Check the task is Open and does not have a helper
+    if (task.status != Task.OPEN or task.helper != None):
+        return Response({"error":"Task must be open, and have no helper assigned"}, status=status.HTTP_400_BAD_REQUEST)
+
+    #Check that the helper has submitted an application for the task
+    if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
+        (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.APPLIED)) :
+        return Response({"error":"Profile must have applied for task to be accepted"}, status=status.HTTP_400_BAD_REQUEST)
+
+
     #makes a serializer from the existing task
     old_serializer = TaskPostSerializer(task)
 
     new_data = old_serializer.data
-    print(new_data)
     # change task status
     new_data["status"] = Task.IN_PROGRESS
     
     profile_serializer = ProfileSerializer(applicant)
     
     new_data["helper"] = applicant.pk
-    # new_data["helper"] = profile_serializer.data
     
-    print(new_data)
 
     #creates new serializer data based on old task with a new status
     serializer = TaskPostSerializer(task, data=new_data)
-    # serializer = TaskHelperSerializer(data=new_data)
     
-    print(serializer)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
