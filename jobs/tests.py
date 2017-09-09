@@ -212,5 +212,76 @@ class TestDiscardTask(APITestCase):
         #pass        
         
         
+class TestApplyTask(APITestCase):
+    
+    def setUp(self):
+        self.profile1 = create_profile(1)
+        self.task1 = create_task(self.profile1, 1)
+        self.profile2 = create_profile(2)
+        self.task2 = create_task(self.profile2, 2)
+
+    # User should not be able to apply for an unshortlisted task
+    def test_apply_unshortlisted(self):
+
+        token = api_login(self.profile1.user)
+        url = reverse('task-apply')
+
+        data = {
+          "profiletask_id" : "1",
+          "answer1" : "ans1",
+          "answer2" : "ans2",
+          "answer3" : "ans3"
+        }
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(ProfileTask.objects.count(), 0)
+        
+    # Ensure a user can apply to a task they have not already applied for
+    def test_apply_discarded(self):
+
+        #discard the task
+        token = api_login(self.profile1.user)
+        url = reverse('task-discard')
+        data = {'task': self.task1.id}
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+
+        url = reverse('task-apply')
+        self.profile_task1 = ProfileTask.objects.filter(profile=self.profile1, task=self.task1)[0]
+
+        data = {
+          "profiletask_id" : self.profile_task1.id,
+          "answer1" : "ans1",
+          "answer2" : "ans2",
+          "answer3" : "ans3"
+        }
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(ProfileTask.objects.count(), 1)
+
+    def test_apply_shortlisted(self):
+
+        #shortlist the task
+        token = api_login(self.profile1.user)
+        url = reverse('task-shortlist')
+        data = {'task': self.task1.id}
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+
+        url = reverse('task-apply')
+        self.profile_task1 = ProfileTask.objects.filter(profile=self.profile1, task=self.task1)[0]
+
+        data = {
+          "profiletask_id" : self.profile_task1.id,
+          "answer1" : "ans1",
+          "answer2" : "ans2",
+          "answer3" : "ans3"
+        }
+        # first apply - should pass
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        #attempt to reapply - should fail
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(ProfileTask.objects.count(), 1)
+        
 
 
