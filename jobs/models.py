@@ -116,6 +116,8 @@ class ProfileTask(BaseModel):
     answer1 = models.CharField(max_length=300,blank=True)
     answer2 = models.CharField(max_length=300,blank=True)
     answer3 = models.CharField(max_length=300,blank=True)
+    quote = models.IntegerField(blank=True,null=True)
+
 
     def __str__(self):
         return "ProfileTask: "+self.task.title +" ("+ self.profile.user.username + ")"

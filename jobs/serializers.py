@@ -63,6 +63,7 @@ class TaskHelperSerializer(serializers.ModelSerializer):
         instance.location = validated_data.get('location', instance.location)
         instance.is_remote = validated_data.get('is_remote', instance.is_remote)
         instance.owner = validated_data.get('owner', instance.owner)
+        instance.quote = validated_data.get('quote', instance.quote)
         instance.save()
         
         helper.user = helper_data.get('user', helper.user)
@@ -83,4 +84,4 @@ class ApplicantSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ProfileTask
-        fields = ['profile','answer1','answer2','answer3']
+        fields = ['profile','answer1','answer2','answer3','quote']
