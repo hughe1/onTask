@@ -270,7 +270,12 @@ def create_profile(request):
 @permission_classes((IsAuthenticated, ))
 def create_task(request):
     if request.method == 'POST':
-
+        
+        skills = Skill.objects.filter(code__in=request.data["skills"])
+        skills_pks = []
+        for skill in skills:
+            skills_pks.append(skill.pk)
+        request.data["skills"] = skills_pks
         request.data["owner"] = request.user.profile.id
         task_serializer = TaskPostSerializer(data=request.data)
         if not task_serializer.is_valid():

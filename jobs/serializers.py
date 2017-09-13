@@ -36,6 +36,7 @@ class TaskGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = "__all__"
+        # exclude = ('skills',)
         
 class TaskPostSerializer(serializers.ModelSerializer):
 
