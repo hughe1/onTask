@@ -9,6 +9,8 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 import django_filters.rest_framework
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 from jobs.models import *
 from jobs.serializers import *
@@ -38,17 +40,25 @@ class TaskList(generics.ListAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskGetSerializer
 
+    #set the view to be searchable and filterabe
+    filter_backends = (filters.SearchFilter,DjangoFilterBackend,)
+
+    # set the fields which are accessed by searching
+    search_fields = ('title','location','description','owner__user__first_name', 'owner__user__last_name')
+
     #Optionally filtered queryset
     def get_queryset(self):
 
         queryset = Task.objects.all()
 
         #Filter by location
+        # __icontains makes query case insensitive and 'contains' rather than 'equals'
+        # so 'syd' will match 'Sydney'
         location = self.request.query_params.get('location', None)
         if location is not None:
-            queryset = queryset.filter(location=location)
+            queryset = queryset.filter(location__icontains=location)
 
-            
+
         return queryset
 
 
