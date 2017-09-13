@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
+import django_filters.rest_framework
 
 from jobs.models import *
 from jobs.serializers import *
@@ -36,6 +37,19 @@ class ProfileTaskDetail(generics.RetrieveAPIView):
 class TaskList(generics.ListAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskGetSerializer
+
+    #Optionally filtered queryset
+    def get_queryset(self):
+
+        queryset = Task.objects.all()
+
+        #Filter by location
+        location = self.request.query_params.get('location', None)
+        if location is not None:
+            queryset = queryset.filter(location=location)
+
+            
+        return queryset
 
 
 class TaskDetail(generics.RetrieveAPIView):
