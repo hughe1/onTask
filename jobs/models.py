@@ -26,6 +26,7 @@ class Profile(BaseModel):
     photo = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
 
 
+
     def __str__(self):
         return self.user.username
 
@@ -70,6 +71,7 @@ class Task(BaseModel):
         choices = STATUS_CHOICES,
         default=OPEN
     )
+    skills = models.ManyToManyField('jobs.Skill')
 
     def __str__(self):
         return self.title
@@ -79,6 +81,7 @@ class Skill(BaseModel):
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2000)
     image = models.ImageField(blank=True)
+    code = models.CharField(max_length=20)
 
     def __str__(self):
         return self.title
@@ -118,6 +121,8 @@ class ProfileTask(BaseModel):
     answer1 = models.CharField(max_length=300,blank=True)
     answer2 = models.CharField(max_length=300,blank=True)
     answer3 = models.CharField(max_length=300,blank=True)
+    quote = models.IntegerField(blank=True,null=True)
+
 
     def __str__(self):
         return "ProfileTask: "+self.task.title +" ("+ self.profile.user.username + ")"
