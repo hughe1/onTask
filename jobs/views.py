@@ -58,6 +58,16 @@ class TaskList(generics.ListAPIView):
         if location is not None:
             queryset = queryset.filter(location__icontains=location)
 
+        #Filter by skills
+        # so 'syd' will match 'Sydney'
+        #skills = self.request.query_params.get('skills', None)
+        #if skills is not None:
+        #    skills = skills.split(',')
+        #    for skill in skills:
+        #        queryset = queryset.filter(location__icontains=location)
+        #skills= self.request.query_params.get('skill', None)
+       #queryset.filter(SkillTask.objects.filter(profile=profile, task=task).count()>0
+
 
         return queryset
 

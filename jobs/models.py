@@ -71,6 +71,7 @@ class Task(BaseModel):
         choices = STATUS_CHOICES,
         default=OPEN
     )
+    skills = models.ManyToManyField('jobs.Skill')
 
     def __str__(self):
         return self.title
