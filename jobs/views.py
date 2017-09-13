@@ -274,7 +274,7 @@ def create_task(request):
         request.data["owner"] = request.user.profile.id
         task_serializer = TaskPostSerializer(data=request.data)
         if not task_serializer.is_valid():
-            return Response(task_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(task_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         task_serializer.save()
         return Response(task_serializer.data, status=status.HTTP_201_CREATED)
 
