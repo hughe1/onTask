@@ -49,25 +49,31 @@ class TaskList(generics.ListAPIView):
     #Optionally filtered queryset
     def get_queryset(self):
 
+        #set initial queryset to all task objects
         queryset = Task.objects.all()
+
+        #Filter by skills
+        #skills are comma separated, ie ?skills=java,python
+        skills = self.request.query_params.get('skills', None)
+        if skills is not None:
+            skills = skills.split(',')
+            skill_querysets = []
+
+            #construct individual querysets for each skill
+            for skill_str in skills:
+                skill = get_object_or_404(Skill, title=skill_str)
+                skill_querysets.append(skill.task_set.all())
+                
+            #find the intersection of all querysets
+            for skill_queryset in skill_querysets:
+                queryset = queryset & skill_queryset
 
         #Filter by location
         # __icontains makes query case insensitive and 'contains' rather than 'equals'
-        # so 'syd' will match 'Sydney'
+        # so ?location=syd will match 'Sydney'
         location = self.request.query_params.get('location', None)
         if location is not None:
             queryset = queryset.filter(location__icontains=location)
-
-        #Filter by skills
-        # so 'syd' will match 'Sydney'
-        #skills = self.request.query_params.get('skills', None)
-        #if skills is not None:
-        #    skills = skills.split(',')
-        #    for skill in skills:
-        #        queryset = queryset.filter(location__icontains=location)
-        #skills= self.request.query_params.get('skill', None)
-       #queryset.filter(SkillTask.objects.filter(profile=profile, task=task).count()>0
-
 
         return queryset
 
