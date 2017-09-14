@@ -418,6 +418,7 @@ def accept_applicant(request, task_id):
 
     task = get_object_or_404(Task, pk=task_id)
     applicant = get_object_or_404(Profile, pk=request.data["profile"])
+    print(applicant)
     
     #ensures correct user is accepting applicant
     if task.owner.id != request.user.id:
@@ -450,5 +451,12 @@ def accept_applicant(request, task_id):
     
     if serializer.is_valid():
         serializer.save()
+
+        #update the status of the profiletask
+        profileTask = ProfileTask.objects.filter(profile=applicant, task=task)[0]
+        profileTask.status = ProfileTask.ASSIGNED
+        profileTask.save()
+
+
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
