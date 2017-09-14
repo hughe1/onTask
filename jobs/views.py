@@ -271,15 +271,19 @@ def create_profile(request):
 def create_task(request):
     if request.method == 'POST':
         
+        # Get skill objects from skill code
         skills = Skill.objects.filter(code__in=request.data["skills"])
         skills_pks = []
+        # Get the skill pk's and add to a a list
         for skill in skills:
             skills_pks.append(skill.pk)
+        # Add skill pk's to the request
         request.data["skills"] = skills_pks
         request.data["owner"] = request.user.profile.id
         task_serializer = TaskPostSerializer(data=request.data)
         if not task_serializer.is_valid():
             return Response(task_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Save task serializer and create new Task object
         task_serializer.save()
         return Response(task_serializer.data, status=status.HTTP_201_CREATED)
 

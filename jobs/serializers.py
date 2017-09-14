@@ -2,12 +2,6 @@ from rest_framework import serializers
 from jobs.models import *
 from django.contrib.auth.models import User
 
-#class UserSerializer(serializers.ModelSerializer):
-
- #   class Meta:
- #       model = User
- #       fields = ('id', 'username')
-
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -36,7 +30,6 @@ class TaskGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = "__all__"
-        # exclude = ('skills',)
         
 class TaskPostSerializer(serializers.ModelSerializer):
 
