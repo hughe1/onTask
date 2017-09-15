@@ -65,7 +65,16 @@ class TaskHelperSerializer(serializers.ModelSerializer):
 
         return instance
 
-class ProfileTaskSerializer(serializers.ModelSerializer):
+
+class ProfileTaskGetSerializer(serializers.ModelSerializer):
+
+    task = TaskGetSerializer()
+
+    class Meta:
+        model = ProfileTask
+        fields = "__all__"
+
+class ProfileTaskPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProfileTask

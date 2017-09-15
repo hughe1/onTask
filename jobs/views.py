@@ -26,9 +26,9 @@ class ProfileDetail(generics.RetrieveAPIView):
     serializer_class = ProfileUserSerializer
 
 
-class ProfileTaskList(generics.ListAPIView):
-    queryset = ProfileTask.objects.all()
-    serializer_class = ProfileTaskSerializer
+#class ProfileTaskList(generics.ListAPIView):
+#    queryset = ProfileTask.objects.all()
+#    serializer_class = ProfileTaskSerializer
 
 
 # TODO: insert nested JSON so HelperTask has the Task object info (as well as the ProfileTask)
@@ -41,7 +41,7 @@ class HelperTaskList(generics.ListAPIView):
 
     filter_backends = (DjangoFilterBackend,)
 
-    serializer_class = ProfileTaskSerializer
+    serializer_class = ProfileTaskGetSerializer
 
     def get_queryset(self):
 
@@ -78,7 +78,7 @@ class PosterTaskList(generics.ListAPIView):
 
 class ProfileTaskDetail(generics.RetrieveAPIView):
     queryset = ProfileTask.objects.all()
-    serializer_class = ProfileTaskSerializer
+    serializer_class = ProfileTaskGetSerializer
 
 
 class TaskList(generics.ListAPIView):
@@ -141,7 +141,7 @@ def shortlist_task(request):
             return Response({"error":"ProfileTask already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
         #create and save serializer
-        serializer = ProfileTaskSerializer(data=request.data)
+        serializer = ProfileTaskPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -176,10 +176,10 @@ def discard_task(request):
         if (ProfileTask.objects.filter(profile=profile, task=task).count()>0):
 
             profileTask = ProfileTask.objects.filter(profile=profile, task=task)[0]
-            serializer = ProfileTaskSerializer(profileTask, data=request.data)
+            serializer = ProfileTaskPostSerializer(profileTask, data=request.data)
             alreadyExists = True
         else:
-            serializer = ProfileTaskSerializer(data=request.data)
+            serializer = ProfileTaskPostSerializer(data=request.data)
             alreadyExists = False
 
         #save the serializer
@@ -213,7 +213,7 @@ def apply_task(request):
         request.data["task"] = profile_task.task.id
         request.data["profile"] = profile_task.profile.id
 
-        serializer = ProfileTaskSerializer(profile_task,data=request.data)
+        serializer = ProfileTaskPostSerializer(profile_task,data=request.data)
 
         if serializer.is_valid():
             serializer.save()
@@ -245,7 +245,7 @@ def reject_application(request):
         request.data["task"] = profile_task.task.id
         request.data["profile"] = profile_task.profile.id
 
-        serializer = ProfileTaskSerializer(profile_task,data=request.data)
+        serializer = ProfileTaskPostSerializer(profile_task,data=request.data)
 
         if serializer.is_valid():
             serializer.save()
@@ -277,7 +277,7 @@ def shortlist_application(request):
         request.data["task"] = profile_task.task.id
         request.data["profile"] = profile_task.profile.id
 
-        serializer = ProfileTaskSerializer(profile_task,data=request.data)
+        serializer = ProfileTaskPostSerializer(profile_task,data=request.data)
 
         if serializer.is_valid():
             serializer.save()
