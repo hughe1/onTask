@@ -1,0 +1,90 @@
+newman
+
+Job-bilby-backend
+
+→ {{host}}/auth/
+  POST job-bilby-dev.herokuapp.com/auth/ [200 OK, 276B, 745ms]
+
+→ {{host}}/auth/login/
+  POST job-bilby-dev.herokuapp.com/auth/login/ [200 OK, 276B, 340ms]
+
+→ {{host}}/profiles/
+  GET job-bilby-dev.herokuapp.com/profiles/ [200 OK, 4.1KB, 359ms]
+
+→ {{host}}/profiles/1/
+  GET job-bilby-dev.herokuapp.com/profiles/1/ [200 OK, 737B, 320ms]
+
+→ {{host}}/profiles/create/
+  ┌
+  │ 'unable to load form file for upload: "[object Object]
+  │ "'
+  └
+  POST job-bilby-dev.herokuapp.com/profiles/create/ [400 Bad Request, 305B, 934ms]
+
+→ {{host}}/tasks/
+  GET job-bilby-dev.herokuapp.com/tasks/ [200 OK, 3.88KB, 743ms]
+
+→ {{host}}/tasks/?location=Melbourne
+  GET job-bilby-dev.herokuapp.com/tasks/?location=Melbourne [200 OK, 1.77KB, 1023ms]
+
+→ {{host}}/tasks/?location=Sydney&search=edwards
+  GET job-bilby-dev.herokuapp.com/tasks/?location=Sydney&search=edwards [200 OK, 244B, 1916ms]
+
+→ {{host}}/tasks/?skills=php,python&search=hugo
+  GET job-bilby-dev.herokuapp.com/tasks/?skills=php,python&search=hugo [404 Not Found, 273B, 322ms]
+
+→ {{host}}/tasks/create/
+  POST job-bilby-dev.herokuapp.com/tasks/create/ [400 Bad Request, 310B, 298ms]
+
+→ {{host}}/tasks/helper/?status=AP
+  GET job-bilby-dev.herokuapp.com/tasks/helper/?status=AP [404 Not Found, 9.21KB, 378ms]
+
+→ {{host}}/tasks/poster/?status=O
+  GET job-bilby-dev.herokuapp.com/tasks/poster/?status=O [404 Not Found, 9.21KB, 338ms]
+
+→ {{host}}/tasks/shortlist/
+  POST job-bilby-dev.herokuapp.com/tasks/shortlist/ [400 Bad Request, 302B, 326ms]
+
+→ {{host}}/tasks/start/
+  POST job-bilby-dev.herokuapp.com/tasks/start/ [404 Not Found, 9.2KB, 319ms]
+
+→ {{host}}/tasks/discard/
+  POST job-bilby-dev.herokuapp.com/tasks/discard/ [400 Bad Request, 298B, 302ms]
+
+→ {{host}}/tasks/apply/
+  POST job-bilby-dev.herokuapp.com/tasks/apply/ [404 Not Found, 268B, 318ms]
+
+→ {{host}}/tasks/complete/
+  POST job-bilby-dev.herokuapp.com/tasks/complete/ [400 Bad Request, 306B, 345ms]
+
+→ {{host}}/tasks/1/applicants/
+  GET job-bilby-dev.herokuapp.com/tasks/1/applicants/ [400 Bad Request, 298B, 386ms]
+
+→ {{host}}/tasks/1/accept
+  GET job-bilby-dev.herokuapp.com/tasks/1/applicants/ [400 Bad Request, 298B, 300ms]
+
+→ {{host}}/tasks/reject
+  POST job-bilby-dev.herokuapp.com/tasks/reject/ [400 Bad Request, 294B, 300ms]
+
+→ {{host}}/tasks/shortlist_application
+  POST job-bilby-dev.herokuapp.com/tasks/shortlist_application/ [400 Bad Request, 294B, 380ms]
+
+┌─────────────────────────┬──────────┬──────────┐
+│                         │ executed │   failed │
+├─────────────────────────┼──────────┼──────────┤
+│              iterations │        1 │        0 │
+├─────────────────────────┼──────────┼──────────┤
+│                requests │       21 │        0 │
+├─────────────────────────┼──────────┼──────────┤
+│            test-scripts │        0 │        0 │
+├─────────────────────────┼──────────┼──────────┤
+│      prerequest-scripts │        0 │        0 │
+├─────────────────────────┼──────────┼──────────┤
+│              assertions │        0 │        0 │
+├─────────────────────────┴──────────┴──────────┤
+│ total run duration: 11s                       │
+├───────────────────────────────────────────────┤
+│ total data received: 37.15KB (approx)         │
+├───────────────────────────────────────────────┤
+│ average response time: 509ms                  │
+└───────────────────────────────────────────────┘
