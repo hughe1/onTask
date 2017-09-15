@@ -31,6 +31,51 @@ class ProfileTaskList(generics.ListAPIView):
     serializer_class = ProfileTaskSerializer
 
 
+# TODO: insert nested JSON so HelperTask has the Task object info (as well as the ProfileTask)
+
+# Shows profiletasks for which the logged user is a helper
+# Filters by status (applied, shortlisted, assigned, ...) based on querystring
+@permission_classes((IsAuthenticated, ))
+
+class HelperTaskList(generics.ListAPIView):
+
+    filter_backends = (DjangoFilterBackend,)
+
+    serializer_class = ProfileTaskSerializer
+
+    def get_queryset(self):
+
+        profile = self.request.user.profile.id
+        queryset = ProfileTask.objects.filter(profile=profile)
+
+        status = self.request.query_params.get('status', None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+
+# Shows tasks for which the logged user is the poster
+# Filters by status (in progress, open, complete) based on querystring
+@permission_classes((IsAuthenticated, ))
+
+class PosterTaskList(generics.ListAPIView):
+
+    filter_backends = (DjangoFilterBackend,)
+
+    serializer_class = TaskGetSerializer
+
+    def get_queryset(self):
+
+        profile = self.request.user.profile.id
+        queryset = Task.objects.filter(owner=profile)
+
+        status = self.request.query_params.get('status', None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+
+
 class ProfileTaskDetail(generics.RetrieveAPIView):
     queryset = ProfileTask.objects.all()
     serializer_class = ProfileTaskSerializer
@@ -270,11 +315,20 @@ def create_profile(request):
 @permission_classes((IsAuthenticated, ))
 def create_task(request):
     if request.method == 'POST':
-
+        
+        # Get skill objects from skill code
+        skills = Skill.objects.filter(code__in=request.data["skills"])
+        skills_pks = []
+        # Get the skill pk's and add to a a list
+        for skill in skills:
+            skills_pks.append(skill.pk)
+        # Add skill pk's to the request
+        request.data["skills"] = skills_pks
         request.data["owner"] = request.user.profile.id
         task_serializer = TaskPostSerializer(data=request.data)
         if not task_serializer.is_valid():
             return Response(task_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Save task serializer and create new Task object
         task_serializer.save()
         return Response(task_serializer.data, status=status.HTTP_201_CREATED)
 
@@ -385,6 +439,7 @@ def accept_applicant(request, task_id):
 
     task = get_object_or_404(Task, pk=task_id)
     applicant = get_object_or_404(Profile, pk=request.data["profile"])
+    print(applicant)
     
     #ensures correct user is accepting applicant
     if task.owner.id != request.user.id:
@@ -417,5 +472,12 @@ def accept_applicant(request, task_id):
     
     if serializer.is_valid():
         serializer.save()
+
+        #update the status of the profiletask
+        profileTask = ProfileTask.objects.filter(profile=applicant, task=task)[0]
+        profileTask.status = ProfileTask.ASSIGNED
+        profileTask.save()
+
+
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

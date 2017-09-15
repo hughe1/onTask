@@ -102,11 +102,13 @@ class ProfileTask(BaseModel):
     profile = models.ForeignKey('jobs.Profile')
     SHORTLISTED = 'SL'
     APPLIED = 'AP'
+    ASSIGNED = 'AS'
     DISCARDED = 'D'
     REJECTED = 'R'
     APPLICATION_SHORTLISTED = 'ASL'
     STATUS_CHOICES = (
         (SHORTLISTED, 'Shortlisted'),
+        (ASSIGNED, 'Assigned'),
         (APPLIED, 'Applied'),
         (DISCARDED, 'Discarded'),
         (REJECTED, 'Rejected'),
