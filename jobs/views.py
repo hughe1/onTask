@@ -30,9 +30,11 @@ class ProfileTaskList(generics.ListAPIView):
     queryset = ProfileTask.objects.all()
     serializer_class = ProfileTaskSerializer
 
-# Shows all profiletasks for which the logged user is a helper
-# Filters by status (applied, shortlisted, discarded, etc)
-# NEED TO ADD AN ASSIGNED STATUS
+
+# TODO: insert nested JSON so HelperTask has the Task object info (as well as the ProfileTask)
+
+# Shows profiletasks for which the logged user is a helper
+# Filters by status (applied, shortlisted, assigned, ...) based on querystring
 @permission_classes((IsAuthenticated, ))
 
 class HelperTaskList(generics.ListAPIView):
@@ -52,7 +54,26 @@ class HelperTaskList(generics.ListAPIView):
 
         return queryset
 
+# Shows tasks for which the logged user is the poster
+# Filters by status (in progress, open, complete) based on querystring
+@permission_classes((IsAuthenticated, ))
 
+class PosterTaskList(generics.ListAPIView):
+
+    filter_backends = (DjangoFilterBackend,)
+
+    serializer_class = TaskGetSerializer
+
+    def get_queryset(self):
+
+        profile = self.request.user.profile.id
+        queryset = Task.objects.filter(owner=profile)
+
+        status = self.request.query_params.get('status', None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        return queryset
 
 
 class ProfileTaskDetail(generics.RetrieveAPIView):
