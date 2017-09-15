@@ -12,6 +12,9 @@ import django_filters.rest_framework
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
+from random import randint
+import operator
+
 from jobs.models import *
 from jobs.serializers import *
 
@@ -86,7 +89,7 @@ class TaskList(generics.ListAPIView):
     serializer_class = TaskGetSerializer
 
     #set the view to be searchable and filterabe
-    filter_backends = (filters.SearchFilter,DjangoFilterBackend,)
+    filter_backends = (filters.SearchFilter,DjangoFilterBackend)
 
     # set the fields which are accessed by searching
     search_fields = ('title','location','description','owner__user__first_name', 'owner__user__last_name')
@@ -120,8 +123,22 @@ class TaskList(generics.ListAPIView):
         if location is not None:
             queryset = queryset.filter(location__icontains=location)
 
+
+        #sort the queryset
+
+        for item in queryset:
+            set_rank(item)
+
+        queryset = sorted(queryset, key=operator.attrgetter('display_rank'))
+
         return queryset
 
+
+def set_rank(item):
+    item.display_rank = randint(0,10)
+            #number of matching:
+            # skills + location match
+            # recentness
 
 class TaskDetail(generics.RetrieveAPIView):
     queryset = Task.objects.all()

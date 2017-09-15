@@ -73,6 +73,12 @@ class Task(BaseModel):
     )
     skills = models.ManyToManyField('jobs.Skill')
 
+    # display_rank is a blank field which is only filled in (and note saved) when serialized
+    # task is returned. Basically allows a temporary rank value to be inserted, without concurrency
+    # issues (the rank is never read from the database; only filled in in memory when it is being
+    # returned )
+    display_rank = models.IntegerField(blank=True,null=True)
+
     def __str__(self):
         return self.title
 
