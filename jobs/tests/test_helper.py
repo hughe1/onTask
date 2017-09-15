@@ -1,6 +1,6 @@
 from rest_framework.authtoken.models import Token
 
-from jobs.models import Profile, User, Task, ProfileTask
+from jobs.models import Profile, User, Task, ProfileTask, Skill
 
 # Return a token to authorise API calls
 def api_login(user):
@@ -41,3 +41,19 @@ def create_task(owner_prof, task_num):
         owner=owner_prof
     )
     return task
+
+# Create a skill    
+def create_skill(title):
+    if len(title) > 2:
+        code = title[:2]
+    else:
+        code = title
+
+    skill = Skill.objects.create(
+        title=title,
+        description="{} description.".format(title),
+        code=code
+    )
+    return skill
+        
+        

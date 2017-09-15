@@ -96,6 +96,8 @@ class TestTaskCreate(APITestCase):
     
     def setUp(self):  
         self.user1 = create_user(1)
+        self.skill1 = create_skill("Python")
+        self.skill2 = create_skill("PHP")
     
     # Test that a task can be created
     def test_task_create(self):
@@ -106,7 +108,8 @@ class TestTaskCreate(APITestCase):
                   'description' : 'Desc 1',
                   'points' : 50,
                   'location' : 'Loc 1',
-                  'is_remote' : True
+                  'is_remote' : True,
+                  'skills': [self.skill1.code, self.skill2.code]
                 }
         response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
