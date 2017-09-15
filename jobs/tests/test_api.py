@@ -1,15 +1,19 @@
-from django.contrib.auth import get_user_model
-from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.authtoken.models import Token
-from rest_framework.test import APIClient, APITestCase
+from rest_framework.test import APITestCase
 
 from jobs.models import Profile, User, Task, ProfileTask
 from jobs.serializers import TaskGetSerializer, TaskPostSerializer
 from jobs.tests.test_helper import *
 
-
+"""
+Note: The coding style followed for these unit tests is deliberately very
+verbose. It does not follow a DRY coding style, but a DAMP coding style
+to increase the readability of tests. There is minimal risk associated with
+repeated code as each test is isolated. This also allows small tweaks to be
+made to tests that are similar but not exactly the same.
+https://stackoverflow.com/questions/6453235/what-does-damp-not-dry-mean-when-talking-about-unit-tests
+"""
 
 
 class ProfileTests(APITestCase):
@@ -26,7 +30,7 @@ class ProfileTests(APITestCase):
                   'last_name' : 'user',
                   'password': 'testing1234',
                   'location' : 'TestVille',
-                  'description' : 'Testi cles.'
+                  'description' : 'This is a test description.'
                 }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

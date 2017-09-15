@@ -1,12 +1,6 @@
-from django.contrib.auth import get_user_model
-from django.test import TestCase
-from django.urls import reverse
-from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.test import APIClient, APITestCase
 
 from jobs.models import Profile, User, Task, ProfileTask
-from jobs.serializers import TaskGetSerializer, TaskPostSerializer
 
 # Return a token to authorise API calls
 def api_login(user):
