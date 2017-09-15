@@ -1,63 +1,19 @@
-from django.contrib.auth import get_user_model
-from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.authtoken.models import Token
-from rest_framework.test import APIClient, APITestCase
+from rest_framework.test import APITestCase
 
-from jobs.models import Profile, User, Task, ProfileTask, Skill
+from jobs.models import Profile, User, Task, ProfileTask
 from jobs.serializers import TaskGetSerializer, TaskPostSerializer
+from jobs.tests.test_helper import *
 
-
-# Return a token to authorise API calls
-def api_login(user):
-    token, created = Token.objects.get_or_create(user=user)
-    return token.key
-
-# Create a user indexed by the argument user_number
-def create_user(user_num):
-    user = User.objects.create(
-        username="test{}_user".format(user_num),
-        email="test{}@user.com".format(user_num),
-        password="testing1234",
-        first_name="test{}".format(user_num),
-        last_name="user{}".format(user_num)
-    )
-    return user  
-
-# Update profile information
-def update_profile(user, user_num):
-    profile = Profile.objects.get(user=user)
-    profile.location = "Location {}".format(user_num)
-    profile.description = "Description {}".format(user_num)
-    return profile
-
-# Create a user and profile and return the profile
-def create_profile(user_num):
-    user = create_user(user_num)
-    profile = update_profile(user, user_num)
-    return profile
-    
-
-# Create and return a skill
-def create_skill(skill_num):
-    skill = Skill.objects.create(
-        title="Skill {}".format(skill_num),
-        description="Desc {}".format(skill_num),
-        code="skill{}".format(skill_num)
-    )
-    return skill
-# Create and return a task
-def create_task(owner_prof, task_num):
-    task = Task.objects.create(
-        title="Task {}".format(task_num),
-        description="Desc {}".format(task_num),
-        points=0,
-        location="Loc {}".format(task_num),
-        owner=owner_prof,
-        #skills=["py","php"]
-    )
-    return task
+"""
+Note: The coding style followed for these unit tests is deliberately very
+verbose. It does not follow a DRY coding style, but a DAMP coding style
+to increase the readability of tests. There is minimal risk associated with
+repeated code as each test is isolated. This also allows small tweaks to be
+made to tests that are similar but not exactly the same.
+https://stackoverflow.com/questions/6453235/what-does-damp-not-dry-mean-when-talking-about-unit-tests
+"""
 
 
 class ProfileTests(APITestCase):
@@ -74,7 +30,7 @@ class ProfileTests(APITestCase):
                   'last_name' : 'user',
                   'password': 'testing1234',
                   'location' : 'TestVille',
-                  'description' : 'Testi cles.'
+                  'description' : 'This is a test description.'
                 }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -140,7 +96,8 @@ class TestTaskCreate(APITestCase):
     
     def setUp(self):  
         self.user1 = create_user(1)
-        self.skill1 = create_skill(1)
+        self.skill1 = create_skill("Python")
+        self.skill2 = create_skill("PHP")
     
     # Test that a task can be created
     def test_task_create(self):
@@ -152,7 +109,7 @@ class TestTaskCreate(APITestCase):
                   'points' : 50,
                   'location' : 'Loc 1',
                   'is_remote' : True,
-                  'skills' : ["skill1"]
+                  'skills': [self.skill1.code, self.skill2.code]
                 }
         response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
