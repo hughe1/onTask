@@ -100,7 +100,7 @@ class ProfileSkill(BaseModel):
     rating = models.FloatField()
 
     def __str__(self):
-        return "ProfileSkill: "+self.skills.title +" ("+ self.user.username + ")"
+        return "ProfileSkill: "+self.skill.title +" ("+ self.profile.user.username + ")"
 
 
 class ProfileTask(BaseModel):

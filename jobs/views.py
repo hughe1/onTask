@@ -124,21 +124,49 @@ class TaskList(generics.ListAPIView):
             queryset = queryset.filter(location__icontains=location)
 
 
-        #sort the queryset
+        #sort the queryset (only if user logged in)
 
-        for item in queryset:
-            set_rank(item)
+        if self.request.user.is_authenticated():
 
-        queryset = sorted(queryset, key=operator.attrgetter('display_rank'))
+            for item in queryset:
+                set_rank(item, self.request)
+
+            #firstly sorts by most recent
+            # this means ties in display_rank are resolved by which is more recent
+            queryset = sorted(queryset, key=operator.attrgetter('updated_at'),reverse=True)
+            queryset = sorted(queryset, key=operator.attrgetter('display_rank'),reverse=True)
 
         return queryset
 
+# temporarily sets the display_rank of a task
+# based on skills and location
+def set_rank(task, request):
 
-def set_rank(item):
-    item.display_rank = randint(0,10)
-            #number of matching:
-            # skills + location match
-            # recentness
+    rank = 0
+
+    # Add 1 point rank per common skill
+    # Take 1 point off per missing skill in profile
+    task_skills = Skill.objects.filter(task__id=task.id)
+    profileskill_objs = ProfileSkill.objects.filter(profile__id=request.user.profile.id)
+
+    profile_skills = []
+    for profile_skill in profileskill_objs:
+        profile_skills.append(profile_skill.skill)
+
+    for task_skill in task_skills:
+        if task_skill in profile_skills:
+            rank += 1
+        else:
+            rank -=1
+
+    # add 3 points if same location
+    if task.location.lower() == request.user.profile.location.lower():
+        rank += 3
+    print(rank)
+
+    #Temporarily set the rank of the task (without saving)
+    task.display_rank = rank
+
 
 class TaskDetail(generics.RetrieveAPIView):
     queryset = Task.objects.all()
