@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient, APITestCase
 
-from jobs.models import Profile, User, Task, ProfileTask
+from jobs.models import Profile, User, Task, ProfileTask, Skill
 from jobs.serializers import TaskGetSerializer, TaskPostSerializer
 
 
@@ -38,6 +38,15 @@ def create_profile(user_num):
     profile = update_profile(user, user_num)
     return profile
     
+
+# Create and return a skill
+def create_skill(skill_num):
+    skill = Skill.objects.create(
+        title="Skill {}".format(skill_num),
+        description="Desc {}".format(skill_num),
+        code="skill{}".format(skill_num)
+    )
+    return skill
 # Create and return a task
 def create_task(owner_prof, task_num):
     task = Task.objects.create(
@@ -45,7 +54,8 @@ def create_task(owner_prof, task_num):
         description="Desc {}".format(task_num),
         points=0,
         location="Loc {}".format(task_num),
-        owner=owner_prof
+        owner=owner_prof,
+        #skills=["py","php"]
     )
     return task
 
@@ -130,6 +140,7 @@ class TestTaskCreate(APITestCase):
     
     def setUp(self):  
         self.user1 = create_user(1)
+        self.skill1 = create_skill(1)
     
     # Test that a task can be created
     def test_task_create(self):
@@ -140,7 +151,8 @@ class TestTaskCreate(APITestCase):
                   'description' : 'Desc 1',
                   'points' : 50,
                   'location' : 'Loc 1',
-                  'is_remote' : True
+                  'is_remote' : True,
+                  'skills' : ["skill1"]
                 }
         response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
