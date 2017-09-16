@@ -1,0 +1,1267 @@
+{
+  "info": {
+    "id": "6062e727-b562-f231-e42d-8a0821e8d2e5",
+    "name": "Job-bilby-backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "event": [],
+  "variable": [],
+  "item": [
+    {
+      "_": {
+        "postman_id": "ab28a038-2a52-56dd-4f6a-d9afe2188d68"
+      },
+      "id": "ab28a038-2a52-56dd-4f6a-d9afe2188d68",
+      "name": "{{host}}/auth/",
+      "request": {
+        "url": "{{host}}/auth/",
+        "method": "POST",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "username",
+              "value": "{{username}}",
+              "type": "text"
+            },
+            {
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "password",
+              "value": "{{password}}",
+              "type": "text"
+            }
+          ]
+        },
+        "description": {
+          "content": "Obtain authorisation token\n\n### Return values\n\nCorrect username and password provided:\n\n*Status: 200 OK*\n\n```json\n{\n    \"token\": \"e61a63c66028f44e4ae448d16d5ddc656eb825ea\"\n}\n```\n\nIncorrect username or password provided:\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"non_field_errors\": [\n        \"Unable to log in with provided credentials.\"\n    ]\n}\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [
+        {
+          "_": {
+            "postman_previewlanguage": "json",
+            "postman_previewtype": "text"
+          },
+          "id": "315931ff-219d-6c6b-fa24-262da7060288",
+          "name": "Success",
+          "originalRequest": {
+            "url": "{{host}}/auth/",
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "username",
+                  "value": "job_user",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "password",
+                  "value": "qwerty1234",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "name": "access-control-allow-origin",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "name": "allow",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "allow",
+              "value": "POST, OPTIONS"
+            },
+            {
+              "name": "content-length",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "content-length",
+              "value": "52"
+            },
+            {
+              "name": "content-type",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "name": "date",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "date",
+              "value": "Thu, 14 Sep 2017 06:25:52 GMT"
+            },
+            {
+              "name": "server",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "server",
+              "value": "WSGIServer/0.2 CPython/3.6.1"
+            },
+            {
+              "name": "x-frame-options",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            }
+          ],
+          "body": "{\"token\":\"e61a63c66028f44e4ae448d16d5ddc656eb825ea\"}",
+          "cookie": [
+            {
+              "name": "_ga",
+              "expires": "2019-08-01T16:42:02.000Z",
+              "domain": "localhost",
+              "path": "/",
+              "secure": false,
+              "httpOnly": false,
+              "hostOnly": true,
+              "session": false,
+              "value": "GA1.1.1393272804.1500221894"
+            },
+            {
+              "name": "sessionid",
+              "expires": "2017-09-19T06:47:13.000Z",
+              "domain": "localhost",
+              "path": "/",
+              "secure": false,
+              "httpOnly": true,
+              "hostOnly": true,
+              "session": false,
+              "value": "bk3zzlh92lawisntq2kqiy21fqxgykwd"
+            },
+            {
+              "name": "csrftoken",
+              "expires": "2018-09-12T08:49:31.000Z",
+              "domain": "localhost",
+              "path": "/",
+              "secure": false,
+              "httpOnly": false,
+              "hostOnly": true,
+              "session": false,
+              "value": "VoE1b3GHkZWE3vWVrV15ldRgm7P5YooPCmdfzlY3Cw1k5zKCjLO2bOFeykaQ9cap"
+            }
+          ],
+          "responseTime": "82"
+        },
+        {
+          "_": {
+            "postman_previewlanguage": "json",
+            "postman_previewtype": "text"
+          },
+          "id": "3be36246-6514-552b-90af-9c0c2c2b41be",
+          "name": "Wrong details",
+          "originalRequest": {
+            "url": "{{host}}/auth/",
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "username",
+                  "value": "job_userr",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "password",
+                  "value": "qwerty1234",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "name": "access-control-allow-origin",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "name": "allow",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "allow",
+              "value": "POST, OPTIONS"
+            },
+            {
+              "name": "content-length",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "content-length",
+              "value": "68"
+            },
+            {
+              "name": "content-type",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "name": "date",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "date",
+              "value": "Thu, 14 Sep 2017 06:26:34 GMT"
+            },
+            {
+              "name": "server",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "server",
+              "value": "WSGIServer/0.2 CPython/3.6.1"
+            },
+            {
+              "name": "x-frame-options",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            }
+          ],
+          "body": "{\"non_field_errors\":[\"Unable to log in with provided credentials.\"]}",
+          "cookie": [
+            {
+              "name": "_ga",
+              "expires": "2019-08-01T16:42:02.000Z",
+              "domain": "localhost",
+              "path": "/",
+              "secure": false,
+              "httpOnly": false,
+              "hostOnly": true,
+              "session": false,
+              "value": "GA1.1.1393272804.1500221894"
+            },
+            {
+              "name": "sessionid",
+              "expires": "2017-09-19T06:47:13.000Z",
+              "domain": "localhost",
+              "path": "/",
+              "secure": false,
+              "httpOnly": true,
+              "hostOnly": true,
+              "session": false,
+              "value": "bk3zzlh92lawisntq2kqiy21fqxgykwd"
+            },
+            {
+              "name": "csrftoken",
+              "expires": "2018-09-12T08:49:31.000Z",
+              "domain": "localhost",
+              "path": "/",
+              "secure": false,
+              "httpOnly": false,
+              "hostOnly": true,
+              "session": false,
+              "value": "VoE1b3GHkZWE3vWVrV15ldRgm7P5YooPCmdfzlY3Cw1k5zKCjLO2bOFeykaQ9cap"
+            }
+          ],
+          "responseTime": "60"
+        }
+      ],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "12fbcfae-2dc8-4240-41dd-ffc1069a83cb"
+      },
+      "id": "12fbcfae-2dc8-4240-41dd-ffc1069a83cb",
+      "name": "{{host}}/auth/login/",
+      "request": {
+        "url": "{{host}}/auth/login/",
+        "method": "POST",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "username",
+              "value": "{{username}}",
+              "type": "text"
+            },
+            {
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "password",
+              "value": "{{password}}",
+              "type": "text"
+            }
+          ]
+        },
+        "description": {
+          "content": "Login and obtain authorisation token\n\n### Return values\n\nCorrect username and password provided:\n\n*Status: 200 OK*\n\n```json\n{\n    \"token\": \"e61a63c66028f44e4ae448d16d5ddc656eb825ea\"\n}\n```\n\nIncorrect username or password provided:\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"non_field_errors\": [\n        \"Unable to log in with provided credentials.\"\n    ]\n}\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "8e2d7397-2393-1a44-407a-56770f2c8618"
+      },
+      "id": "8e2d7397-2393-1a44-407a-56770f2c8618",
+      "name": "{{host}}/profiles/",
+      "request": {
+        "url": "{{host}}/profiles/",
+        "method": "GET",
+        "body": {},
+        "description": {
+          "content": "Get list of profiles\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"id\": 24,\n        \"user\": {\n            \"id\": 25,\n            \"password\": \"pbkdf2_sha256$36000$QZXtYSVcYDjS$kBDbugvFraSmVwo2QJ7s7I/Sdn9lzcIKZfgkSdMsWuc=\",\n            \"last_login\": null,\n            \"is_superuser\": false,\n            \"username\": \"abcc\",\n            \"first_name\": \"john\",\n            \"last_name\": \"smith\",\n            \"email\": \"jo123owewwn@gmail.com\",\n            \"is_staff\": false,\n            \"is_active\": true,\n            \"date_joined\": \"2017-09-06T07:44:09.435030Z\",\n            \"groups\": [],\n            \"user_permissions\": []\n        },\n        \"created_at\": \"2017-08-15T00:26:04.962151Z\",\n        \"updated_at\": \"2017-08-15T00:26:04.989562Z\",\n        \"enabled\": true,\n        \"location\": \"\",\n        \"description\": \"\",\n        \"photo\": null,\n        \"date_created\": \"2017-08-15T00:26:04.816433Z\"\n    },\n    ...\n]\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "f4a300d1-fa5c-a891-3d66-66e7cea3b2b6"
+      },
+      "id": "f4a300d1-fa5c-a891-3d66-66e7cea3b2b6",
+      "name": "{{host}}/profiles/1/",
+      "request": {
+        "url": "{{host}}/profiles/1/",
+        "method": "GET",
+        "body": {},
+        "description": {
+          "content": "Get specific profile details.\n\n### Return Values\n\nProfile exists\n\n*Status: 200 OK*\n\n```json\n{\n    \"id\": 1,\n    \"user\": {\n        \"id\": 1,\n        \"password\": \"pbkdf2_sha256$36000$6Ga6JMQMaFv4$/SHwM/BFIgvkeFx9KDZOwnkDsLbvQLNhO9kFBdn5VWM=\",\n        \"last_login\": \"2017-09-05T06:47:13.002668Z\",\n        \"is_superuser\": true,\n        \"username\": \"job_user\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"email\": \"job@bilby.com\",\n        \"is_staff\": true,\n        \"is_active\": true,\n        \"date_joined\": \"2017-08-11T13:06:26.322000Z\",\n        \"groups\": [],\n        \"user_permissions\": []\n    },\n    \"created_at\": \"2017-08-15T00:26:04.962151Z\",\n    \"updated_at\": \"2017-09-05T06:47:13.007759Z\",\n    \"enabled\": true,\n    \"location\": \"\",\n    \"description\": \"\",\n    \"photo\": null,\n    \"date_created\": \"2017-09-05T06:47:13.007793Z\"\n}\n```\n\nProfile does not exist\n\n*Status: 404 Not Found*\n\n```json\n{\n    \"detail\": \"Not found.\"\n}\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "83f6b3a7-4326-9361-a5e8-df35318c9d40"
+      },
+      "id": "83f6b3a7-4326-9361-a5e8-df35318c9d40",
+      "name": "{{host}}/profiles/create/",
+      "request": {
+        "url": "{{host}}/profiles/create/",
+        "method": "POST",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "photo",
+              "value": "",
+              "type": "file",
+              "src": {
+                "0": {
+                  "name": "David Barrell Colour.JPG",
+                  "lastModified": 1498473223000,
+                  "lastModifiedDate": "2017-06-26T10:33:43.000Z",
+                  "webkitRelativePath": "",
+                  "size": 4750913,
+                  "type": "image/jpeg"
+                },
+                "length": 1
+              }
+            },
+            {
+              "key": "username",
+              "value": "john15",
+              "type": "text"
+            },
+            {
+              "key": "email",
+              "value": "john@gmail.com",
+              "type": "text"
+            },
+            {
+              "key": "first_name",
+              "value": "john",
+              "type": "text"
+            },
+            {
+              "key": "last_name",
+              "value": "smith",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "johnpassword",
+              "type": "text"
+            },
+            {
+              "key": "location",
+              "value": "some location",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "value": "some description",
+              "type": "text"
+            }
+          ]
+        },
+        "description": {
+          "content": "Create a profile.\n\n*Note: Requests to this endpoint must not have a `Content-Type` header*\n\n### Return Values\n\nProfile doesn't already exists\n\n*Status: 201 Created*\n\n```json\n{\n    \"id\": 30,\n    \"password\": \"pbkdf2_sha256$36000$ZOZkxLvorMUY$mWOph4cEgm0xwMNOKoyWXpUeoXVLb24R3+TPDJ3fvjU=\",\n    \"last_login\": null,\n    \"is_superuser\": false,\n    \"username\": \"abcabcdefg\",\n    \"first_name\": \"john\",\n    \"last_name\": \"smith\",\n    \"email\": \"jo123owewwn@gmail.com\",\n    \"is_staff\": false,\n    \"is_active\": true,\n    \"date_joined\": \"2017-09-08T00:30:12.831260Z\",\n    \"groups\": [],\n    \"user_permissions\": []\n}\n```\n\nProfile already exists\n\n>\n\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"username\": [\n        \"A user with that username already exists.\"\n    ]\n}\n```\n",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "b4e82f15-ade3-ba86-9a04-bbe2b6123ade"
+      },
+      "id": "b4e82f15-ade3-ba86-9a04-bbe2b6123ade",
+      "name": "{{host}}/tasks/",
+      "request": {
+        "url": "{{host}}/tasks/",
+        "method": "GET",
+        "body": {},
+        "description": {
+          "content": "List all tasks.\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"id\": 33,\n        \"owner\": {\n            \"id\": 1,\n            \"created_at\": \"2017-08-15T00:26:04.962151Z\",\n            \"updated_at\": \"2017-09-05T06:47:13.007759Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"date_created\": \"2017-09-05T06:47:13.007793Z\",\n            \"user\": 1\n        },\n        ...\n]\n```\n\n> TODO: Support Querystring\n",
+          "type": "text/plain"
+        }
+      },
+      "response": [
+        {
+          "_": {
+            "postman_previewlanguage": "json",
+            "postman_previewtype": "text"
+          },
+          "id": "cd54d8d1-d56b-182c-d30b-acb2ab40a312",
+          "name": "{{host}}/tasks/",
+          "originalRequest": {
+            "url": "{{host}}/tasks/",
+            "method": "GET",
+            "header": [
+              {
+                "description": {
+                  "content": "",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "name": "Allow",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "Allow",
+              "value": "GET, HEAD, OPTIONS"
+            },
+            {
+              "name": "Content-Length",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "Content-Length",
+              "value": "2990"
+            },
+            {
+              "name": "Content-Type",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Date",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "Date",
+              "value": "Fri, 15 Sep 2017 04:31:57 GMT"
+            },
+            {
+              "name": "Server",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "Server",
+              "value": "WSGIServer/0.2 CPython/3.6.2"
+            },
+            {
+              "name": "Vary",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "Vary",
+              "value": "Accept"
+            },
+            {
+              "name": "X-Frame-Options",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            }
+          ],
+          "body": "[{\"id\":13,\"owner\":{\"id\":2,\"created_at\":\"2017-09-06T06:54:19.950054Z\",\"updated_at\":\"2017-09-06T07:10:25.264298Z\",\"enabled\":true,\"location\":\"\",\"description\":\"\",\"photo\":null,\"user\":2},\"created_at\":\"2017-09-15T00:17:53.504051Z\",\"updated_at\":\"2017-09-15T00:17:53.504080Z\",\"enabled\":true,\"title\":\"task title\",\"description\":\"Some Description\",\"points\":50,\"location\":\"Some Location\",\"is_remote\":false,\"photo\":null,\"question1\":\"\",\"question2\":\"\",\"question3\":\"\",\"status\":\"O\",\"display_rank\":null,\"helper\":null,\"skills\":[1]},{\"id\":12,\"owner\":{\"id\":2,\"created_at\":\"2017-09-06T06:54:19.950054Z\",\"updated_at\":\"2017-09-06T07:10:25.264298Z\",\"enabled\":true,\"location\":\"\",\"description\":\"\",\"photo\":null,\"user\":2},\"created_at\":\"2017-09-13T05:29:44.831749Z\",\"updated_at\":\"2017-09-14T23:53:07.484753Z\",\"enabled\":true,\"title\":\"yo\",\"description\":\"lizard\",\"points\":1,\"location\":\"sydney\",\"is_remote\":false,\"photo\":null,\"question1\":\"d\",\"question2\":\"d\",\"question3\":\"d\",\"status\":\"I\",\"display_rank\":null,\"helper\":2,\"skills\":[2,1]},{\"id\":11,\"owner\":{\"id\":2,\"created_at\":\"2017-09-06T06:54:19.950054Z\",\"updated_at\":\"2017-09-06T07:10:25.264298Z\",\"enabled\":true,\"location\":\"\",\"description\":\"\",\"photo\":null,\"user\":2},\"created_at\":\"2017-09-13T05:28:23.856224Z\",\"updated_at\":\"2017-09-14T23:47:54.722713Z\",\"enabled\":true,\"title\":\"BBQ\",\"description\":\"sdfsdf\",\"points\":1,\"location\":\"Sydney\",\"is_remote\":false,\"photo\":null,\"question1\":\"dsf\",\"question2\":\"f\",\"question3\":\"d\",\"status\":\"I\",\"display_rank\":null,\"helper\":4,\"skills\":[2,1]},{\"id\":10,\"owner\":{\"id\":2,\"created_at\":\"2017-09-06T06:54:19.950054Z\",\"updated_at\":\"2017-09-06T07:10:25.264298Z\",\"enabled\":true,\"location\":\"\",\"description\":\"\",\"photo\":null,\"user\":2},\"created_at\":\"2017-09-13T05:03:43.258517Z\",\"updated_at\":\"2017-09-13T06:51:09.734097Z\",\"enabled\":true,\"title\":\"Sdf\",\"description\":\"sdf\",\"points\":1,\"location\":\"Melbourne\",\"is_remote\":false,\"photo\":null,\"question1\":\"sdf\",\"question2\":\"sdf\",\"question3\":\"dsf\",\"status\":\"O\",\"display_rank\":null,\"helper\":5,\"skills\":[1]},{\"id\":9,\"owner\":{\"id\":2,\"created_at\":\"2017-09-06T06:54:19.950054Z\",\"updated_at\":\"2017-09-06T07:10:25.264298Z\",\"enabled\":true,\"location\":\"\",\"description\":\"\",\"photo\":null,\"user\":2},\"created_at\":\"2017-09-13T05:01:59.824075Z\",\"updated_at\":\"2017-09-13T06:51:05.258729Z\",\"enabled\":true,\"title\":\"MY TASK HAHA\",\"description\":\"yo\",\"points\":50,\"location\":\"Melbourne\",\"is_remote\":true,\"photo\":null,\"question1\":\"sdf\",\"question2\":\"df\",\"question3\":\"sdf\",\"status\":\"O\",\"display_rank\":null,\"helper\":6,\"skills\":[3,2,1]},{\"id\":8,\"owner\":{\"id\":2,\"created_at\":\"2017-09-06T06:54:19.950054Z\",\"updated_at\":\"2017-09-06T07:10:25.264298Z\",\"enabled\":true,\"location\":\"\",\"description\":\"\",\"photo\":null,\"user\":2},\"created_at\":\"2017-09-09T00:19:18.640447Z\",\"updated_at\":\"2017-09-13T06:51:14.337354Z\",\"enabled\":true,\"title\":\"task title\",\"description\":\"Some Description\",\"points\":50,\"location\":\"Some Location\",\"is_remote\":false,\"photo\":null,\"question1\":\"\",\"question2\":\"\",\"question3\":\"\",\"status\":\"I\",\"display_rank\":null,\"helper\":4,\"skills\":[3]}]",
+          "cookie": [],
+          "responseTime": "65"
+        },
+        {
+          "_": {
+            "postman_previewlanguage": "html",
+            "postman_previewtype": "text"
+          },
+          "id": "e55279db-a412-89de-1387-f05e070909f5",
+          "name": "{{host}}/tasks/",
+          "originalRequest": {
+            "url": "{{host}}/tasks/",
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "name": "connection",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "content-encoding",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "content-encoding",
+              "value": "gzip"
+            },
+            {
+              "name": "content-type",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "content-type",
+              "value": "text/html; charset=UTF-8"
+            },
+            {
+              "name": "date",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "date",
+              "value": "Thu, 14 Sep 2017 06:22:14 GMT"
+            },
+            {
+              "name": "server",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "server",
+              "value": "nginx"
+            },
+            {
+              "name": "transfer-encoding",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "transfer-encoding",
+              "value": "chunked"
+            },
+            {
+              "name": "vary",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "name": "x-adblock-key",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "x-adblock-key",
+              "value": "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALquDFETXRn0Hr05fUP7EJT77xYnPmRbpMy4vk8KYiHnkNpednjOANJcaXDXcKQJN0nXKZJL7TciJD8AoHXK158CAwEAAQ==_H2MONrBvjkZiENlK19L3Rnx9viZfE6cJEgcDKg1TNdL+mYi5cNCG/sK5wO2X+tbhRIlIQ2ZvCFLOghYQZ2PuLQ=="
+            },
+            {
+              "name": "x-buckets",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "x-buckets",
+              "value": "bucket067"
+            },
+            {
+              "name": "x-check",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "x-check",
+              "value": "3c12dc4d54f8e22d666785b733b0052100c53444"
+            },
+            {
+              "name": "x-language",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "x-language",
+              "value": "english"
+            },
+            {
+              "name": "x-template",
+              "description": {
+                "content": "",
+                "type": "text/plain"
+              },
+              "key": "x-template",
+              "value": "tpl_Grimming_twoclick"
+            }
+          ],
+          "body": "<!DOCTYPE html>\n<html data-adblockkey=\"MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALquDFETXRn0Hr05fUP7EJT77xYnPmRbpMy4vk8KYiHnkNpednjOANJcaXDXcKQJN0nXKZJL7TciJD8AoHXK158CAwEAAQ==_H2MONrBvjkZiENlK19L3Rnx9viZfE6cJEgcDKg1TNdL+mYi5cNCG/sK5wO2X+tbhRIlIQ2ZvCFLOghYQZ2PuLQ==\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n<title>herokupp.com</title>\n<script src=\"http://www.google.com/adsense/domains/caf.js\" type=\"text/javascript\" ></script>\n<link href=\"http://d1grtyyel8f1mh.cloudfront.net/themes/grimming_9eaa6e55/style.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\" />\n</head>\n<body id=\"twoclick\" style=\"visibility:hidden\">\n<div id=\"content\">\n<div id=\"header\">\n<h1>herokupp.com&nbsp;</h1>\n<div id=\"searchboxHolder\">\n<div id=\"searchbox\"></div>\n</div>\n</div>\n<div id=\"tcHolder\">\n<div id=\"tc\"></div>\n</div>\n<div class=\"fix\"></div>\n</div>\n<div id=\"footer\"><script type=\"text/javascript\">\n\n    function showImprint(){\n\n        var imprintwnd = window.open('','pcrew_imprint','width=640,height=480,left=200,top=200,menubar=no,status=yes,toolbar=no');\n        imprintwnd.document.writeln(\"\");\n        imprintwnd.document.close();\n    }\n\n    function showPolicy(){\n        var link = 'www.parkingcrew.net';\n        policywnd = window.open(\n                'http://' + link + '/privacy.html','pcrew_policy','width=890,height=330,left=200,top=200,menubar=no,status=yes,toolbar=no');\n        policywnd.focus();\n    }\n\n    function showAboutUs(){\n        var link = 'http://'+document.location.host+'/aboutus.php?domain=herokupp.com';\n        policywnd = window.open(link,'pcrew_policy','width=890,height=330,left=200,top=200,menubar=no,status=yes,toolbar=no');\n        policywnd.focus();\n    }\n\n</script>\n2017 Copyright.  All Rights Reserved. <br/><br/>\nThe Sponsored Listings displayed above are served automatically by a third party. Neither the service provider nor the domain owner maintain any relationship with the advertisers. In case of trademark issues please contact the domain owner directly (contact information can be found in whois).\n<br/><br/>\n<a href=\"javascript:void(0);\" onClick=\"showPolicy();\">Privacy Policy</a>\n<br/><br/>\n<br/><br/>\n<script type=\"text/javascript\">\nvar _gaq = _gaq || [];\n_gaq.push(['_setAccount', 'UA-48689684-1']);\n_gaq.push(['_setDomainName', 'auto']);\n_gaq.push(['_setAllowLinker', false]);\n_gaq.push(['_setCustomVar', 1, 'Theme', 'Grimming', 1]);\n_gaq.push(['_setCustomVar', 2, 'Theme Type', 'two', 3]);\n_gaq.push(['_setCustomVar', 3, 'Category ID', '0', 3]);\n_gaq.push(['_setCustomVar', 4, 'Colorscheme', '', 3]);\n_gaq.push(['_setCustomVar', 5, 'domty', 'ascii', 3]);\n_gaq.push(['_gat._anonymizeIp']);\n_gaq.push(['_trackPageview']);\n_gaq.push(['_setSampleRate', '10']);\n (function() {\n    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n  })(); \n</script>\n<!-- --></div>\n<script type=\"text/javascript\" language=\"JavaScript\">\nvar searchboxBlock = {\n\t// Required params.\n\t'container' : 'searchbox',\n\t'type' : 'searchbox',\n\t'fontSizeSearchInput' : 12,\n\t'fontSizeSearchButton' : 10,\n\t'fontSizeSearchButton' : 13\n};\n\nvar rsblock = {\n\t// Required params.\n\t'container' : 'rs',\n\t'type' : 'relatedsearch',\n\t'number' : 10,\n\t'fontSizeTitle' : 17,\n\t'colorTitleLink' : '#3366FF',\n\t'colorBackground' : 'transparent',\n\t'fontSizeAttribution' : 11,\n\t'colorAttribution' : '#cdcdcd',\n\t'lineHeightTitle' : 20,\n\t'lineHeightDescription' : 16,\n\t'lineHeightDomainLink' : 16,\n\t'noTitleUnderline': true,\n\t'rolloverLinkColor' : '#e50b7c'\n};\n\nvar tcblock = {\n\t// Required params.\n\t'container' : 'tc',\n\t'type' : 'relatedsearch',\n\t// Optional params.\n\t\n\t'number' : 6,\n\t\n\t'fontSizeTitle' : 35,\n\t'colorBackground' : 'transparent',\n\t'fontSizeAttribution' : 14,\n\t'lineHeightTitle' : 30,\n\t'noTitleUnderline': true,\n\t'colorTitleLink' : '#3366FF',\n\t'rolloverLinkColor' : '#e50b7c',\n\t'titleBold': true,\n\t'width' : '620px',\n\t'verticalSpacing' : 12,\n\t'horizontalAlignment' : 'center',\n};\n\n</script>\n<script type='text/javascript' language='JavaScript'>var isAdult=false;var xbase='';var sbtext='Search';var xt_auto_load=0;var ads='',pop_cats='';var rxid='118178395';var uniqueTrackingID='MTUwNTM3MDE2NC41NzAzOjE2NGE4MWFkNjBiYmU4ZjY5OTQ5ZjYzNzM0OTNhZDUxZWZkODIwZDRjNDczMTExYzM5YmRjZTE3YTJjZDcwNDk6NTliYTIwMzQ4YjNmMw==';var search='';var is_afs=false;var country='au';var themedata='fEdyaW1taW5nfHxiNGY4NXxidWNrZXQwNjd8fGJ1Y2tldDA0NXx8MTE4MTc4Mzk1fHw1OWJhMjAzNDhhNTFlfHx8MTUwNTM3MDE2NC41NzQ1fDg1NzRiM2JhZmU3OTBhNmIxMGJmMTRjZWRmYzE0ZDRmNmNhMDgyNTV8fHx8fDF8fHwwfHx8fDF8fHx8fDB8MHx8fHx8fHx8fHwwfDF8fDB8MA==';var domain='herokupp.com';var scriptPath='';var adtest='off';var useFallbackTerms=false;</script><script type=\"text/javascript\" language=\"JavaScript\">if (top.location!=location){top.location.href=location.protocol + \"//\" + location.host + location.pathname + (location.search ? location.search + \"&\" : \"?\") + \"_xafvr=MTg1MWMzMTc2YWFjNjM4N2Q5OGNkN2FhZDFjODBjZjllYjMzYmEwMCw1OWJhMjAzNDhjNDUz\";}</script><script>if (!window.JSON) { document.write(\"<script src='http://d1grtyyel8f1mh.cloudfront.net/scripts/json3.min.js' type='text/javascript' language='JavaScript'><\\/scr\"+\"ipt>\"); }</script>\n<script src='http://d1grtyyel8f1mh.cloudfront.net/scripts/js3caf.js' type='text/javascript' language='JavaScript'></script>\n<script type='text/javascript' language='JavaScript'>x(pageOptions,{resultsPageBaseUrl: 'http://ww1.herokupp.com/?ts=fEdyaW1taW5nfHxiNGY4NXxidWNrZXQwNjd8fGJ1Y2tldDA0NXx8MTE4MTc4Mzk1fHw1OWJhMjAzNDhhNTFlfHx8MTUwNTM3MDE2NC41NzU4fGIzZGM1OTg2ODFhMGNiNjY4MTlkOTYxYTdiMDU3N2VmMDhkZmFhZDl8fHx8fDF8fHwwfHx8fDF8fHx8fDB8MHx8fHx8fHx8fHwwfDF8fDB8MA%3D%3D', hl: 'en', kw: '', terms: '', uiOptimize: true,  channel: 'bucket067,bucket045', pubId: 'dp-teaminternet12_3ph', adtest: 'off', clicktrackUrl: '//ww1.herokupp.com/track.' + 'php?click=caf' + '&domain=herokupp.com&rxid=118178395&uid=MTUwNTM3MDE2NC41NzAzOjE2NGE4MWFkNjBiYmU4ZjY5OTQ5ZjYzNzM0OTNhZDUxZWZkODIwZDRjNDczMTExYzM5YmRjZTE3YTJjZDcwNDk6NTliYTIwMzQ4YjNmMw%3D%3D&ts=fEdyaW1taW5nfHxiNGY4NXxidWNrZXQwNjd8fGJ1Y2tldDA0NXx8MTE4MTc4Mzk1fHw1OWJhMjAzNDhhNTFlfHx8MTUwNTM3MDE2NC41NzU4fGIzZGM1OTg2ODFhMGNiNjY4MTlkOTYxYTdiMDU3N2VmMDhkZmFhZDl8fHx8fDF8fHwwfHx8fDF8fHx8fDB8MHx8fHx8fHx8fHwwfDF8fDB8MA%3D%3D&adtest=off'});</script><script type='text/javascript' language='JavaScript'>x(pageOptions,{domainRegistrant:'as-drid-2950815653512408'});</script><script type=\"text/javascript\">function loadFeed(){\n    if(typeof formerCalledArguments !== 'undefined' && false === formerCalledArguments){\n        formerCalledArguments = arguments;\n    }\n\n    var query = arguments;\n    if(typeof formerCalledArguments === 'object'){\n        query = formerCalledArguments;\n    }\n    return google.ads.domains.Caf.apply(this, query);\n}</script><script type=\"text/javascript\" language=\"JavaScript\">function relatedCallback(options){return false;} function relatedFallback(callback){return callback();}</script><script type='text/javascript' language='JavaScript'>if(typeof x == 'undefined' || typeof pageOptions == 'undefined') { var links = document.head.getElementsByTagName('link'); for(var i = 0; i < links.length; i++) { links[i].href = links[i].href.replace('http://d1grtyyel8f1mh.cloudfront.net', 'http://parkingcrew.net/assets'); } document.body.style.visibility = 'visible'; document.getElementById('searchHolder').style.visibility = 'hidden'; }</script>\n<script type=\"text/javascript\">var ls = function(xhr, path, payload) { \n    xhr.open(\"POST\", path + '/ls.p' + 'hp', true);\n    xhr.setRequestHeader(\"Content-Type\", \"application/x-www-form-urlencoded; charset=UTF-8\");\n    xhr.send('_=' + payload);\n};\nls(new XMLHttpRequest(), scriptPath, '1457|||59ba20348c7ddeyJvd25lcils73aa51cc42I6MTExMjgsImRvbWFpbiI6Imhlcm9rdXBwLmNvbSIsInVuaXFJRCI6Ik1UVXdOVE0zTURFMk5DNDFOekF6T2pFMk5HRTRNV0ZrTmpCaVltVTRaalk1T1RRNVpqWXpOek0wT1ROaFpEVXhaV1prT0RJd1pEUmpORGN6TVRFeFl6TTVZbVJqWlRFM1lUSmpaRGN3TkRrNk5UbGlZVEl3TXpRNFlqTm1Ndz09Iiwic2hhcmRLZXkiOiJmMWE1ZGU5YTg2MzIyNDI0NTY5N2EyMzZjYzMwMzhjOTA4NTlkZGI1IiwiYnJvd3NlcmpzIjpmYWxzZSwic3BlY2lhbCI6ZmFsc2UsInJlZGlyIjpmYWxzZSwiZmVlZCI6Imdvb2dsZSIsInN0YW1wIjoxNTA1MzcwMTY0LCJkYXRlIjoiMjAxNy0wOS0xMyIsInRpbWUiOiIyMzoyMjo0NCIsInJlZmVyZXIiOmZhbHNlLCJjb3VudHJ5IjoiYXUiLCJkZXZpY2UiOjAsInRlbXBsYXRlbmFtZSI6InRwbF9HcmltbWluZ190d29jbGljayIsImlwIjoiMTAxLjE4Ny4yMy4wIiwiY2xpZW50SVAiOiIxMDEuMTg3LjIzLjAiLCJpcF9jaXR5IjoiRGFuZGVub25nIiwiaXBfb3JnYSI6IlRlbHN0cmEgSW50ZXJuZXQiLCJpcEhhc2giOiJlNWM3ZTE1OWNiMDRhNGY0OWU2NTIzOWY4NzRjYTM1MjQwNTgzNzQ2IiwidWEiOiJNb3ppbGxhXC81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTJfNikgQXBwbGVXZWJLaXRcLzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZVwvNjEuMC4zMTYzLjc5IFNhZmFyaVwvNTM3LjM2IiwiYl9sYW5nIjoiZW4tVVMsZW5cLzAuOCIsImlzdW5pcXVlIjp0cnVlLCJyb3RJZCI6MTE4MTc4Mzk1LCJhZHRlc3QiOiJvZmYiLCJjbGllbnRJRCI6ImRwLXRlYW1pbnRlcm5ldDEyXzNwaCIsInRzIjpudWxsLCJlbmdpbmUiOiIzLWNhZiIsInNlcnZlciI6InBjcmV3LXdlYjE4LnRlYW1pbnRlcm5ldC5kZSIsInJ0IjowLjAwOTExODA4MDEzOTE2MDIsImV4dElwIjoiMTg1LjUzLjE3OS4yOSIsImJ1Y2tldCI6ImJ1Y2tldDA2NyIsImJ1Y2tldG9zIjoiYnVja2V0MDQ1Iiwic3ViZG9tYWluIjoid3cxIiwiZ29vZ2xlYW5zd2VyIjoibm8iLCJjaGFubmVscyI6WyJidWNrZXQwNjciLCJidWNrZXQwNDUiXSwiaGl0aWQiOmZhbHNlfQ==');</script>\n<script type=\"text/javascript\" language=\"JavaScript\">new loadFeed(pageOptions, tcblock, searchboxBlock);</script>\n</body>\n</html>",
+          "cookie": [
+            {
+              "name": "sid",
+              "expires": null,
+              "domain": ".herokupp.com",
+              "path": "/",
+              "secure": false,
+              "httpOnly": true,
+              "hostOnly": false,
+              "session": true,
+              "value": "be8d0912-982b-11e7-8120-c05a23004254"
+            }
+          ],
+          "responseTime": "6711"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "tests[\"Has an owner\"] = responseBody.has(\"owner\")",
+              "tests[\"Has a user ID\"] = responseBody.has(\"id\")",
+              ""
+            ],
+            "_lastExecutionId": "c2ee589e-a935-40f0-b236-cb591c1aab32"
+          }
+        }
+      ]
+    },
+    {
+      "_": {
+        "postman_id": "5a7d7677-d323-b805-a054-b4344aa7e8b4"
+      },
+      "id": "5a7d7677-d323-b805-a054-b4344aa7e8b4",
+      "name": "{{host}}/tasks/?location=Melbourne",
+      "request": {
+        "url": "{{host}}/tasks/?location=Melbourne",
+        "method": "GET",
+        "body": {},
+        "description": {
+          "content": "List tasks filtered by location\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"id\": 10,\n        \"owner\": {\n            \"id\": 2,\n            \"created_at\": \"2017-09-06T06:54:19.950054Z\",\n            \"updated_at\": \"2017-09-06T07:10:25.264298Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"user\": 2\n        },\n        \"created_at\": \"2017-09-13T05:03:43.258517Z\",\n        \"updated_at\": \"2017-09-13T05:03:43.258547Z\",\n        \"enabled\": true,\n        \"title\": \"Sdf\",\n        \"description\": \"sdf\",\n        \"points\": 1,\n        \"location\": \"Melbourne\",\n        \"is_remote\": false,\n        \"photo\": null,\n        \"question1\": \"sdf\",\n        \"question2\": \"sdf\",\n        \"question3\": \"dsf\",\n        \"status\": \"O\",\n        \"helper\": 5\n    },\n    {\n        \"id\": 9,\n        \"owner\": {\n            \"id\": 2,\n            \"created_at\": \"2017-09-06T06:54:19.950054Z\",\n            \"updated_at\": \"2017-09-06T07:10:25.264298Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"user\": 2\n        },\n        \"created_at\": \"2017-09-13T05:01:59.824075Z\",\n        \"updated_at\": \"2017-09-13T05:01:59.824106Z\",\n        \"enabled\": true,\n        \"title\": \"MY TASK HAHA\",\n        \"description\": \"yo\",\n        \"points\": 50,\n        \"location\": \"Melbourne\",\n        \"is_remote\": true,\n        \"photo\": null,\n        \"question1\": \"sdf\",\n        \"question2\": \"df\",\n        \"question3\": \"sdf\",\n        \"status\": \"O\",\n        \"helper\": 6\n    }\n]\n```\n\n> TODO: Support Querystring",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "0218a215-881d-9c23-35b4-c5d6dc34c2b8"
+      },
+      "id": "0218a215-881d-9c23-35b4-c5d6dc34c2b8",
+      "name": "{{host}}/tasks/?location=Sydney&search=edwards",
+      "request": {
+        "url": "{{host}}/tasks/?location=Sydney&search=edwards",
+        "method": "GET",
+        "body": {},
+        "description": {
+          "content": "List tasks filtered by location\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"id\": 10,\n        \"owner\": {\n            \"id\": 2,\n            \"created_at\": \"2017-09-06T06:54:19.950054Z\",\n            \"updated_at\": \"2017-09-06T07:10:25.264298Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"user\": 2\n        },\n        \"created_at\": \"2017-09-13T05:03:43.258517Z\",\n        \"updated_at\": \"2017-09-13T05:03:43.258547Z\",\n        \"enabled\": true,\n        \"title\": \"Sdf\",\n        \"description\": \"sdf\",\n        \"points\": 1,\n        \"location\": \"Melbourne\",\n        \"is_remote\": false,\n        \"photo\": null,\n        \"question1\": \"sdf\",\n        \"question2\": \"sdf\",\n        \"question3\": \"dsf\",\n        \"status\": \"O\",\n        \"helper\": 5\n    },\n    {\n        \"id\": 9,\n        \"owner\": {\n            \"id\": 2,\n            \"created_at\": \"2017-09-06T06:54:19.950054Z\",\n            \"updated_at\": \"2017-09-06T07:10:25.264298Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"user\": 2\n        },\n        \"created_at\": \"2017-09-13T05:01:59.824075Z\",\n        \"updated_at\": \"2017-09-13T05:01:59.824106Z\",\n        \"enabled\": true,\n        \"title\": \"MY TASK HAHA\",\n        \"description\": \"yo\",\n        \"points\": 50,\n        \"location\": \"Melbourne\",\n        \"is_remote\": true,\n        \"photo\": null,\n        \"question1\": \"sdf\",\n        \"question2\": \"df\",\n        \"question3\": \"sdf\",\n        \"status\": \"O\",\n        \"helper\": 6\n    }\n]\n```\n\n> TODO: Support Querystring",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "30e8887a-ce4c-c0df-f26a-87d5cc3270c0"
+      },
+      "id": "30e8887a-ce4c-c0df-f26a-87d5cc3270c0",
+      "name": "{{host}}/tasks/?skills=php,python&search=hugo",
+      "request": {
+        "url": "{{host}}/tasks/?skills=php,python&search=hugo",
+        "method": "GET",
+        "body": {},
+        "description": {
+          "content": "List tasks filtered by location\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"id\": 11,\n        \"owner\": {\n            \"id\": 1,\n            \"created_at\": \"2017-09-06T06:53:25.080801Z\",\n            \"updated_at\": \"2017-09-13T05:28:43.313738Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"user\": 1\n        },\n        \"created_at\": \"2017-09-13T05:28:23.856224Z\",\n        \"updated_at\": \"2017-09-13T06:51:18.963977Z\",\n        \"enabled\": true,\n        \"title\": \"BBQ\",\n        \"description\": \"sdfsdf\",\n        \"points\": 1,\n        \"location\": \"Sydney\",\n        \"is_remote\": false,\n        \"photo\": null,\n        \"question1\": \"dsf\",\n        \"question2\": \"f\",\n        \"question3\": \"d\",\n        \"status\": \"O\",\n        \"helper\": null,\n        \"skills\": [\n            2,\n            1\n        ]\n    }\n]\n```\n\n> TODO: Support Querystring",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "595f412e-fb5c-fa00-3e54-fbbd7b4ac62e"
+      },
+      "id": "595f412e-fb5c-fa00-3e54-fbbd7b4ac62e",
+      "name": "{{host}}/tasks/create/",
+      "request": {
+        "url": "{{host}}/tasks/create/",
+        "method": "POST",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\" : \"Build a video platform\",\n  \"description\" : \"Some Description\",\n  \"points\" : 1000,\n  \"location\" : \"Some Location\",\n  \"is_remote\" : false,\n  \"skills\": [\"php\", \"py\"]\n}"
+        },
+        "description": {
+          "content": "Create a task.\n\n### Return Values\n\n*Status: 201 Created*\n\n```json\n{\n    \"id\": 42,\n    \"created_at\": \"2017-09-14T03:19:20.363679Z\",\n    \"updated_at\": \"2017-09-14T03:19:20.363711Z\",\n    \"enabled\": true,\n    \"title\": \"task title\",\n    \"description\": \"Some Description\",\n    \"points\": 50,\n    \"location\": \"Some Location\",\n    \"is_remote\": false,\n    \"photo\": null,\n    \"question1\": \"\",\n    \"question2\": \"\",\n    \"question3\": \"\",\n    \"status\": \"O\",\n    \"owner\": 1,\n    \"helper\": null,\n    \"skills\": [\n        2,\n        1\n    ]\n}\n```\n\n*Note*: The API accepts job \"codes\" in `skills`, and returns Skill IDs.",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "86c075f8-a2e7-31d0-8ded-56674d0cb683"
+      },
+      "id": "86c075f8-a2e7-31d0-8ded-56674d0cb683",
+      "name": "{{host}}/tasks/helper/?status=AP",
+      "request": {
+        "url": "{{host}}/tasks/helper/?status=AP",
+        "method": "GET",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\" : \"task title\",\n  \"description\" : \"Some Description\",\n  \"points\" : 50,\n  \"location\" : \"Some Location\",\n  \"is_remote\" : false\n}"
+        },
+        "description": {
+          "content": "View helper tasks for a user\n\n### Return Values\n\n*Status: 200 OK*\n\n[\n    {\n        \"id\": 8,\n        \"task\": {\n            \"id\": 8,\n            \"owner\": {\n                \"id\": 2,\n                \"created_at\": \"2017-09-06T06:54:19.950054Z\",\n                \"updated_at\": \"2017-09-06T07:10:25.264298Z\",\n                \"enabled\": true,\n                \"location\": \"\",\n                \"description\": \"\",\n                \"photo\": null,\n                \"user\": 2\n            },\n            \"created_at\": \"2017-09-09T00:19:18.640447Z\",\n            \"updated_at\": \"2017-09-13T06:51:14.337354Z\",\n            \"enabled\": true,\n            \"title\": \"task title\",\n            \"description\": \"Some Description\",\n            \"points\": 50,\n            \"location\": \"Some Location\",\n            \"is_remote\": false,\n            \"photo\": null,\n            \"question1\": \"\",\n            \"question2\": \"\",\n            \"question3\": \"\",\n            \"status\": \"I\",\n            \"helper\": 4,\n            \"skills\": [\n                3\n            ]\n        },\n        \"created_at\": \"2017-09-09T00:43:00.896388Z\",\n        \"updated_at\": \"2017-09-14T23:25:11.216900Z\",\n        \"enabled\": true,\n        \"status\": \"AP\",\n        \"answer1\": \"asd\",\n        \"answer2\": \"asd\",\n        \"answer3\": \"asd\",\n        \"quote\": 10,\n        \"profile\": 2\n    }\n]\n\n*Note*: The API accepts job \"codes\" in `skills`, and returns Skill IDs.",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "d603abfd-0cfd-c2dc-b824-983550e41a5b"
+      },
+      "id": "d603abfd-0cfd-c2dc-b824-983550e41a5b",
+      "name": "{{host}}/tasks/poster/?status=O",
+      "request": {
+        "url": "{{host}}/tasks/poster/?status=O",
+        "method": "GET",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\" : \"task title\",\n  \"description\" : \"Some Description\",\n  \"points\" : 50,\n  \"location\" : \"Some Location\",\n  \"is_remote\" : false,\n  \"skills\": [\"php\", \"py\"]\n}"
+        },
+        "description": {
+          "content": "View helper tasks for a user\n\n### Return Values\n\n*Status: 200 OK*\n\n[\n    {\n        \"id\": 10,\n        \"owner\": {\n            \"id\": 2,\n            \"created_at\": \"2017-09-06T06:54:19.950054Z\",\n            \"updated_at\": \"2017-09-06T07:10:25.264298Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"user\": 2\n        },\n        \"created_at\": \"2017-09-13T05:03:43.258517Z\",\n        \"updated_at\": \"2017-09-13T06:51:09.734097Z\",\n        \"enabled\": true,\n        \"title\": \"Sdf\",\n        \"description\": \"sdf\",\n        \"points\": 1,\n        \"location\": \"Melbourne\",\n        \"is_remote\": false,\n        \"photo\": null,\n        \"question1\": \"sdf\",\n        \"question2\": \"sdf\",\n        \"question3\": \"dsf\",\n        \"status\": \"O\",\n        \"helper\": 5,\n        \"skills\": [\n            1\n        ]\n    },\n    {\n        \"id\": 9,\n        \"owner\": {\n            \"id\": 2,\n            \"created_at\": \"2017-09-06T06:54:19.950054Z\",\n            \"updated_at\": \"2017-09-06T07:10:25.264298Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"user\": 2\n        },\n        \"created_at\": \"2017-09-13T05:01:59.824075Z\",\n        \"updated_at\": \"2017-09-13T06:51:05.258729Z\",\n        \"enabled\": true,\n        \"title\": \"MY TASK HAHA\",\n        \"description\": \"yo\",\n        \"points\": 50,\n        \"location\": \"Melbourne\",\n        \"is_remote\": true,\n        \"photo\": null,\n        \"question1\": \"sdf\",\n        \"question2\": \"df\",\n        \"question3\": \"sdf\",\n        \"status\": \"O\",\n        \"helper\": 6,\n        \"skills\": [\n            3,\n            2,\n            1\n        ]\n    }\n]\n\n*Note*: The API accepts job \"codes\" in `skills`, and returns Skill IDs.",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "41e7976f-88ab-6ffe-206f-3b0e321b291f"
+      },
+      "id": "41e7976f-88ab-6ffe-206f-3b0e321b291f",
+      "name": "{{host}}/tasks/shortlist/",
+      "request": {
+        "url": "{{host}}/tasks/shortlist/",
+        "method": "POST",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"task\" : 35\n}"
+        },
+        "description": {
+          "content": "When a helper wants to swipe a task to shortlist it.\n\n*Note*: This creates a ProfileTask object. If the ProfileTask object already exsits it will return an error, as the only way to create a ProfileTask object is by shortlisting it.\n\n### Return values\n\nIf ProfileTask doesn't already exist:\n\n*Status: 201 Created*\n\n```json\n{\n    \"id\": 8,\n    \"created_at\": \"2017-09-08T00:39:20.760062Z\",\n    \"updated_at\": \"2017-09-08T00:39:20.760118Z\",\n    \"enabled\": true,\n    \"status\": \"SL\",\n    \"answer1\": \"\",\n    \"answer2\": \"\",\n    \"answer3\": \"\",\n    \"task\": 35,\n    \"profile\": 1\n}\n```\n\nIf profile task already exists:\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"ProfileTask already exists\"\n}\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "56be25b9-f301-defc-7b2b-6eeeb955971b"
+      },
+      "id": "56be25b9-f301-defc-7b2b-6eeeb955971b",
+      "name": "{{host}}/tasks/start/",
+      "request": {
+        "url": "{{host}}/tasks/start/",
+        "method": "POST",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"task_id\" : \"1\"\n}"
+        },
+        "description": {
+          "content": "When a poster has assigned a helper and wants to start a task.\n\n### Return values\n\nIf task status is *open*:\n\n*Status: 201 Created*\n\n```json\n{\n    \"id\": 1,\n    \"created_at\": \"2017-08-15T00:26:05.025248Z\",\n    \"updated_at\": \"2017-09-07T21:18:10.934615Z\",\n    \"enabled\": true,\n    \"title\": \"Task0\",\n    \"description\": \"Description0\",\n    \"points\": 0,\n    \"location\": \"Location0\",\n    \"date_posted\": \"2017-09-07T21:18:10.934629Z\",\n    \"photo\": null,\n    \"question1\": \"\",\n    \"question2\": \"\",\n    \"question3\": \"\",\n    \"status\": \"I\",\n    \"owner\": 1,\n    \"helper\": null\n}\n```\n\nIf task status is *not open* ('in progress' or 'complete'):\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Task is not open and cannot be started\"\n}\n```\n\nIf requester is *not the owner* of the task:\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Current User does not own this task\"\n}\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "f57318e7-8e0d-c1ae-8e22-d6f454091330"
+      },
+      "id": "f57318e7-8e0d-c1ae-8e22-d6f454091330",
+      "name": "{{host}}/tasks/discard/",
+      "request": {
+        "url": "{{host}}/tasks/discard/",
+        "method": "POST",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"task\" : \"1\"\n}"
+        },
+        "description": {
+          "content": "When a user swipes left on a Task or ProfileTask to discard it. This can happen from the Browse Tasks screen, or from the Shortlist bucket.\n\n### Return Values\n\nProfileTask already exists (ie swiping from shortlist bucket). \n\n*Status: 200 OK*\n\n```json\n{\n    \"id\": 3,\n    \"created_at\": \"2017-09-04T03:52:17.189547Z\",\n    \"updated_at\": \"2017-09-08T00:55:17.974912Z\",\n    \"enabled\": true,\n    \"status\": \"D\",\n    \"answer1\": \"Some answer\",\n    \"answer2\": \"Some answer\",\n    \"answer3\": \"Some answer\",\n    \"task\": 1,\n    \"profile\": 1\n}\n```\n\nProfileTask does not already exists (ie from Browse all tasks screen).\n\n*Status: 201 Created*\n```json\n{\n    \"id\": 10,\n    \"created_at\": \"2017-09-08T01:10:42.288102Z\",\n    \"updated_at\": \"2017-09-08T01:10:42.288126Z\",\n    \"enabled\": true,\n    \"status\": \"D\",\n    \"answer1\": \"\",\n    \"answer2\": \"\",\n    \"answer3\": \"\",\n    \"task\": 3,\n    \"profile\": 1\n}\n```\n\nTask doesn't exist.\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"status\": \"D\",\n    \"task\": \"1000\",\n    \"profile\": 1\n}\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "47237e3d-dae3-a680-5848-1ae49b03be68"
+      },
+      "id": "47237e3d-dae3-a680-5848-1ae49b03be68",
+      "name": "{{host}}/tasks/apply/",
+      "request": {
+        "url": "{{host}}/tasks/apply/",
+        "method": "POST",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"profiletask_id\" : \"3\",\n  \"answer1\" : \"Some answer\",\n  \"answer2\" : \"Some answer\",\n  \"answer3\" : \"Some answer\"\n}"
+        },
+        "description": {
+          "content": "Apply for a task\n\nProfileTask is in 'SL' (shortlisted) state, and associated Task is in 'O' (open) state.\n\n*Status: 200 OK*\n\n\n```json\n{\n    \"id\": 3,\n    \"created_at\": \"2017-09-04T03:52:17.189547Z\",\n    \"updated_at\": \"2017-09-08T01:13:34.556477Z\",\n    \"enabled\": true,\n    \"status\": \"AP\",\n    \"answer1\": \"Some answer\",\n    \"answer2\": \"Some answer\",\n    \"answer3\": \"Some answer\",\n    \"task\": 1,\n    \"profile\": 1\n}\n```\n\nProfileTask is in any other state.\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Task isn't available to apply for.\"\n}\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "0ff05d60-ec67-d076-84cd-95239063e995"
+      },
+      "id": "0ff05d60-ec67-d076-84cd-95239063e995",
+      "name": "{{host}}/tasks/complete/",
+      "request": {
+        "url": "{{host}}/tasks/complete/",
+        "method": "POST",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"task_id\" : \"1\"\n}"
+        },
+        "description": {
+          "content": "When a poster wants to finish a task and change it's status to complete.\n\n### Return values\n\nIf task status is *in progress*:\n\n*Status: 201 Created*\n\n```json\n{\n    \"id\": 1,\n    \"created_at\": \"2017-08-15T00:26:05.025248Z\",\n    \"updated_at\": \"2017-09-07T21:18:10.934615Z\",\n    \"enabled\": true,\n    \"title\": \"Task0\",\n    \"description\": \"Description0\",\n    \"points\": 0,\n    \"location\": \"Location0\",\n    \"date_posted\": \"2017-09-07T21:18:10.934629Z\",\n    \"photo\": null,\n    \"question1\": \"\",\n    \"question2\": \"\",\n    \"question3\": \"\",\n    \"status\": \"C\",\n    \"owner\": 1,\n    \"helper\": null\n}\n```\n\nIf task status is *not in progress* ('open' or 'complete'):\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Task is not In Progress and cannot be Completed\"\n}\n```\n\nIf requester is *not the owner* of the task:\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Current User does not own this task\"\n}\n```",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "7b570363-2d0d-a626-be8a-0c406f14b0be"
+      },
+      "id": "7b570363-2d0d-a626-be8a-0c406f14b0be",
+      "name": "{{host}}/tasks/1/applicants/",
+      "request": {
+        "url": "{{host}}/tasks/1/applicants/",
+        "method": "GET",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "description": {
+          "content": "View all applicants of a task.\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"profile\": {\n            \"id\": 2,\n            \"user\": {\n                \"id\": 2,\n                \"password\": \"pbkdf2_sha256$36000$erj1qrTq2UGp$hPKoe+86V0hE2lqv5iQIeXY/3p4VCck19Wy7y9U54cE=\",\n                \"last_login\": null,\n                \"is_superuser\": false,\n                \"username\": \"mperrott\",\n                \"first_name\": \"Matt\",\n                \"last_name\": \"Perrott\",\n                \"email\": \"matt@perrott.com\",\n                \"is_staff\": false,\n                \"is_active\": true,\n                \"date_joined\": \"2017-08-11T13:07:41Z\",\n                \"groups\": [],\n                \"user_permissions\": []\n            },\n            \"created_at\": \"2017-08-15T00:26:04.962151Z\",\n            \"updated_at\": \"2017-08-15T00:26:04.989562Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"date_created\": \"2017-08-15T00:26:04.816433Z\"\n        }\n    },\n    ...\n]\n```\n\nRequester is not owner of task.\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Cannot view applicants as not task owner\"\n}\n```\n\nTask doesn't exist.\n\n*Status: 404 Not Found*\n\n```json\n{\n    \"detail\": \"Not found.\"\n}\n```\n\n",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "971f9faa-f1f5-5ccf-6a77-bc29596a4917"
+      },
+      "id": "971f9faa-f1f5-5ccf-6a77-bc29596a4917",
+      "name": "{{host}}/tasks/1/accept",
+      "request": {
+        "url": "{{host}}/tasks/1/applicants/",
+        "method": "GET",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "description": {
+          "content": "View all applicants of a task.\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"profile\": {\n            \"id\": 2,\n            \"user\": {\n                \"id\": 2,\n                \"password\": \"pbkdf2_sha256$36000$erj1qrTq2UGp$hPKoe+86V0hE2lqv5iQIeXY/3p4VCck19Wy7y9U54cE=\",\n                \"last_login\": null,\n                \"is_superuser\": false,\n                \"username\": \"mperrott\",\n                \"first_name\": \"Matt\",\n                \"last_name\": \"Perrott\",\n                \"email\": \"matt@perrott.com\",\n                \"is_staff\": false,\n                \"is_active\": true,\n                \"date_joined\": \"2017-08-11T13:07:41Z\",\n                \"groups\": [],\n                \"user_permissions\": []\n            },\n            \"created_at\": \"2017-08-15T00:26:04.962151Z\",\n            \"updated_at\": \"2017-08-15T00:26:04.989562Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"date_created\": \"2017-08-15T00:26:04.816433Z\"\n        }\n    },\n    ...\n]\n```\n\nRequester is not owner of task.\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Cannot view applicants as not task owner\"\n}\n```\n\nTask doesn't exist.\n\n*Status: 404 Not Found*\n\n```json\n{\n    \"detail\": \"Not found.\"\n}\n```\n\n",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "7cb47793-ac36-3d6d-c3de-10add182d32a"
+      },
+      "id": "7cb47793-ac36-3d6d-c3de-10add182d32a",
+      "name": "{{host}}/tasks/reject",
+      "request": {
+        "url": "{{host}}/tasks/reject/",
+        "method": "POST",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"profiletask_id\" : \"1\"\n}"
+        },
+        "description": {
+          "content": "View all applicants of a task.\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"profile\": {\n            \"id\": 2,\n            \"user\": {\n                \"id\": 2,\n                \"password\": \"pbkdf2_sha256$36000$erj1qrTq2UGp$hPKoe+86V0hE2lqv5iQIeXY/3p4VCck19Wy7y9U54cE=\",\n                \"last_login\": null,\n                \"is_superuser\": false,\n                \"username\": \"mperrott\",\n                \"first_name\": \"Matt\",\n                \"last_name\": \"Perrott\",\n                \"email\": \"matt@perrott.com\",\n                \"is_staff\": false,\n                \"is_active\": true,\n                \"date_joined\": \"2017-08-11T13:07:41Z\",\n                \"groups\": [],\n                \"user_permissions\": []\n            },\n            \"created_at\": \"2017-08-15T00:26:04.962151Z\",\n            \"updated_at\": \"2017-08-15T00:26:04.989562Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"date_created\": \"2017-08-15T00:26:04.816433Z\"\n        }\n    },\n    ...\n]\n```\n\nRequester is not owner of task.\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Cannot view applicants as not task owner\"\n}\n```\n\nTask doesn't exist.\n\n*Status: 404 Not Found*\n\n```json\n{\n    \"detail\": \"Not found.\"\n}\n```\n\n",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    },
+    {
+      "_": {
+        "postman_id": "c038ff73-5ed9-efd0-65d3-c9156e134eeb"
+      },
+      "id": "c038ff73-5ed9-efd0-65d3-c9156e134eeb",
+      "name": "{{host}}/tasks/shortlist_application",
+      "request": {
+        "url": "{{host}}/tasks/shortlist_application/",
+        "method": "POST",
+        "header": [
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Authorization",
+            "value": "Token {{token}}"
+          },
+          {
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"profiletask_id\" : \"1\"\n}"
+        },
+        "description": {
+          "content": "View all applicants of a task.\n\n### Return Values\n\n*Status: 200 OK*\n\n```json\n[\n    {\n        \"profile\": {\n            \"id\": 2,\n            \"user\": {\n                \"id\": 2,\n                \"password\": \"pbkdf2_sha256$36000$erj1qrTq2UGp$hPKoe+86V0hE2lqv5iQIeXY/3p4VCck19Wy7y9U54cE=\",\n                \"last_login\": null,\n                \"is_superuser\": false,\n                \"username\": \"mperrott\",\n                \"first_name\": \"Matt\",\n                \"last_name\": \"Perrott\",\n                \"email\": \"matt@perrott.com\",\n                \"is_staff\": false,\n                \"is_active\": true,\n                \"date_joined\": \"2017-08-11T13:07:41Z\",\n                \"groups\": [],\n                \"user_permissions\": []\n            },\n            \"created_at\": \"2017-08-15T00:26:04.962151Z\",\n            \"updated_at\": \"2017-08-15T00:26:04.989562Z\",\n            \"enabled\": true,\n            \"location\": \"\",\n            \"description\": \"\",\n            \"photo\": null,\n            \"date_created\": \"2017-08-15T00:26:04.816433Z\"\n        }\n    },\n    ...\n]\n```\n\nRequester is not owner of task.\n\n*Status: 400 Bad Request*\n\n```json\n{\n    \"error\": \"Cannot view applicants as not task owner\"\n}\n```\n\nTask doesn't exist.\n\n*Status: 404 Not Found*\n\n```json\n{\n    \"detail\": \"Not found.\"\n}\n```\n\n",
+          "type": "text/plain"
+        }
+      },
+      "response": [],
+      "event": []
+    }
+  ],
+  "_postman_variable_scope": "collection",
+  "_postman_exported_at": "2017-09-15T06:02:57.448Z",
+  "_postman_exported_using": "Newman/3.8.1"
+}
