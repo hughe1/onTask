@@ -21,6 +21,7 @@ class ProfileTests(APITestCase):
     def test_create_profile(self):
         """
         Ensure we can create a new Profile (and subsequently, User)
+        ID: UT01.01
         """
         url = reverse('profile-create')
         data = {
@@ -78,6 +79,7 @@ class TaskListTests(APITestCase):
     # def test_task_list(self):
     #     """
     #     Test whether the right list of tasks is returned
+    #     ID: UT02.01
     #     """
     #     url = reverse('profile-list')
     #     response = self.client.get(url, format='json')
@@ -101,6 +103,9 @@ class TestTaskCreate(APITestCase):
     
     # Test that a task can be created
     def test_task_create(self):
+        """
+        ID: UT03.01
+        """
         token = api_login(self.user1)
         url = reverse('task-create')
         data = {
@@ -125,6 +130,9 @@ class TestShortlist(APITestCase):
         
     # Ensure a user can shortlist a task they have not already shortlisted
     def test_shortlist_not_already_shortlisted(self):
+        """
+        ID: UT04.01
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-shortlist')
         data = {'task': self.task1.id}
@@ -134,6 +142,9 @@ class TestShortlist(APITestCase):
         
     # Ensure a user cannot shortlist a task they have already shortlisted    
     def test_shortlist_already_shortlisted(self):
+        """
+        ID: UT04.02
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-shortlist')
         data = {'task': self.task1.id}
@@ -158,6 +169,9 @@ class TestDiscardTask(APITestCase):
         
     # Ensure a user can discard a task they have not already discarded
     def test_discard_not_already_discarded(self):
+        """
+        ID: UT05.01
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-discard')
         data = {'task': self.task1.id}
@@ -167,6 +181,9 @@ class TestDiscardTask(APITestCase):
         
     # Ensure a user cannot discard a task they have already discarded    
     def test_discard_already_discarded(self):
+        """
+        ID: UT05.02
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-discard')
         data = {'task': self.task1.id}
@@ -191,7 +208,9 @@ class TestApplyTask(APITestCase):
 
     # User should not be able to apply for an unshortlisted task
     def test_apply_unshortlisted(self):
-
+        """
+        ID: UT06.01
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-apply')
 
@@ -207,7 +226,9 @@ class TestApplyTask(APITestCase):
         
     # Ensure a user can apply to a task they have not already applied for
     def test_apply_discarded(self):
-
+        """
+        ID: UT06.02
+        """
         #discard the task
         token = api_login(self.profile1.user)
         url = reverse('task-discard')
@@ -228,7 +249,9 @@ class TestApplyTask(APITestCase):
         self.assertEqual(ProfileTask.objects.count(), 1)
 
     def test_apply_shortlisted(self):
-
+        """
+        ID: UT06.03
+        """
         #shortlist the task
         token = api_login(self.profile1.user)
         url = reverse('task-shortlist')
