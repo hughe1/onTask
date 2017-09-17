@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = "__all__"
+        exclude = ('password')
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -39,7 +39,8 @@ class ProfileUserSerializer(serializers.ModelSerializer):
 
 class TaskGetSerializer(serializers.ModelSerializer):
 
-    owner = ProfileSerializer()
+    owner = ProfileUserSerializer()
+    helper = ProfileUserSerializer(required=False)
 
     class Meta:
         model = Task
