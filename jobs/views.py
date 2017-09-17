@@ -480,3 +480,50 @@ def accept_applicant(request, task_id):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def rate_helper(request, task_id):
+    
+    task = get_object_or_404(Task, pk=task_id)
+    
+    applicant = get_object_or_404(Profile, pk=request.data["profile"])
+    rating = int(request.data["rating"])
+    
+    if not (rating >= 0 and rating <=5):
+        return Response ({"error": "Rating must be between 0 and 5"})
+    
+    if not isinstance(rating, int):
+        return Response ({"error": "Rating must be and integer value"})
+    
+    #ensures correct user is accepting applicant
+    if task.owner.id != request.user.id:
+        return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
+
+    #Check the task is Open and does not have a helper
+    if task.status != Task.COMPLETE:
+        return Response({"error":"Task must be complete to rate user"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    #Check that the helper has submitted an application for the task
+    if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
+        (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.ASSIGNED)):
+        print(ProfileTask.objects.filter(profile=applicant, task=task)[0].status)
+        return Response({"error":"Profile must be assigned to task to be rated"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    profile_task = ProfileTask.objects.filter(profile=applicant, task=task)[0]
+    
+    #makes a serializer from the existing task
+    old_serializer = ProfileTaskPostSerializer(profile_task)
+
+    new_data = old_serializer.data
+    # change task status
+    new_data["rating"] = rating
+    
+    #creates new serializer data based on old task with a new status
+    serializer = ProfileTaskPostSerializer(profile_task, data=new_data)
+    
+    if serializer.is_valid():
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
