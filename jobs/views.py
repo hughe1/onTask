@@ -111,7 +111,7 @@ class TaskList(generics.ListAPIView):
             for skill_str in skills:
                 skill = get_object_or_404(Skill, title=skill_str)
                 skill_querysets.append(skill.task_set.all())
-                
+
             #find the intersection of all querysets
             for skill_queryset in skill_querysets:
                 queryset = queryset & skill_queryset
@@ -195,8 +195,15 @@ def shortlist_task(request):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Written so that any task can be discarded, regardless of status. 
-# May need to be updated if we want 'in progress' tasks to not be discarded. 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def current_profile(request):
+    serializer = ProfileUserSerializer(request.user.profile)
+    return Response(serializer.data)
+
+
+# Written so that any task can be discarded, regardless of status.
+# May need to be updated if we want 'in progress' tasks to not be discarded.
 # need to add permission integrity
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
@@ -235,7 +242,7 @@ def discard_task(request):
             else:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
 # TODO:
 #need to check here that the user is the logged in user
 @api_view(['POST'])
@@ -360,7 +367,7 @@ def create_profile(request):
 @permission_classes((IsAuthenticated, ))
 def create_task(request):
     if request.method == 'POST':
-        
+
         # Get skill objects from skill code
         skills = Skill.objects.filter(code__in=request.data["skills"])
         skills_pks = []
@@ -445,38 +452,38 @@ def complete_task(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # View all applicants of a task
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def view_applicants(request, task_id):
     if request.method == 'GET':
-        
+
         # Return 404 if doesn't doesn't exists
         task = get_object_or_404(Task, pk=task_id)
-        
+
         # Get the profile of requester and profile of task owner
         requester = request.user.profile
         owner = Task.objects.get(pk=task_id).owner
-        
+
         # Check requester is the task owner
         if not requester == owner:
             return Response({"error":"Cannot view applicants as not task owner"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         # Get the Profile Tasks for the task, where the status is "applied"
         profile_tasks = ProfileTask.objects.filter(task=task_id, status=ProfileTask.APPLIED)
-        
+
         # Use applicant serializer to just serializer the profile attribute from ProfileTask
         serializer = ApplicantSerializer(profile_tasks, many=True)
-        
+
         # Return the list of Profiles that have applied for the task
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+
 
 # TODO Provide Helper object in response, not just ID
-# Accept an applicant and start the task 
+# Accept an applicant and start the task
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
@@ -484,7 +491,7 @@ def accept_applicant(request, task_id):
 
     task = get_object_or_404(Task, pk=task_id)
     applicant = get_object_or_404(Profile, pk=request.data["profile"])
-    
+
     #ensures correct user is accepting applicant
     if task.owner.id != request.user.id:
         return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
@@ -505,15 +512,15 @@ def accept_applicant(request, task_id):
     new_data = old_serializer.data
     # change task status
     new_data["status"] = Task.IN_PROGRESS
-    
+
     profile_serializer = ProfileSerializer(applicant)
-    
+
     new_data["helper"] = applicant.pk
-    
+
 
     #creates new serializer data based on old task with a new status
     serializer = TaskPostSerializer(task, data=new_data)
-    
+
     if serializer.is_valid():
         serializer.save()
 
@@ -525,22 +532,22 @@ def accept_applicant(request, task_id):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def rate_helper(request, task_id):
-    
+
     task = get_object_or_404(Task, pk=task_id)
-    
+
     applicant = get_object_or_404(Profile, pk=request.data["profile"])
     rating = int(request.data["rating"])
-    
+
     if not (rating >= 0 and rating <=5):
         return Response ({"error": "Rating must be between 0 and 5"})
-    
+
     if not isinstance(rating, int):
         return Response ({"error": "Rating must be and integer value"})
-    
+
     #ensures correct user is accepting applicant
     if task.owner.id != request.user.id:
         return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
@@ -548,25 +555,25 @@ def rate_helper(request, task_id):
     #Check the task is Open and does not have a helper
     if task.status != Task.COMPLETE:
         return Response({"error":"Task must be complete to rate user"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
     #Check that the helper has submitted an application for the task
     if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
         (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.ASSIGNED)):
         print(ProfileTask.objects.filter(profile=applicant, task=task)[0].status)
         return Response({"error":"Profile must be assigned to task to be rated"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
     profile_task = ProfileTask.objects.filter(profile=applicant, task=task)[0]
-    
+
     #makes a serializer from the existing task
     old_serializer = ProfileTaskPostSerializer(profile_task)
 
     new_data = old_serializer.data
     # change task status
     new_data["rating"] = rating
-    
+
     #creates new serializer data based on old task with a new status
     serializer = ProfileTaskPostSerializer(profile_task, data=new_data)
-    
+
     if serializer.is_valid():
         serializer.save()
 

@@ -7,6 +7,7 @@ from jobs import views
 urlpatterns = [
 
     url(r'^profiles/$', views.ProfileList.as_view(), name='profile-list'),
+    url(r'^profile/$', views.current_profile, name='profile-current'),
     url(r'^profiles/create/$', views.create_profile, name='profile-create'),
     url(r'^profiles/(?P<pk>[0-9]+)/$', views.ProfileDetail.as_view(), name='profile-detail'),
     url(r'^tasks/$', views.TaskList.as_view(), name='task-list'),
