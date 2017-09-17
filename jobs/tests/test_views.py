@@ -21,6 +21,7 @@ class ProfileTests(APITestCase):
     def test_create_profile(self):
         """
         Ensure we can create a new Profile (and subsequently, User)
+        ID: UT01.01
         """
         url = reverse('profile-create')
         data = {
@@ -49,11 +50,11 @@ class TaskListTests(APITestCase):
         Create some task objects and users
         """
         # Create users
-        user1 = create_user(1)
-        user2 = create_user(2)
+        self.user1 = create_user(1)
+        self.user2 = create_user(2)
         # Update profile info
-        profile1 = update_profile(user1, 1)
-        profile2 = update_profile(user2, 2)
+        self.profile1 = update_profile(self.user1, 1)
+        self.profile2 = update_profile(self.user2, 2)
         
         # TODO Try with an image field
         # Create a task without a helper, is remote
@@ -75,21 +76,22 @@ class TaskListTests(APITestCase):
         )
         
     # TODO Work out why this test is failing
-    # def test_task_list(self):
-    #     """
-    #     Test whether the right list of tasks is returned
-    #     """
-    #     url = reverse('profile-list')
-    #     response = self.client.get(url, format='json')
-    #     tasks = Task.objects.all()
-    #     serializer = TaskGetSerializer(tasks, many=True)
-    #     print("Response.data: ")
-    #     print(response.data)
-    #     print("")
-    #     print("Serializer.data ")
-    #     print(serializer.data)
-    #     print("")
-    #     self.assertEqual(response.data, serializer.data)
+    def test_task_list(self):
+        """
+        Test whether the right list of tasks is returned
+        ID: UT02.01
+        """
+        url = reverse('profile-list')
+        response = self.client.get(url, format='json')
+        tasks = Task.objects.all()
+        serializer = TaskPostSerializer(tasks, many=True)
+        print("Response.data: ")
+        print(response.data)
+        print("")
+        print("Serializer.data ")
+        print(serializer.data)
+        print("")
+        self.assertEqual(response.data, serializer.data)
 
 
 class TestTaskCreate(APITestCase):
@@ -101,6 +103,9 @@ class TestTaskCreate(APITestCase):
     
     # Test that a task can be created
     def test_task_create(self):
+        """
+        ID: UT03.01
+        """
         token = api_login(self.user1)
         url = reverse('task-create')
         data = {
@@ -125,6 +130,9 @@ class TestShortlist(APITestCase):
         
     # Ensure a user can shortlist a task they have not already shortlisted
     def test_shortlist_not_already_shortlisted(self):
+        """
+        ID: UT04.01
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-shortlist')
         data = {'task': self.task1.id}
@@ -134,6 +142,9 @@ class TestShortlist(APITestCase):
         
     # Ensure a user cannot shortlist a task they have already shortlisted    
     def test_shortlist_already_shortlisted(self):
+        """
+        ID: UT04.02
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-shortlist')
         data = {'task': self.task1.id}
@@ -158,6 +169,9 @@ class TestDiscardTask(APITestCase):
         
     # Ensure a user can discard a task they have not already discarded
     def test_discard_not_already_discarded(self):
+        """
+        ID: UT05.01
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-discard')
         data = {'task': self.task1.id}
@@ -167,6 +181,9 @@ class TestDiscardTask(APITestCase):
         
     # Ensure a user cannot discard a task they have already discarded    
     def test_discard_already_discarded(self):
+        """
+        ID: UT05.02
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-discard')
         data = {'task': self.task1.id}
@@ -191,7 +208,9 @@ class TestApplyTask(APITestCase):
 
     # User should not be able to apply for an unshortlisted task
     def test_apply_unshortlisted(self):
-
+        """
+        ID: UT06.01
+        """
         token = api_login(self.profile1.user)
         url = reverse('task-apply')
 
@@ -207,7 +226,9 @@ class TestApplyTask(APITestCase):
         
     # Ensure a user can apply to a task they have not already applied for
     def test_apply_discarded(self):
-
+        """
+        ID: UT06.02
+        """
         #discard the task
         token = api_login(self.profile1.user)
         url = reverse('task-discard')
@@ -228,7 +249,9 @@ class TestApplyTask(APITestCase):
         self.assertEqual(ProfileTask.objects.count(), 1)
 
     def test_apply_shortlisted(self):
-
+        """
+        ID: UT06.03
+        """
         #shortlist the task
         token = api_login(self.profile1.user)
         url = reverse('task-shortlist')
