@@ -439,7 +439,6 @@ def accept_applicant(request, task_id):
 
     task = get_object_or_404(Task, pk=task_id)
     applicant = get_object_or_404(Profile, pk=request.data["profile"])
-    print(applicant)
     
     #ensures correct user is accepting applicant
     if task.owner.id != request.user.id:
