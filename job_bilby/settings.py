@@ -158,3 +158,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+COVERAGE_URL = '/tests/'
+COVERAGE_ROOT = os.path.join(BASE_DIR, 'docs/testing_logs/coverage/html')
