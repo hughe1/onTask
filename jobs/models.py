@@ -124,6 +124,7 @@ class ProfileTask(BaseModel):
     answer2 = models.CharField(max_length=300,blank=True)
     answer3 = models.CharField(max_length=300,blank=True)
     quote = models.IntegerField(blank=True,null=True)
+    rating = models.IntegerField(blank=True, null=True)
 
 
     def __str__(self):
