@@ -50,11 +50,11 @@ class TaskListTests(APITestCase):
         Create some task objects and users
         """
         # Create users
-        user1 = create_user(1)
-        user2 = create_user(2)
+        self.user1 = create_user(1)
+        self.user2 = create_user(2)
         # Update profile info
-        profile1 = update_profile(user1, 1)
-        profile2 = update_profile(user2, 2)
+        self.profile1 = update_profile(self.user1, 1)
+        self.profile2 = update_profile(self.user2, 2)
         
         # TODO Try with an image field
         # Create a task without a helper, is remote
@@ -76,22 +76,22 @@ class TaskListTests(APITestCase):
         )
         
     # TODO Work out why this test is failing
-    # def test_task_list(self):
-    #     """
-    #     Test whether the right list of tasks is returned
-    #     ID: UT02.01
-    #     """
-    #     url = reverse('profile-list')
-    #     response = self.client.get(url, format='json')
-    #     tasks = Task.objects.all()
-    #     serializer = TaskGetSerializer(tasks, many=True)
-    #     print("Response.data: ")
-    #     print(response.data)
-    #     print("")
-    #     print("Serializer.data ")
-    #     print(serializer.data)
-    #     print("")
-    #     self.assertEqual(response.data, serializer.data)
+    def test_task_list(self):
+        """
+        Test whether the right list of tasks is returned
+        ID: UT02.01
+        """
+        url = reverse('profile-list')
+        response = self.client.get(url, format='json')
+        tasks = Task.objects.all()
+        serializer = TaskPostSerializer(tasks, many=True)
+        print("Response.data: ")
+        print(response.data)
+        print("")
+        print("Serializer.data ")
+        print(serializer.data)
+        print("")
+        self.assertEqual(response.data, serializer.data)
 
 
 class TestTaskCreate(APITestCase):
