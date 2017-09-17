@@ -96,8 +96,8 @@ class Skill(BaseModel):
 class ProfileSkill(BaseModel):
     skill = models.ForeignKey('jobs.Skill')
     profile = models.ForeignKey('jobs.Profile')
-    # TODO - Discuss whether this should be a list of ratings
-    rating = models.FloatField()
+    # TODO - Potentially implement rating for Sprint 3
+    rating = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return "ProfileSkill: "+self.skill.title +" ("+ self.profile.user.username + ")"
