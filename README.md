@@ -67,7 +67,7 @@ pip install -r requirements.txt
 
 To deactivate the virtual environment, use `deactivate`.
 
-## Adding the required environmental variables
+### Adding the required environmental variables
 
 For local development, the following environmental variables are required:
  - DJANGO_SECRET_KEY
@@ -122,6 +122,26 @@ A good naming structure for your own branch might be `<name>-<feature>`.
   especially at the start. We might be adding new packages to the venv as we go
 * If you `pip install` something, make sure you `pip freeze > requirements.txt`
   and commit your changes, so everyone has the same environment
+
+## Deployment
+### Staging
+Each push to the `dev` branch will be automatically compiled and push to Heroku.
+It can be accessed at [https://job-bilby-dev.herokuapp.com/](https://job-bilby-dev.herokuapp.com/).
+
+### Production
+Each push to the `master` branch will be automatically compiled and push to Heroku.
+It can be accessed at [https://job-bilby.herokuapp.com/](https://job-bilby.herokuapp.com/).
+
+### Logging
+This backend utilises Papertrail for logging purposes. Once the Heroku CLI is installed and you have logged in,
+logs can be accessed with `heroku addons:open papertrail --app=job-bilby(-dev)`.
+
+
+## Testing
+
+The test suite can be run with the following command:
+
+`./manage.py test`
 
   **TODO**
 

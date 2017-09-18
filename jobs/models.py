@@ -18,12 +18,13 @@ class BaseModel(models.Model):
     def time_since_create(self):
         return timesince(self.created_at).split(',')[0]
 
+
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
-    photo = models.ImageField(blank=True)
-    date_created = models.DateTimeField(auto_now=True)
+    photo = models.ImageField(upload_to='%Y/%m/%d/', blank=True, null=True)
+
 
 
     def __str__(self):
@@ -36,28 +37,47 @@ class Profile(BaseModel):
         pass
 
 
+# TODO - default photo
 class Task(BaseModel):
-    INCOMPLETE = 'IC'
+    OPEN = 'O'
+    IN_PROGRESS = 'I'
     COMPLETE = 'C'
     STATUS_CHOICES = (
-        (INCOMPLETE, 'Incomplete'),
+        (OPEN, 'Open'),
+        (IN_PROGRESS, 'In Progress'),
         (COMPLETE, 'Complete')
     )
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2000)
     points = models.IntegerField()
     location = models.CharField(max_length=128)
-    is_remote = models.BooleanField
-    owner = models.ForeignKey(Profile)
-    date_posted = models.DateTimeField(auto_now=True)
+    is_remote = models.BooleanField(default=False)
+    owner = models.ForeignKey('jobs.Profile',related_name="poster")
+    helper = models.ForeignKey('jobs.Profile',related_name="helper",blank=True,null=True)
 
+    ####
+    # Null photo is temporary allowed (until Baz susses photos) so that task_start works
+    # REMOVE null=true EVENTUALLY (and test that task_start works)
+    ####
+
+    photo = models.ImageField(upload_to='%Y/%m/%d/', blank=True,null=True)
     # TODO question1, question2 etc - might be better with a many-to-many field
     # instead of hard-code attributes
+    question1 = models.CharField(max_length=300,blank=True)
+    question2 = models.CharField(max_length=300,blank=True)
+    question3 = models.CharField(max_length=300,blank=True)
     status = models.CharField(
         max_length=2,
         choices = STATUS_CHOICES,
-        default=INCOMPLETE
+        default=OPEN
     )
+    skills = models.ManyToManyField('jobs.Skill')
+
+    # display_rank is a blank field which is only filled in (and note saved) when serialized
+    # task is returned. Basically allows a temporary rank value to be inserted, without concurrency
+    # issues (the rank is never read from the database; only filled in in memory when it is being
+    # returned )
+    display_rank = models.IntegerField(blank=True,null=True)
 
     def __str__(self):
         return self.title
@@ -67,50 +87,60 @@ class Skill(BaseModel):
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2000)
     image = models.ImageField(blank=True)
+    code = models.CharField(max_length=20)
 
     def __str__(self):
         return self.title
 
 
-class UserSkill(BaseModel):
-    skills = models.ForeignKey('jobs.Skill')
-    user = models.ForeignKey(Profile)
-    rating = models.FloatField()
+class ProfileSkill(BaseModel):
+    skill = models.ForeignKey('jobs.Skill')
+    profile = models.ForeignKey('jobs.Profile')
+    # TODO - Potentially implement rating for Sprint 3
+    rating = models.FloatField(null=True, blank=True)
 
     def __str__(self):
-        return "UserSkill: "+self.skills.title +" ("+ self.user.username + ")"
+        return "ProfileSkill: "+self.skill.title +" ("+ self.profile.user.username + ")"
 
 
-# TODO - add an override create method to prevent duplicates of the same usertask being created
-class UserTask(BaseModel):
-    OPEN = 'O'
+class ProfileTask(BaseModel):
+    task = models.ForeignKey('jobs.Task')
+    profile = models.ForeignKey('jobs.Profile')
     SHORTLISTED = 'SL'
-    ASSIGNED = 'A'
-    COMPLETE = 'C'
+    APPLIED = 'AP'
+    ASSIGNED = 'AS'
+    DISCARDED = 'D'
+    REJECTED = 'R'
+    APPLICATION_SHORTLISTED = 'ASL'
     STATUS_CHOICES = (
-        (OPEN, 'Open'),
         (SHORTLISTED, 'Shortlisted'),
         (ASSIGNED, 'Assigned'),
-        (COMPLETE, 'Complete')
+        (APPLIED, 'Applied'),
+        (DISCARDED, 'Discarded'),
+        (REJECTED, 'Rejected'),
+        (APPLICATION_SHORTLISTED, 'Application Shortlisted')
+
     )
     status = models.CharField(
-        max_length=2,
+        max_length=3,
         choices=STATUS_CHOICES,
-        default=OPEN
+        default=SHORTLISTED
     )
-    task = models.ForeignKey('jobs.Task')
-    profile = models.ForeignKey(Profile)
+    answer1 = models.CharField(max_length=300,blank=True)
+    answer2 = models.CharField(max_length=300,blank=True)
+    answer3 = models.CharField(max_length=300,blank=True)
+    quote = models.IntegerField(blank=True,null=True)
+    rating = models.IntegerField(blank=True, null=True)
+
 
     def __str__(self):
-        return "UserJob: "+self.task.title +" ("+ self.profile.user.username + ")"
+        return "ProfileTask: "+self.task.title +" ("+ self.profile.user.username + ")"
 
 
 class Comment(BaseModel):
-    user = models.ForeignKey(Profile)
+    profile = models.ForeignKey('jobs.Profile')
     task = models.ForeignKey('jobs.Task')
     text = models.TextField(max_length=1000)
-    date_posted = models.DateTimeField(auto_now=True)
-
 
     def __str__(self):
         return "Comment: "+self.task.title +" ("+ self.user.username + ")"

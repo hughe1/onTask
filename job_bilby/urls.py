@@ -24,3 +24,7 @@ urlpatterns = [
     url(r'^auth/', views.obtain_auth_token),
     url(r'^', include('jobs.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += static(settings.COVERAGE_URL, document_root=settings.COVERAGE_ROOT)

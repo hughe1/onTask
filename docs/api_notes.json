@@ -1,49 +1,292 @@
+================================================================================
+=================================== SUMMARY ====================================
+================================================================================
 
-1)
-a: POST /auth/login
+Done:
+POST /auth/
+POST /auth/login/
+GET /profiles/
+POST /tasks/create/
+POST /profiles/create/
+POST /tasks/apply/
+GET /profiletasks/
+GET /profiletasks/<id>
+POST /tasks/discard/
+POST /tasks/shortlist/
+GET /tasks/
+
+
+Todo:
+GET /jobs/<id>/questions
+POST /jobs/<id>/application
+POST /jobs/<id>/accept
+POST /jobs/<id>/reject
+
+================================================================================
+==================================== DONE ======================================
+================================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Obtain auth token ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /auth/
+Example post data:
 {
-  "user" : "pass",
-  "return": "token"
+  "username" : "job_user",
+  "password": "qwerty1234"
+}
+Return:
+{
+  "token" : "e61a63c66028f44e4ae448d16d5ddc656eb825ea"
 }
 
-2)
-a: GET /jobs/
+Note: Include this token in "Authorization" header of requests that require
+authentication.
+e.g. HTTP:
+"
+POST /auth/ HTTP/1.1
+Authorization: Token e61a63c66028f44e4ae448d16d5ddc656eb825ea
+
+username=job_user&password=qwerty1234
+"
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Login ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /auth/login/
+Example post data:
 {
-  "filter": "false",
-  "sort": [
+  "username" : "job_user",
+  "password": "qwerty1234"
+}
+Return:
+{
+  "token" : "e61a63c66028f44e4ae448d16d5ddc656eb825ea"
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get list of all profiles ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GET /profiles/
+return:
+[
+  {
+      "user": 14,
+      "location": "",
+      "description": "",
+      "photo": null,
+      "date_created": "2017-08-22T00:48:20.868569Z"
+  },
+  "..."
+]
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Create Task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /tasks/create/
+Example post data:
+{
+  "title" : "Some Title",
+  "description" : "Some Description",
+  "points" : "50",
+  "location" : "Some Location",
+  "is_remote" : "False",
+  "owner" : "1"
+}
+Return:
+{
+    "id": 11,
+    "created_at": "2017-08-22T01:33:27.499084Z",
+    "updated_at": "2017-08-22T01:33:27.499110Z",
+    "enabled": false,
+    "title": "some title",
+    "description": "some desc",
+    "points": 50,
+    "location": "some loc",
+    "date_posted": "2017-08-22T01:33:27.499166Z",
+    "photo": null,
+    "question1": "",
+    "question2": "",
+    "question3": "",
+    "status": "IC",
+    "owner": 2
+}
+TODO: 
+* Remove /create/ (good API practice)
+* Set location (href) in response
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Shortlist a task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST tasks/shortlist/
+Example post data:
+{
+  "task" : "1"
+}
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Discard a task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Removes a task from the list of tasks displayed to a given user
+
+POST tasks/discard/
+Example post data:
+{
+  "profile" : "1",
+  "task" : "1"
+}
+
+Return:
+
+{
+    "id": 1,
+    "created_at": "2017-09-02T00:55:11.029324Z",
+    "updated_at": "2017-09-02T01:25:33.957014Z",
+    "enabled": true,
+    "status": "D",
+    "answer1": "",
+    "answer2": "",
+    "answer3": "",
+    "task": 1,
+    "profile": 1
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Create Profile ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /profiles/create
+Post body:
+{
+  "username" : "john",
+  "email" : "john@gmail.com",
+  "first_name" : "john",
+  "last_name" : "smith",
+  "password": "johnpassword",
+  "location" : "some location",
+  "description" : "some description"
+}
+Return:
+{
+  "id": 17,
+  "password": "pbkdf2_sha256$36000$CXrGxe35Dcnh$Fr4nJPlE2MuVzj4znhlrxM9YG4rhRqLi0NI9ORE48Dw=",
+  "last_login": null,
+  "is_superuser": false,
+  "username": "john",
+  "first_name": "john",
+  "last_name": "smith",
+  "email": "john@gmail.com",
+  "is_staff": false,
+  "is_active": true,
+  "date_joined": "2017-08-22T05:20:06.526168Z",
+  "groups": [],
+  "user_permissions": []
+}
+Note: Must use `Content-Type: application/json`
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Apply for Task ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /tasks/apply/
+Example post data:
+{
+  "profiletask_id" : "3",
+  "answer1" : "Some answer",
+  "answer2" : "Some answer",
+  "answer3" : "Some answer"
+}
+Return:
+{
+  "id": 2,
+  "created_at": "2017-08-22T03:58:39.816274Z",
+  "updated_at": "2017-08-22T05:21:54.842082Z",
+  "enabled": true,
+  "status": "AP",
+  "answer1": "Some answer",
+  "answer2": "Some answer",
+  "answer3": "Some answer",
+  "task": 8,
+  "profile": 1
+}
+Note: Must use `Content-Type: application/json`
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get Tasks ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GET /tasks/
+Return:
+[
+  {
+      "id": 16,
+      "created_at": "2017-08-22T02:11:53.625317Z",
+      "updated_at": "2017-08-22T02:11:53.625342Z",
+      "enabled": false,
+      "title": "some title",
+      "description": "some desc",
+      "points": 50,
+      "location": "some loc",
+      "date_posted": "2017-08-22T02:11:53.625427Z",
+      "photo": null,
+      "question1": "",
+      "question2": "",
+      "question3": "",
+      "status": "IC",
+      "owner": 2
+  },
+  "..."
+]
+**TODO: Handle the querystring**
+Querystring:
+?sort=<sort_value>
+{
+  "sort_value": [
     "recent",
-    "skills",
-    "..."
+    "skills"
   ]
 }
 
-b: POST /jobs/<id>/accept
-c: POST /jobs/<id>/reject
-{
 
-}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get ProfileTasks ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-3)
-a: GET /shortlist/
-{
-  "token": "token"
-}
+ProfileTasks contain information about whether a task has been shortlisted, discarded, 
+applied, completed, etc, by a profile
 
-4)
-a: GET /jobs/<id>
-{
-  
-}
-b: DELETE /shortlist/<id>/
+GET /profiletasks/
+Return:
 
-5)
-a: GET /jobs/<id>/questions
-b: POST /jobs/<id>/application
-{
-  "user": ,
-  "answer1": ,
-  "answer2": ,
-  "answer3": 
-}
+[
+  {
+    "id": 5,
+    "created_at": "2017-09-02T01:15:42.401416Z",
+    "updated_at": "2017-09-02T01:15:42.401447Z",
+    "enabled": true,
+    "status": "D",
+    "answer1": "",
+    "answer2": "",
+    "answer3": "",
+    "task": 3,
+    "profile": 1
+  },
+  "..."
+]
 
-6)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get A ProfileTask ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Gets a specific profiletask by primary key
+
+GET /profiletasks/1
+Return:
+
+[
+  {
+    "id": 1,
+    "created_at": "2017-09-02T00:55:11.029324Z",
+    "updated_at": "2017-09-02T01:17:57.413499Z",
+    "enabled": true,
+    "status": "D",
+    "answer1": "",
+    "answer2": "",
+    "answer3": "",
+    "task": 1,
+    "profile": 1
+  },
+  "..."
+]
+
+
+
+================================================================================
+==================================== TODO ======================================
+================================================================================
+
+GET /jobs/<id>/questions/
+POST /jobs/<id>/application/
+POST /jobs/<id>/accept/
+POST /jobs/<id>/reject/
+
+

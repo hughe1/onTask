@@ -1,0 +1,1517 @@
+{
+	"id": "b3f86c6f-7f9f-4bfd-ad16-53b374928f1b",
+	"name": "Job-bilby-backend",
+	"allTests": [],
+	"timestamp": "2017-09-17T05:44:15.093Z",
+	"collection_id": "6062e727-b562-f231-e42d-8a0821e8d2e5",
+	"folder_id": 0,
+	"target_type": "collection",
+	"environment_id": "a2fea03b-e880-f227-f203-9a102dc88851",
+	"data": [],
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "6062e727-b562-f231-e42d-8a0821e8d2e5",
+		"name": "Job-bilby-backend",
+		"description": "All working API calls for the job-bilby backend.",
+		"order": [
+			"ab28a038-2a52-56dd-4f6a-d9afe2188d68",
+			"12fbcfae-2dc8-4240-41dd-ffc1069a83cb",
+			"8e2d7397-2393-1a44-407a-56770f2c8618",
+			"f4a300d1-fa5c-a891-3d66-66e7cea3b2b6",
+			"83f6b3a7-4326-9361-a5e8-df35318c9d40",
+			"b4e82f15-ade3-ba86-9a04-bbe2b6123ade",
+			"5a7d7677-d323-b805-a054-b4344aa7e8b4",
+			"0218a215-881d-9c23-35b4-c5d6dc34c2b8",
+			"30e8887a-ce4c-c0df-f26a-87d5cc3270c0",
+			"595f412e-fb5c-fa00-3e54-fbbd7b4ac62e",
+			"86c075f8-a2e7-31d0-8ded-56674d0cb683",
+			"d603abfd-0cfd-c2dc-b824-983550e41a5b",
+			"41e7976f-88ab-6ffe-206f-3b0e321b291f",
+			"56be25b9-f301-defc-7b2b-6eeeb955971b",
+			"f57318e7-8e0d-c1ae-8e22-d6f454091330",
+			"47237e3d-dae3-a680-5848-1ae49b03be68",
+			"0ff05d60-ec67-d076-84cd-95239063e995",
+			"7b570363-2d0d-a626-be8a-0c406f14b0be",
+			"971f9faa-f1f5-5ccf-6a77-bc29596a4917",
+			"aefcbc58-cacc-cc55-46a1-74eb2a208b3c",
+			"7cb47793-ac36-3d6d-c3de-10add182d32a",
+			"c038ff73-5ed9-efd0-65d3-c9156e134eeb"
+		],
+		"folders": [],
+		"folders_order": [],
+		"timestamp": 0,
+		"synced": true,
+		"remote_id": "0",
+		"owner": "1836603",
+		"sharedWithTeam": true,
+		"subscribed": false,
+		"remoteLink": null,
+		"remoteLinkUpdatedAt": null,
+		"public": false,
+		"createdAt": "2017-08-22T01:39:04.000Z",
+		"updatedAt": "2017-09-17T00:33:45.653Z",
+		"write": true,
+		"published": true,
+		"favorite": false,
+		"permissions": {
+			"team": {
+				"id": "61467",
+				"access": "write"
+			},
+			"users": []
+		},
+		"syncedPermissions": {
+			"team": {
+				"id": "61467",
+				"access": "write"
+			},
+			"users": []
+		}
+	},
+	"folder": null,
+	"environment": null,
+	"globals": [
+		{
+			"enabled": true,
+			"key": "job_user-token",
+			"type": "text",
+			"value": "Token e61a63c66028f44e4ae448d16d5ddc656eb825ea"
+		},
+		{
+			"enabled": true,
+			"key": "postman_api_key",
+			"type": "text",
+			"value": "12cc937bbee74591a358163f50310723"
+		},
+		{
+			"enabled": true,
+			"key": "backend_uid",
+			"type": "text",
+			"value": "6062e727-b562-f231-e42d-8a0821e8d2e5"
+		}
+	],
+	"results": [
+		{
+			"name": "{{host}}/auth/",
+			"id": "ab28a038-2a52-56dd-4f6a-d9afe2188d68",
+			"url": "job-bilby-dev.herokuapp.com/auth/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Has a token": true,
+				"Token is correct": true,
+				"Response Code 200": true
+			},
+			"testPassFailCounts": {
+				"Has a token": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Token is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Code 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"591"
+			],
+			"allTests": [
+				{
+					"Has a token": true,
+					"Token is correct": true,
+					"Response Code 200": true
+				}
+			],
+			"time": "591",
+			"totalRequestTime": "591",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/auth/login/",
+			"id": "12fbcfae-2dc8-4240-41dd-ffc1069a83cb",
+			"url": "job-bilby-dev.herokuapp.com/auth/login/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Has a token": true,
+				"Token is correct": true,
+				"Response Code 200": true
+			},
+			"testPassFailCounts": {
+				"Has a token": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Token is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Code 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"974"
+			],
+			"allTests": [
+				{
+					"Has a token": true,
+					"Token is correct": true,
+					"Response Code 200": true
+				}
+			],
+			"time": "974",
+			"totalRequestTime": "974",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/profiles/",
+			"id": "8e2d7397-2393-1a44-407a-56770f2c8618",
+			"url": "job-bilby-dev.herokuapp.com/profiles/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Has profiles": true,
+				"Response Code 200": true
+			},
+			"testPassFailCounts": {
+				"Has profiles": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Code 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"1283"
+			],
+			"allTests": [
+				{
+					"Has profiles": true,
+					"Response Code 200": true
+				}
+			],
+			"time": "1283",
+			"totalRequestTime": "1283",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/profiles/{{profile_id}}/",
+			"id": "f4a300d1-fa5c-a891-3d66-66e7cea3b2b6",
+			"url": "job-bilby-dev.herokuapp.com/profiles/12/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Has profiles": true,
+				"Returns correct user": false,
+				"Response Code 200": true
+			},
+			"testPassFailCounts": {
+				"Has profiles": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returns correct user": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response Code 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"807"
+			],
+			"allTests": [
+				{
+					"Has profiles": true,
+					"Returns correct user": false,
+					"Response Code 200": true
+				}
+			],
+			"time": "807",
+			"totalRequestTime": "807",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/profiles/create/",
+			"id": "83f6b3a7-4326-9361-a5e8-df35318c9d40",
+			"url": "job-bilby-dev.herokuapp.com/profiles/create/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request",
+				"detail": {
+					"name": "Bad Request",
+					"detail": "The request cannot be fulfilled due to bad syntax."
+				}
+			},
+			"tests": {
+				"Response Code 200": false
+			},
+			"testPassFailCounts": {
+				"Response Code 200": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				"245"
+			],
+			"allTests": [
+				{
+					"Response Code 200": false
+				}
+			],
+			"time": "245",
+			"totalRequestTime": "245",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/",
+			"id": "b4e82f15-ade3-ba86-9a04-bbe2b6123ade",
+			"url": "job-bilby-dev.herokuapp.com/tasks/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Has an owner": true,
+				"Has a user ID": true,
+				"Has a user": true,
+				"Has a last name": false,
+				"Has skills": true
+			},
+			"testPassFailCounts": {
+				"Has an owner": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has a user ID": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has a user": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has a last name": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Has skills": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"455"
+			],
+			"allTests": [
+				{
+					"Has an owner": true,
+					"Has a user ID": true,
+					"Has a user": true,
+					"Has a last name": false,
+					"Has skills": true
+				}
+			],
+			"time": "455",
+			"totalRequestTime": "455",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/?location=Melbourne",
+			"id": "5a7d7677-d323-b805-a054-b4344aa7e8b4",
+			"url": "job-bilby-dev.herokuapp.com/tasks/?location=Melbourne",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Has a location": true,
+				"Location is Melbourne": true,
+				"Location not Sydney": true
+			},
+			"testPassFailCounts": {
+				"Has a location": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Location is Melbourne": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Location not Sydney": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"271"
+			],
+			"allTests": [
+				{
+					"Has a location": true,
+					"Location is Melbourne": true,
+					"Location not Sydney": true
+				}
+			],
+			"time": "271",
+			"totalRequestTime": "271",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/?location=Sydney&search=edwards",
+			"id": "0218a215-881d-9c23-35b4-c5d6dc34c2b8",
+			"url": "job-bilby-dev.herokuapp.com/tasks/?location=Sydney&search=edwards",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Has a location": true,
+				"Has a user": true,
+				"User is searched user": false,
+				"Location is Melbourne": true,
+				"Location not Sydney": true
+			},
+			"testPassFailCounts": {
+				"Has a location": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has a user": {
+					"pass": 1,
+					"fail": 0
+				},
+				"User is searched user": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Location is Melbourne": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Location not Sydney": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"252"
+			],
+			"allTests": [
+				{
+					"Has a location": true,
+					"Has a user": true,
+					"User is searched user": false,
+					"Location is Melbourne": true,
+					"Location not Sydney": true
+				}
+			],
+			"time": "252",
+			"totalRequestTime": "252",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/?skills=php,python&search=hugo",
+			"id": "30e8887a-ce4c-c0df-f26a-87d5cc3270c0",
+			"url": "job-bilby-dev.herokuapp.com/tasks/?skills=php,python&search=hugo",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"243"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "243",
+			"totalRequestTime": "243",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/create/",
+			"id": "595f412e-fb5c-fa00-3e54-fbbd7b4ac62e",
+			"url": "job-bilby-dev.herokuapp.com/tasks/create/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {
+				"Has skills": true,
+				"Task owner has first name": false
+			},
+			"testPassFailCounts": {
+				"Has skills": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task owner has first name": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				"283"
+			],
+			"allTests": [
+				{
+					"Has skills": true,
+					"Task owner has first name": false
+				}
+			],
+			"time": "283",
+			"totalRequestTime": "283",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/helper/?status=AP",
+			"id": "86c075f8-a2e7-31d0-8ded-56674d0cb683",
+			"url": "job-bilby-dev.herokuapp.com/tasks/helper/?status=AP",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Has helper": true,
+				"Task profile ID correct": true,
+				"Task has status AP": true
+			},
+			"testPassFailCounts": {
+				"Has helper": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task profile ID correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task has status AP": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"264"
+			],
+			"allTests": [
+				{
+					"Has helper": true,
+					"Task profile ID correct": true,
+					"Task has status AP": true
+				}
+			],
+			"time": "264",
+			"totalRequestTime": "264",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/poster/?status=O",
+			"id": "d603abfd-0cfd-c2dc-b824-983550e41a5b",
+			"url": "job-bilby-dev.herokuapp.com/tasks/poster/?status=O",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Task owner ID correct": true,
+				"Task has status AP": true
+			},
+			"testPassFailCounts": {
+				"Task owner ID correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task has status AP": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"407"
+			],
+			"allTests": [
+				{
+					"Task owner ID correct": true,
+					"Task has status AP": true
+				}
+			],
+			"time": "407",
+			"totalRequestTime": "407",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/shortlist/",
+			"id": "41e7976f-88ab-6ffe-206f-3b0e321b291f",
+			"url": "job-bilby-dev.herokuapp.com/tasks/shortlist/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {
+				"Correct task shortlisted": true,
+				"Task has status SL": true
+			},
+			"testPassFailCounts": {
+				"Correct task shortlisted": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task has status SL": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"361"
+			],
+			"allTests": [
+				{
+					"Correct task shortlisted": true,
+					"Task has status SL": true
+				}
+			],
+			"time": "361",
+			"totalRequestTime": "361",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/start/",
+			"id": "56be25b9-f301-defc-7b2b-6eeeb955971b",
+			"url": "job-bilby-dev.herokuapp.com/tasks/start/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Task has status I": true
+			},
+			"testPassFailCounts": {
+				"Task has status I": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"577"
+			],
+			"allTests": [
+				{
+					"Task has status I": true
+				}
+			],
+			"time": "577",
+			"totalRequestTime": "577",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/discard/",
+			"id": "f57318e7-8e0d-c1ae-8e22-d6f454091330",
+			"url": "job-bilby-dev.herokuapp.com/tasks/discard/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Task has status D or has already been discarded": true
+			},
+			"testPassFailCounts": {
+				"Task has status D or has already been discarded": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"280"
+			],
+			"allTests": [
+				{
+					"Task has status D or has already been discarded": true
+				}
+			],
+			"time": "280",
+			"totalRequestTime": "280",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/apply/",
+			"id": "47237e3d-dae3-a680-5848-1ae49b03be68",
+			"url": "job-bilby-dev.herokuapp.com/tasks/apply/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"tests": {
+				"Task has status AP or isn't available": false
+			},
+			"testPassFailCounts": {
+				"Task has status AP or isn't available": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				"245"
+			],
+			"allTests": [
+				{
+					"Task has status AP or isn't available": false
+				}
+			],
+			"time": "245",
+			"totalRequestTime": "245",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/complete/",
+			"id": "0ff05d60-ec67-d076-84cd-95239063e995",
+			"url": "job-bilby-dev.herokuapp.com/tasks/complete/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request",
+				"detail": {
+					"name": "Bad Request",
+					"detail": "The request cannot be fulfilled due to bad syntax."
+				}
+			},
+			"tests": {
+				"Task has status C or isn't available": false
+			},
+			"testPassFailCounts": {
+				"Task has status C or isn't available": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				"315"
+			],
+			"allTests": [
+				{
+					"Task has status C or isn't available": false
+				}
+			],
+			"time": "315",
+			"totalRequestTime": "315",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/{{task_id}}/applicants/",
+			"id": "7b570363-2d0d-a626-be8a-0c406f14b0be",
+			"url": "job-bilby-dev.herokuapp.com/tasks/11/applicants/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Task has applicants": true
+			},
+			"testPassFailCounts": {
+				"Task has applicants": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"277"
+			],
+			"allTests": [
+				{
+					"Task has applicants": true
+				}
+			],
+			"time": "277",
+			"totalRequestTime": "277",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/{{task_id}}/accept",
+			"id": "971f9faa-f1f5-5ccf-6a77-bc29596a4917",
+			"url": "job-bilby-dev.herokuapp.com/tasks/11/accept/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request",
+				"detail": {
+					"name": "Bad Request",
+					"detail": "The request cannot be fulfilled due to bad syntax."
+				}
+			},
+			"tests": {
+				"Helper and owner are not null": true,
+				"Status should be in progress": false
+			},
+			"testPassFailCounts": {
+				"Helper and owner are not null": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status should be in progress": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				"281"
+			],
+			"allTests": [
+				{
+					"Helper and owner are not null": true,
+					"Status should be in progress": false
+				}
+			],
+			"time": "281",
+			"totalRequestTime": "281",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/{{task_id}}/rate/",
+			"id": "aefcbc58-cacc-cc55-46a1-74eb2a208b3c",
+			"url": "job-bilby-dev.herokuapp.com/tasks/11/rate/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request",
+				"detail": {
+					"name": "Bad Request",
+					"detail": "The request cannot be fulfilled due to bad syntax."
+				}
+			},
+			"tests": {
+				"Helper and owner are not null": true,
+				"Status should be in progress": false
+			},
+			"testPassFailCounts": {
+				"Helper and owner are not null": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status should be in progress": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				"282"
+			],
+			"allTests": [
+				{
+					"Helper and owner are not null": true,
+					"Status should be in progress": false
+				}
+			],
+			"time": "282",
+			"totalRequestTime": "282",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/reject",
+			"id": "7cb47793-ac36-3d6d-c3de-10add182d32a",
+			"url": "job-bilby-dev.herokuapp.com/tasks/reject/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"tests": {
+				"Task has status D or has already been discarded": false
+			},
+			"testPassFailCounts": {
+				"Task has status D or has already been discarded": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				"732"
+			],
+			"allTests": [
+				{
+					"Task has status D or has already been discarded": false
+				}
+			],
+			"time": "732",
+			"totalRequestTime": "732",
+			"iterationResults": {}
+		},
+		{
+			"name": "{{host}}/tasks/shortlist_application",
+			"id": "c038ff73-5ed9-efd0-65d3-c9156e134eeb",
+			"url": "job-bilby-dev.herokuapp.com/tasks/shortlist_application/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"tests": {
+				"Task has status D or has already been discarded": false
+			},
+			"testPassFailCounts": {
+				"Task has status D or has already been discarded": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				"1012"
+			],
+			"allTests": [
+				{
+					"Task has status D or has already been discarded": false
+				}
+			],
+			"time": "1012",
+			"totalRequestTime": "1012",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 34,
+	"totalFail": 11,
+	"totalTime": 10437,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "{{host}}/auth/",
+			"id": "ab28a038-2a52-56dd-4f6a-d9afe2188d68",
+			"url": "job-bilby-dev.herokuapp.com/auth/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Has a token": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Token is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Code 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/auth/login/",
+			"id": "12fbcfae-2dc8-4240-41dd-ffc1069a83cb",
+			"url": "job-bilby-dev.herokuapp.com/auth/login/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Has a token": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Token is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Code 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/profiles/",
+			"id": "8e2d7397-2393-1a44-407a-56770f2c8618",
+			"url": "job-bilby-dev.herokuapp.com/profiles/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Has profiles": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Code 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/profiles/{{profile_id}}/",
+			"id": "f4a300d1-fa5c-a891-3d66-66e7cea3b2b6",
+			"url": "job-bilby-dev.herokuapp.com/profiles/12/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Has profiles": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returns correct user": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response Code 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/profiles/create/",
+			"id": "83f6b3a7-4326-9361-a5e8-df35318c9d40",
+			"url": "job-bilby-dev.herokuapp.com/profiles/create/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request",
+				"detail": {
+					"name": "Bad Request",
+					"detail": "The request cannot be fulfilled due to bad syntax."
+				}
+			},
+			"testPassFailCounts": {
+				"Response Code 200": {
+					"pass": 0,
+					"fail": 1
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/",
+			"id": "b4e82f15-ade3-ba86-9a04-bbe2b6123ade",
+			"url": "job-bilby-dev.herokuapp.com/tasks/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Has an owner": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has a user ID": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has a user": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has a last name": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Has skills": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/?location=Melbourne",
+			"id": "5a7d7677-d323-b805-a054-b4344aa7e8b4",
+			"url": "job-bilby-dev.herokuapp.com/tasks/?location=Melbourne",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Has a location": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Location is Melbourne": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Location not Sydney": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/?location=Sydney&search=edwards",
+			"id": "0218a215-881d-9c23-35b4-c5d6dc34c2b8",
+			"url": "job-bilby-dev.herokuapp.com/tasks/?location=Sydney&search=edwards",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Has a location": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has a user": {
+					"pass": 1,
+					"fail": 0
+				},
+				"User is searched user": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Location is Melbourne": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Location not Sydney": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/?skills=php,python&search=hugo",
+			"id": "30e8887a-ce4c-c0df-f26a-87d5cc3270c0",
+			"url": "job-bilby-dev.herokuapp.com/tasks/?skills=php,python&search=hugo",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "{{host}}/tasks/create/",
+			"id": "595f412e-fb5c-fa00-3e54-fbbd7b4ac62e",
+			"url": "job-bilby-dev.herokuapp.com/tasks/create/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {
+				"Has skills": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task owner has first name": {
+					"pass": 0,
+					"fail": 1
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/helper/?status=AP",
+			"id": "86c075f8-a2e7-31d0-8ded-56674d0cb683",
+			"url": "job-bilby-dev.herokuapp.com/tasks/helper/?status=AP",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Has helper": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task profile ID correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task has status AP": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/poster/?status=O",
+			"id": "d603abfd-0cfd-c2dc-b824-983550e41a5b",
+			"url": "job-bilby-dev.herokuapp.com/tasks/poster/?status=O",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Task owner ID correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task has status AP": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/shortlist/",
+			"id": "41e7976f-88ab-6ffe-206f-3b0e321b291f",
+			"url": "job-bilby-dev.herokuapp.com/tasks/shortlist/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {
+				"Correct task shortlisted": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Task has status SL": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/start/",
+			"id": "56be25b9-f301-defc-7b2b-6eeeb955971b",
+			"url": "job-bilby-dev.herokuapp.com/tasks/start/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Task has status I": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/discard/",
+			"id": "f57318e7-8e0d-c1ae-8e22-d6f454091330",
+			"url": "job-bilby-dev.herokuapp.com/tasks/discard/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Task has status D or has already been discarded": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/apply/",
+			"id": "47237e3d-dae3-a680-5848-1ae49b03be68",
+			"url": "job-bilby-dev.herokuapp.com/tasks/apply/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"testPassFailCounts": {
+				"Task has status AP or isn't available": {
+					"pass": 0,
+					"fail": 1
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/complete/",
+			"id": "0ff05d60-ec67-d076-84cd-95239063e995",
+			"url": "job-bilby-dev.herokuapp.com/tasks/complete/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request",
+				"detail": {
+					"name": "Bad Request",
+					"detail": "The request cannot be fulfilled due to bad syntax."
+				}
+			},
+			"testPassFailCounts": {
+				"Task has status C or isn't available": {
+					"pass": 0,
+					"fail": 1
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/{{task_id}}/applicants/",
+			"id": "7b570363-2d0d-a626-be8a-0c406f14b0be",
+			"url": "job-bilby-dev.herokuapp.com/tasks/11/applicants/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Task has applicants": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/{{task_id}}/accept",
+			"id": "971f9faa-f1f5-5ccf-6a77-bc29596a4917",
+			"url": "job-bilby-dev.herokuapp.com/tasks/11/accept/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request",
+				"detail": {
+					"name": "Bad Request",
+					"detail": "The request cannot be fulfilled due to bad syntax."
+				}
+			},
+			"testPassFailCounts": {
+				"Helper and owner are not null": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status should be in progress": {
+					"pass": 0,
+					"fail": 1
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/{{task_id}}/rate/",
+			"id": "aefcbc58-cacc-cc55-46a1-74eb2a208b3c",
+			"url": "job-bilby-dev.herokuapp.com/tasks/11/rate/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request",
+				"detail": {
+					"name": "Bad Request",
+					"detail": "The request cannot be fulfilled due to bad syntax."
+				}
+			},
+			"testPassFailCounts": {
+				"Helper and owner are not null": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status should be in progress": {
+					"pass": 0,
+					"fail": 1
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/reject",
+			"id": "7cb47793-ac36-3d6d-c3de-10add182d32a",
+			"url": "job-bilby-dev.herokuapp.com/tasks/reject/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"testPassFailCounts": {
+				"Task has status D or has already been discarded": {
+					"pass": 0,
+					"fail": 1
+				}
+			}
+		},
+		{
+			"name": "{{host}}/tasks/shortlist_application",
+			"id": "c038ff73-5ed9-efd0-65d3-c9156e134eeb",
+			"url": "job-bilby-dev.herokuapp.com/tasks/shortlist_application/",
+			"time": "2017-09-17T05:44:15.093Z",
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"testPassFailCounts": {
+				"Task has status D or has already been discarded": {
+					"pass": 0,
+					"fail": 1
+				}
+			}
+		}
+	],
+	"synced": false
+}
