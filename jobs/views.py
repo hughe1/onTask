@@ -29,12 +29,11 @@ class ProfileDetail(generics.RetrieveAPIView):
     serializer_class = ProfileUserSerializer
 
 
+# class removed: more specific methods have been added (helpertask list, postertasklist)
 #class ProfileTaskList(generics.ListAPIView):
 #    queryset = ProfileTask.objects.all()
 #    serializer_class = ProfileTaskSerializer
 
-
-# TODO: insert nested JSON so HelperTask has the Task object info (as well as the ProfileTask)
 
 # Shows profiletasks for which the logged user is a helper
 # Filters by status (applied, shortlisted, assigned, ...) based on querystring
@@ -488,6 +487,39 @@ def view_applicants(request, task_id):
 
         # Return the list of Profiles that have applied for the task
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+# View applicants of a task, filtered by application status
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def delete_task(request, task_id):
+    if request.method == 'POST':
+
+
+        # Return 404 if doesn't doesn't exists
+        task = get_object_or_404(Task, pk=task_id)
+
+        # Get the profile of requester and profile of task owner
+        requester = request.user.profile
+        owner = Task.objects.get(pk=task_id).owner
+
+        # Check requester is the task owner
+        if not requester == owner:
+            return Response({"error":"Cannot delete task: not task owner"}, status=status.HTTP_400_BAD_REQUEST)
+
+        deleted = task.delete()
+        # Get the Profile Tasks for the task, where the status is "applied"
+        #profile_tasks = ProfileTask.objects.filter(task=task_id)
+
+        #Filter by status
+        #profiletask_status = request.query_params.get('status', None)
+        #if profiletask_status is not None:
+        #    profile_tasks = profile_tasks.filter(status=profiletask_status)
+
+        # Use applicant serializer to just serializer the profile attribute from ProfileTask
+        #serializer = ApplicantSerializer(profile_tasks, many=True)
+
+        # Return the list of Profiles that have applied for the task
+        return Response(deleted, status=status.HTTP_200_OK)
 
 
 # TODO Provide Helper object in response, not just ID

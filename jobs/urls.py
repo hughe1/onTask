@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^tasks/helper/$', views.HelperTaskList.as_view(), name='task-helper'),
     url(r'^tasks/poster/$', views.PosterTaskList.as_view(), name='task-poster'),
     url(r'^tasks/discard/$', views.discard_task, name='task-discard'),
+    url(r'^tasks/(?P<task_id>[0-9]+)/delete/$', views.delete_task, name='task-delete'),
     url(r'^tasks/(?P<task_id>[0-9]+)/applicants/$', views.view_applicants, name='task-view-applicants'),
     url(r'^tasks/(?P<task_id>[0-9]+)/accept/$', views.accept_applicant, name='task-accept-applicant'),
     url(r'^tasks/(?P<task_id>[0-9]+)/rate/$', views.rate_helper, name='rate-helper'),
