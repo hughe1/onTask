@@ -48,7 +48,6 @@ class TaskGetSerializer(serializers.ModelSerializer):
 
 class TaskPostSerializer(serializers.ModelSerializer):
 
-    photo = Base64ImageField()
 
     class Meta:
         model = Task
