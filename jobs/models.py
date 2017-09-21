@@ -129,15 +129,6 @@ class ProfileTask(BaseModel):
         return "ProfileTask: "+self.task.title +" ("+ self.profile.user.username + ")"
 
 
-class Comment(BaseModel):
-    profile = models.ForeignKey('jobs.Profile')
-    task = models.ForeignKey('jobs.Task')
-    text = models.TextField(max_length=1000)
-
-    def __str__(self):
-        return "Comment: "+self.task.title +" ("+ self.user.username + ")"
-
-
 # Ensures that a Profile instance is created each time a User is created
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
