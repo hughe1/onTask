@@ -455,11 +455,14 @@ def complete_task(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# View all applicants of a task
+
+# View applicants of a task, filtered by application status
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def view_applicants(request, task_id):
     if request.method == 'GET':
+
+        filter_backends = (DjangoFilterBackend,)
 
         # Return 404 if doesn't doesn't exists
         task = get_object_or_404(Task, pk=task_id)
@@ -473,7 +476,12 @@ def view_applicants(request, task_id):
             return Response({"error":"Cannot view applicants as not task owner"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Get the Profile Tasks for the task, where the status is "applied"
-        profile_tasks = ProfileTask.objects.filter(task=task_id, status=ProfileTask.APPLIED)
+        profile_tasks = ProfileTask.objects.filter(task=task_id)
+
+        #Filter by status
+        profiletask_status = request.query_params.get('status', None)
+        if profiletask_status is not None:
+            profile_tasks = profile_tasks.filter(status=profiletask_status)
 
         # Use applicant serializer to just serializer the profile attribute from ProfileTask
         serializer = ApplicantSerializer(profile_tasks, many=True)

@@ -100,7 +100,8 @@ class ProfileTaskPostSerializer(serializers.ModelSerializer):
 class ApplicantSerializer(serializers.ModelSerializer):
 
     profile = ProfileUserSerializer()
+    #task = TaskGetSerializer()
 
     class Meta:
         model = ProfileTask
-        fields = ['profile','answer1','answer2','answer3','quote']
+        fields = ['profile','answer1','answer2','answer3','quote','status']
