@@ -174,7 +174,13 @@ def shortlist_task(request):
         #checks to see if ProfileTask already exists
         profile = request.user.profile.id
         request.data["profile"] = profile
-        task = request.data['task']
+        task_id = request.data['task']
+        task = get_object_or_404(Task, pk=task_id)
+
+        #Makes sure owner is not shortlister
+        if profile == task.owner.id:
+            return Response({"error":"A profile cannot shortlist their own task!"}, status=status.HTTP_400_BAD_REQUEST)
+
         if (ProfileTask.objects.filter(profile=profile, task=task).count()>0):
             return Response({"error":"ProfileTask already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -243,6 +249,10 @@ def apply_task(request, task_id):
 
         profile = request.user.profile.id
         task = get_object_or_404(Task, pk=task_id)
+
+        if profile == task.owner.id:
+            return Response({"error":"A profile cannot apply to their own task!"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
         # More than 1 matching profileTasks exists (error)
