@@ -505,11 +505,15 @@ def view_applicants(request, task_id):
         if profiletask_status is not None:
             profile_tasks = profile_tasks.filter(status=profiletask_status)
 
+        #Sort by rating
+        profile_tasks = sorted(profile_tasks, key=operator.attrgetter('profile.rating'),reverse=True)
+
         # Use applicant serializer to just serializer the profile attribute from ProfileTask
         serializer = ApplicantSerializer(profile_tasks, many=True)
 
         # Return the list of Profiles that have applied for the task
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 # View applicants of a task, filtered by application status
 @api_view(['POST'])
