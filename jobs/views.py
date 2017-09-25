@@ -29,12 +29,6 @@ class ProfileDetail(generics.RetrieveAPIView):
     serializer_class = ProfileUserSerializer
 
 
-# class removed: more specific methods have been added (helpertask list, postertasklist)
-#class ProfileTaskList(generics.ListAPIView):
-#    queryset = ProfileTask.objects.all()
-#    serializer_class = ProfileTaskSerializer
-
-
 # Shows profiletasks for which the logged user is a helper
 # Filters by status (applied, shortlisted, assigned, ...) based on querystring
 @permission_classes((IsAuthenticated, ))
@@ -189,9 +183,7 @@ def shortlist_task(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -246,31 +238,52 @@ def discard_task(request):
 #need to check here that the user is the logged in user
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
-def apply_task(request):
+def apply_task(request, task_id):
     if request.method == 'POST':
 
-        #returns 404 if no such ProfileTask exists
-        profile_task = get_object_or_404(ProfileTask, pk=request.data["profiletask_id"])
-        task = profile_task.task
+        profile = request.user.profile.id
+        task = get_object_or_404(Task, pk=task_id)
 
-        # if task has already been assigned or rejected, return an error
-        if not (profile_task.status == 'SL' and task.status == 'O'):
-            return Response({"error":"Task isn't available to apply for."}, status=status.HTTP_400_BAD_REQUEST)
 
-        #set status to 'applied'
-        request.data["status"] = "AP"
+        # More than 1 matching profileTasks exists (error)
+        if (ProfileTask.objects.filter(profile=profile, task=task_id).count()>1):
+            return Response({"error":"Integrity check failed! There should only be one profileTask per profile per task."}, status=status.HTTP_400_BAD_REQUEST)
 
-        #set compulsory fields in the serializer
-        request.data["task"] = profile_task.task.id
-        request.data["profile"] = profile_task.profile.id
+        # One matching profiletask exists
+        elif (ProfileTask.objects.filter(profile=profile, task=task_id).count()>0):
 
-        serializer = ProfileTaskPostSerializer(profile_task,data=request.data)
+            profile_task = get_object_or_404(ProfileTask, profile=profile, task=task_id)
 
+            # Integrity check on status of task and profiletask
+            if not (profile_task.status == ProfileTask.SHORTLISTED and task.status == Task.OPEN):
+                return Response({"error":"Task must be open, and profile must not have already applied"}, status=status.HTTP_400_BAD_REQUEST)
+
+            #set compulsory fields in the serializer
+            request.data["status"] = ProfileTask.APPLIED
+            request.data["task"] = profile_task.task.id
+            request.data["profile"] = profile_task.profile.id
+
+            #create serializer from existing profiletask
+            serializer = ProfileTaskPostSerializer(profile_task,data=request.data)
+
+        # No matching profileTask exists, so create one
+        else:
+
+            #set compulsory fields in serializer
+            request.data["task"] = task_id
+            request.data["profile"] = profile
+            request.data["status"] = ProfileTask.APPLIED
+
+            #create new serializer
+            serializer = ProfileTaskPostSerializer(data=request.data)
+
+
+        #save serializer
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        print(serializer.errors)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
