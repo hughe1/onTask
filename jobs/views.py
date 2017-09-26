@@ -84,14 +84,25 @@ class TaskList(generics.ListAPIView):
     #set the view to be searchable and filterabe
     filter_backends = (filters.SearchFilter,DjangoFilterBackend)
 
+
     # set the fields which are accessed by searching
     search_fields = ('title','location','description','owner__user__first_name', 'owner__user__last_name')
 
-    #Optionally filtered queryset
+    # filtered queryset
     def get_queryset(self):
 
-        #set initial queryset to all task objects
-        queryset = Task.objects.all()
+        #set initial queryset to all open tasks
+        queryset = Task.objects.filter(status=Task.OPEN)
+
+        #Find all profiletasks associated with the current user
+        profile_id = self.request.user.profile.id
+        my_profiletasks = ProfileTask.objects.filter(profile=profile_id)
+
+        # filter out all tasks which have a profiletask associated with the current user
+        # i.e. shortlisted, discarded, applied, etc, tasks won't be displayed
+        for profiletask in my_profiletasks:
+            task = profiletask.task.id
+            queryset = queryset.exclude(id=task)
 
         #Filter by skills
         #skills are comma separated, ie ?skills=java,python
