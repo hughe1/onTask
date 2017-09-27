@@ -221,6 +221,7 @@ class TaskDetail(generics.RetrieveAPIView):
 @permission_classes((IsAuthenticated, ))
 def shortlist_task(request):
     """ Shortlists a task , if it is possible to do so
+        task id provided in POST data.
     """
     if request.method == 'POST':
 
@@ -261,7 +262,8 @@ def current_profile(request):
 @permission_classes((IsAuthenticated, ))
 def discard_task(request):
     """ Discard a task
-    This removes it from the visible task list available to Helpers.
+        This removes it from the visible task list available to Helpers.
+        task id provided in POST data.
     """
     if request.method == 'POST':
 
@@ -302,6 +304,7 @@ def discard_task(request):
 @permission_classes((IsAuthenticated, ))
 def apply_task(request, task_id):
     """ Apply to a task as a Helper.
+        task_id provided as an argument
     """
     if request.method == 'POST':
 
@@ -358,7 +361,9 @@ def apply_task(request, task_id):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def reject_application(request):
-    """ Reject an applicant for a task """
+    """ Reject an applicant for a task
+        profiletask_id retrieved from POST data
+    """
     if request.method == 'POST':
 
         profile_task = get_object_or_404(ProfileTask, pk=request.data["profiletask_id"])
@@ -391,7 +396,9 @@ def reject_application(request):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def shortlist_application(request):
-    """ Shortlist an application for a task that is posted by the user """
+    """ Shortlist an application for a task that is posted by the user
+        profile and task ids are retrieved from POST data.
+    """
     if request.method == 'POST':
 
         profile_task = get_object_or_404(ProfileTask, pk=request.data["profiletask_id"])
@@ -471,60 +478,58 @@ def create_task(request):
         return Response(task_serializer.data, status=status.HTTP_201_CREATED)
 
 
-# Sets the status of task to "completed"
-# Called when the Poster judges that the task is done
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def complete_task(request):
+    """ Mark a Task as Completed. To be called when the Poster judges it do be
+    finished.
+    task_id retrieved from POST data.
+    """
     if request.method == 'POST':
 
-        #returns 404 if no such task exists
         task = get_object_or_404(Task, pk=request.data["task_id"])
 
-        # if task is not currently in progress, return an error
+        # Integrity Check: Task should be in progress
         if task.status != Task.IN_PROGRESS:
             return Response({"error":"Task is not In Progress and cannot be Completed"}, status=status.HTTP_400_BAD_REQUEST)
-        #ensures correct user is starting the task
+        # Permission check: Logged in user is task owner
         if task.owner.id != request.user.id:
             return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
 
-        #makes a serializer from the existing task
+        # Fill in required serializer data, populated from the existing Task
+        # data
         old_serializer = TaskPostSerializer(task)
-
-        #creates new serializer data based on old task with a new status
         new_data = old_serializer.data
         new_data["status"] = Task.COMPLETE
 
+        # Create and save the serializer
         serializer = TaskPostSerializer(task,data=new_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-# View applicants of a task, filtered by application status
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def view_applicants(request, task_id):
+    """ View applicants of a given task
+        Filtered by application status
+        Ranked by Profile rating
+        task_id provided as an argument
+    """
     if request.method == 'GET':
 
         filter_backends = (DjangoFilterBackend,)
-
-        # Return 404 if doesn't doesn't exists
         task = get_object_or_404(Task, pk=task_id)
-
-        # Get the profile of requester and profile of task owner
         requester = request.user.profile
         owner = Task.objects.get(pk=task_id).owner
 
-        # Check requester is the task owner
+        # Permission Check: Check requester is the task owner
         if not requester == owner:
             return Response({"error":"Cannot view applicants as not task owner"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Get the Profile Tasks for the task, where the status is "applied"
+        # Get the ProfileTasks for the task
         profile_tasks = ProfileTask.objects.filter(task=task_id)
 
         #Filter by status
@@ -532,13 +537,11 @@ def view_applicants(request, task_id):
         if profiletask_status is not None:
             profile_tasks = profile_tasks.filter(status=profiletask_status)
 
-        #Sort by rating
+        #Sort by Profile rating
         profile_tasks = sorted(profile_tasks, key=operator.attrgetter('profile.rating'),reverse=True)
 
-        # Use applicant serializer to just serializer the profile attribute from ProfileTask
+        # Return serialized list of applicants
         serializer = ApplicantSerializer(profile_tasks, many=True)
-
-        # Return the list of Profiles that have applied for the task
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -546,83 +549,65 @@ def view_applicants(request, task_id):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def delete_task(request, task_id):
+    """ Delete a task
+        task_id provided as an argument
+    """
     if request.method == 'POST':
 
-
-        # Return 404 if doesn't doesn't exists
         task = get_object_or_404(Task, pk=task_id)
-
-        # Get the profile of requester and profile of task owner
         requester = request.user.profile
         owner = Task.objects.get(pk=task_id).owner
 
-        # Check requester is the task owner
+        # Permission Check: Check requester is the task owner
         if not requester == owner:
             return Response({"error":"Cannot delete task: not task owner"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Delete the task
         deleted = task.delete()
-        # Get the Profile Tasks for the task, where the status is "applied"
-        #profile_tasks = ProfileTask.objects.filter(task=task_id)
-
-        #Filter by status
-        #profiletask_status = request.query_params.get('status', None)
-        #if profiletask_status is not None:
-        #    profile_tasks = profile_tasks.filter(status=profiletask_status)
-
-        # Use applicant serializer to just serializer the profile attribute from ProfileTask
-        #serializer = ApplicantSerializer(profile_tasks, many=True)
-
-        # Return the list of Profiles that have applied for the task
         return Response(deleted, status=status.HTTP_200_OK)
 
-
-# TODO Provide Helper object in response, not just ID
-# Accept an applicant and start the task
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def accept_applicant(request, task_id):
+    """ Accepts an applicant for a task. Sets task to 'in progress'
+        Task_id provided as an argument
+        Applicant id provided in POST data as "profile"
+    """
 
     task = get_object_or_404(Task, pk=task_id)
     applicant = get_object_or_404(Profile, pk=request.data["profile"])
 
-    #ensures correct user is accepting applicant
+    #Permission Check: Ensures correct user is accepting applicant
     if task.owner.id != request.user.id:
         return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
 
-    #Check the task is Open and does not have a helper
+    # Integrity check: Check the task is Open and does not have a helper
     if (task.status != Task.OPEN or task.helper != None):
         return Response({"error":"Task must be open, and have no helper assigned"}, status=status.HTTP_400_BAD_REQUEST)
 
-    #Check that the helper has submitted an application for the task
+    # Integrity Check: Check that the helper has submitted an application
+    # for the task
     if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
         (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.APPLIED)) :
         return Response({"error":"Profile must have applied for task to be accepted"}, status=status.HTTP_400_BAD_REQUEST)
 
-
-    #makes a serializer from the existing task
+    # Set required fields for serializer, populating fro existing task
     old_serializer = TaskPostSerializer(task)
-
     new_data = old_serializer.data
-    # change task status
     new_data["status"] = Task.IN_PROGRESS
-
     profile_serializer = ProfileSerializer(applicant)
-
     new_data["helper"] = applicant.pk
 
-
-    #creates new serializer data based on old task with a new status
+    #Create and save new serializer 
     serializer = TaskPostSerializer(task, data=new_data)
-
     if serializer.is_valid():
         serializer.save()
 
-        #update the status of the profiletask
+        # Update the status of the associated profiletask
         profileTask = ProfileTask.objects.filter(profile=applicant, task=task)[0]
         profileTask.status = ProfileTask.ASSIGNED
         profileTask.save()
-
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -630,46 +615,46 @@ def accept_applicant(request, task_id):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def rate_helper(request, task_id):
+    """ Rates a helper after a task has been completed
+        Task_id provided as an argument
+        Rating provided by POST data
+    """
 
     task = get_object_or_404(Task, pk=task_id)
-
     applicant = get_object_or_404(Profile, pk=request.data["profile"])
     rating = int(request.data["rating"])
 
-    if not (rating >= 0 and rating <=5):
-        return Response ({"error": "Rating must be between 0 and 5"})
-
+    #Integrity check: Rating must be an integer
     if not isinstance(rating, int):
         return Response ({"error": "Rating must be and integer value"})
 
-    #ensures correct user is accepting applicant
+    #Integrity check: Rating must be between 0 and 5
+    if not (rating >= 0 and rating <=5):
+        return Response ({"error": "Rating must be between 0 and 5"})
+
+    #Permission check: Rater is task owner
     if task.owner.id != request.user.id:
         return Response({"error":"Current User does not own this task"}, status=status.HTTP_400_BAD_REQUEST)
 
-    #Check the task is Open and does not have a helper
+    # Integrity check: Check the task is complete
     if task.status != Task.COMPLETE:
         return Response({"error":"Task must be complete to rate user"}, status=status.HTTP_400_BAD_REQUEST)
 
-    #Check that the helper has submitted an application for the task
+    # Integrity check: Check that the helper is assigned to the task
     if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
         (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.ASSIGNED)):
         print(ProfileTask.objects.filter(profile=applicant, task=task)[0].status)
         return Response({"error":"Profile must be assigned to task to be rated"}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Fill in compulsory fields for serializer
     profile_task = ProfileTask.objects.filter(profile=applicant, task=task)[0]
-
-    #makes a serializer from the existing task
     old_serializer = ProfileTaskPostSerializer(profile_task)
-
     new_data = old_serializer.data
-    # change task status
     new_data["rating"] = rating
 
-    #creates new serializer data based on old task with a new status
+    # Create and save new serializer
     serializer = ProfileTaskPostSerializer(profile_task, data=new_data)
-
     if serializer.is_valid():
         serializer.save()
-
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
