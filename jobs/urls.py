@@ -33,7 +33,6 @@ urlpatterns = [
     url(r'^tasks/(?P<pk>[0-9]+)/$', views.TaskDetail.as_view(), name='task-detail'),
     url(r'^tasks/create/$', views.create_task, name='task-create'),
     url(r'^tasks/(?P<task_id>[0-9]+)/apply/$', views.apply_task, name='task-apply'),
-    url(r'^tasks/start/$', views.start_task, name='task-start'),
     url(r'^tasks/shortlist/$', views.shortlist_task, name='task-shortlist'),
     url(r'^tasks/helper/$', views.HelperTaskList.as_view(), name='task-helper'),
     url(r'^tasks/poster/$', views.PosterTaskList.as_view(), name='task-poster'),
