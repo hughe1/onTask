@@ -120,7 +120,7 @@ class Skill(BaseModel):
         Skills are created by site administrators.
         They may be selected as required for Tasks by the Poster
         They may also be listed as proficiencies on Profiles.
-     """
+    """
     title = models.CharField(max_length=128)
     image = models.ImageField(blank=True)
     code = models.CharField(max_length=20)
@@ -143,14 +143,20 @@ class ProfileSkill(BaseModel):
 
 
 class ProfileTask(BaseModel):
+    """ Associative Entity between Profiles and Tasks
+        Records the status of the interaction, including shortlisting,
+        application details, rating, etc.
+    """
     task = models.ForeignKey('jobs.Task')
     profile = models.ForeignKey('jobs.Profile')
-    SHORTLISTED = 'SL'
-    APPLIED = 'AP'
-    ASSIGNED = 'AS'
-    DISCARDED = 'D'
-    REJECTED = 'R'
-    APPLICATION_SHORTLISTED = 'ASL'
+
+    # Enumeration of status options for a profiletask
+    SHORTLISTED = 'SL'                  # Shortlisted by Helper
+    APPLIED = 'AP'                      # Applied by Helper
+    ASSIGNED = 'AS'                     # Assigned to Helper by Poster
+    DISCARDED = 'D'                     # Discarded by Helper
+    REJECTED = 'R'                      # Application rejected by Poster
+    APPLICATION_SHORTLISTED = 'ASL'     # Application shortliste dby Poster
     STATUS_CHOICES = (
         (SHORTLISTED, 'Shortlisted'),
         (ASSIGNED, 'Assigned'),
@@ -165,28 +171,31 @@ class ProfileTask(BaseModel):
         choices=STATUS_CHOICES,
         default=SHORTLISTED
     )
+
+    # Answers corresponding to the questions required by the Task Application
     answer1 = models.CharField(max_length=300,blank=True)
     answer2 = models.CharField(max_length=300,blank=True)
     answer3 = models.CharField(max_length=300,blank=True)
-    quote = models.IntegerField(blank=True,null=True)
-    rating = models.IntegerField(blank=True, null=True)
 
+    # Monetary quote provided by the Helper 
+    # (optional, can be different to original odder)
+    quote = models.IntegerField(blank=True,null=True)
+
+    # Rating given by the Poster to the Helper for this Task.
+    rating = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return "ProfileTask: "+self.task.title +" ("+ self.profile.user.username + ")"
 
 
-# Ensures that a Profile instance is created each time a User is created
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
+    """Ensures a Profile instance is created each time a User is created """
     if created:
         Profile.objects.create(user=instance)
 
-# Ensures that the Profile is saved when a User is saved
+
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
+    """ Ensures that the Profile is saved when a User is saved"""
     instance.profile.save()
-
-# TODO work out how we handle notifications
-class Notification(BaseModel):
-    pass

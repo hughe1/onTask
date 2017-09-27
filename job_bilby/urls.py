@@ -27,6 +27,7 @@ from django.conf import settings
 from rest_framework.authtoken import views
 
 urlpatterns = [
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', views.obtain_auth_token),
     url(r'^', include('jobs.urls')),
