@@ -12,7 +12,7 @@ Client: Paul Ashkar (Capgemini)                 paul.ashkar@capgemini.com
 Supervisor: Rachel Burrows                      rachel.burrows@unimelb.edu.au
 Team:
 Annie Zhou:                                     azhou@student.unimelb.edu.au
-David Barrel:                                   dbarrell@student.unimelb.edu.au
+David Barrell:                                   dbarrell@student.unimelb.edu.au
 Grace Johnson:                                  gjohnson1@student.unimelb.edu.au
 Hugh Edwards:                                   hughe@student.unimelb.edu.au
 Matt Perrot:                                    mperrott@student.unimelb.edu.au 

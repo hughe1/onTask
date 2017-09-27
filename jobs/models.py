@@ -1,3 +1,22 @@
+"""job_bilby Definition of database models in the Jobs application
+
+This file belongs to the back end source code for team 'job-bilby' for the
+University of Melbourne subject SWEN90014 Masters Software Engineering Project.
+The project is a mobile-first web application for sharing tasks.
+The back-end is based on the REST Framework for Django.
+
+Client: Paul Ashkar (Capgemini)                 paul.ashkar@capgemini.com
+Supervisor: Rachel Burrows                      rachel.burrows@unimelb.edu.au
+Team:
+Annie Zhou:                                     azhou@student.unimelb.edu.au
+David Barrel:                                   dbarrell@student.unimelb.edu.au
+Grace Johnson:                                  gjohnson1@student.unimelb.edu.au
+Hugh Edwards:                                   hughe@student.unimelb.edu.au
+Matt Perrot:                                    mperrott@student.unimelb.edu.au 
+View our 'Project Overview' document on Confluence for more information about the project.
+Date project started: 6/8/2017
+Date project completed: 15/10/2017
+"""
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
@@ -6,20 +25,28 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 class BaseModel(models.Model):
+    """ The base model provides basic attributes that all models inherit """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     enabled = models.BooleanField(default=True, verbose_name='active')
 
     class Meta:
+        """ Provides a default ordering for the BaseModel """
         abstract = True
         ordering = ['-created_at']
 
     @property
     def time_since_create(self):
+        """Return time since the model was created  """
         return timesince(self.created_at).split(',')[0]
 
 
 class Profile(BaseModel):
+    """ Model for a Profile
+        Each Profile is related to one and only one User.
+        Profile essentially adds extra functionality on top of the User model
+        provided by Django.
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
@@ -37,9 +64,10 @@ class Profile(BaseModel):
     def get_rating():
         pass
 
-
-# TODO - default photo
 class Task(BaseModel):
+    """ Model for a Task """
+
+    # Enumeration of possible statuses
     OPEN = 'O'
     IN_PROGRESS = 'I'
     COMPLETE = 'C'
@@ -48,29 +76,39 @@ class Task(BaseModel):
         (IN_PROGRESS, 'In Progress'),
         (COMPLETE, 'Complete')
     )
-    title = models.CharField(max_length=128)
-    description = models.TextField(max_length=2000)
-    points = models.IntegerField()
-    location = models.CharField(max_length=128)
-    is_remote = models.BooleanField(default=False)
-    owner = models.ForeignKey('jobs.Profile',related_name="poster")
-    helper = models.ForeignKey('jobs.Profile',related_name="helper",blank=True,null=True)
-    # TODO question1, question2 etc - might be better with a many-to-many field
-    # instead of hard-code attributes
-    question1 = models.CharField(max_length=300,blank=True)
-    question2 = models.CharField(max_length=300,blank=True)
-    question3 = models.CharField(max_length=300,blank=True)
     status = models.CharField(
         max_length=2,
         choices = STATUS_CHOICES,
         default=OPEN
     )
+
+    title = models.CharField(max_length=128)
+    description = models.TextField(max_length=2000)
+    points = models.IntegerField()
+    location = models.CharField(max_length=128)
+
+    # Specification of whether the task can be completed from a remote location
+    is_remote = models.BooleanField(default=False)
+
+    # Profile that posted the Task (Poster)
+    owner = models.ForeignKey('jobs.Profile',related_name="poster")
+
+    # Profile that has been accepted for the Task (Helper).
+    # Null if no Profile has been accepted for the Task.
+    helper = models.ForeignKey('jobs.Profile',related_name="helper",blank=True,null=True)
+
+    # Three questions, to be answered by applicants for the Task
+    # Questions are set by the Poster.
+    question1 = models.CharField(max_length=300,blank=True)
+    question2 = models.CharField(max_length=300,blank=True)
+    question3 = models.CharField(max_length=300,blank=True)
+    
     skills = models.ManyToManyField('jobs.Skill')
 
-    # display_rank is a blank field which is only filled in (and note saved) when serialized
-    # task is returned. Basically allows a temporary rank value to be inserted, without concurrency
-    # issues (the rank is never read from the database; only filled in in memory when it is being
-    # returned )
+    # display_rank is a blank field which is used as a placeholder
+    # for a temporary value used in serializing.
+    # Allows a temporary rank value to be used, without concurrency
+    # issues (the rank is never written or read from the database)
     display_rank = models.IntegerField(blank=True,null=True)
 
     def __str__(self):
@@ -78,6 +116,11 @@ class Task(BaseModel):
 
 
 class Skill(BaseModel):
+    """ Model for a Skill
+        Skills are created by site administrators.
+        They may be selected as required for Tasks by the Poster
+        They may also be listed as proficiencies on Profiles.
+     """
     title = models.CharField(max_length=128)
     image = models.ImageField(blank=True)
     code = models.CharField(max_length=20)
@@ -87,10 +130,13 @@ class Skill(BaseModel):
 
 
 class ProfileSkill(BaseModel):
+    """ Associative Entity between Profiles and Skills
+        Manually created (instead of using Django default many-to-many
+        So that profiles could have ratings for each skill, potentially
+        in future builds.
+    """
     skill = models.ForeignKey('jobs.Skill')
     profile = models.ForeignKey('jobs.Profile')
-    # TODO - Potentially implement rating for Sprint 3
-    rating = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return "ProfileSkill: "+self.skill.title +" ("+ self.profile.user.username + ")"

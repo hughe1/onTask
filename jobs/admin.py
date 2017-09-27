@@ -11,7 +11,7 @@ Client: Paul Ashkar (Capgemini)                 paul.ashkar@capgemini.com
 Supervisor: Rachel Burrows                      rachel.burrows@unimelb.edu.au
 Team:
 Annie Zhou:                                     azhou@student.unimelb.edu.au
-David Barrel:                                   dbarrell@student.unimelb.edu.au
+David Barrell:                                   dbarrell@student.unimelb.edu.au
 Grace Johnson:                                  gjohnson1@student.unimelb.edu.au
 Hugh Edwards:                                   hughe@student.unimelb.edu.au
 Matt Perrot:                                    mperrott@student.unimelb.edu.au 
@@ -25,15 +25,15 @@ from jobs.models import *
 
 class TaskAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for Tasks """
-    list_display = ('title', 'pk')
+	list_display = ('title', 'pk')
     
 class ProfileTaskAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for ProfileTasks """
-    list_display = ('__str__','pk',)
+	list_display = ('__str__','pk',)
     
 class ProfileAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for Profiles """
-    list_display = ('user', 'pk')
+	list_display = ('user', 'pk')
 
 # Register models with the admin suite.
 admin.site.register(Task, TaskAdmin)
