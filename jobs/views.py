@@ -136,30 +136,6 @@ class TaskList(generics.ListAPIView):
             task = profiletask.task.id
             queryset = queryset.exclude(id=task)
 
-        # Filter by skills
-        # Skills are comma separated, ie ?skills=java,python
-        skills = self.request.query_params.get('skills', None)
-        if skills is not None:
-            skills = skills.split(',')
-            skill_querysets = []
-
-            #construct individual querysets for each skill
-            for skill_str in skills:
-                skill = get_object_or_404(Skill, title=skill_str)
-                skill_querysets.append(skill.task_set.all())
-
-            #find the intersection of all querysets
-            for skill_queryset in skill_querysets:
-                queryset = queryset & skill_queryset
-
-        # Filter by location
-        # __icontains makes query case insensitive and behave as 'contains'
-        # rather than 'equals'
-        # for example, ?location=syd will match 'Sydney'
-        location = self.request.query_params.get('location', None)
-        if location is not None:
-            queryset = queryset.filter(location__icontains=location)
-
         #sort the queryset (only if user logged in)
         if self.request.user.is_authenticated():
             for item in queryset:
