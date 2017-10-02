@@ -146,8 +146,8 @@ class TaskList(generics.ListAPIView):
             # Firstly sort by most recent, then relevance
             # This means ties in display_rank are resolved by which is
             # more recent
-            queryset = sorted(queryset, key=operator.attrgetter('updated_at'),reverse=True)
-            queryset = sorted(queryset, key=operator.attrgetter('display_rank'),reverse=True)
+            #queryset = sorted(queryset, key=operator.attrgetter('updated_at'),reverse=True)
+            #queryset = sorted(queryset, key=operator.attrgetter('display_rank'),reverse=True)
 
         return queryset
 
