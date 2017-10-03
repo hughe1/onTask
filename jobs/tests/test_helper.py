@@ -51,7 +51,6 @@ def create_skill(title):
 
     skill = Skill.objects.create(
         title=title,
-        description="{} description.".format(title),
         code=code
     )
     return skill
