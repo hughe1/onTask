@@ -62,11 +62,19 @@ class Profile(BaseModel):
     def get_offer():
         pass
 
-    def get_rating():
-        pass
+    def update_rating(self):
+        profile_tasks = ProfileTask.objects.filter(profile=self)
+        pt_list = []
+        for profile_task in profile_tasks:
+            if profile_task.rating:
+                pt_list.append(profile_task.rating)
+        average_rating = sum(pt_list) / float(len(pt_list))
+        self.rating = average_rating
+        self.save()
     
     def shortlist(self):
         self.shortlists = self.shortlists + 1
+        self.save()
         
 
 class Task(BaseModel):
