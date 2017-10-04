@@ -178,7 +178,7 @@ def set_rank(task, request):
         else:
             rank -=1
 
-    # Add 3 points if same location as user
+    # Add 3 offer if same location as user
     if task.location.lower() == request.user.profile.location.lower():
         rank += 3
 

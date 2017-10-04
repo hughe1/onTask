@@ -97,7 +97,7 @@ class TaskHelperSerializer(serializers.ModelSerializer):
 
         instance.title = validated_data.get('title', instance.title)
         instance.description = validated_data.get('description', instance.description)
-        instance.points = validated_data.get('points', instance.points)
+        instance.offer = validated_data.get('offer', instance.offer)
         instance.location = validated_data.get('location', instance.location)
         instance.is_remote = validated_data.get('is_remote', instance.is_remote)
         instance.owner = validated_data.get('owner', instance.owner)

@@ -59,7 +59,7 @@ class Profile(BaseModel):
     def __str__(self):
         return self.user.username
 
-    def get_points():
+    def get_offer():
         pass
 
     def get_rating():
@@ -89,7 +89,7 @@ class Task(BaseModel):
 
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2000)
-    points = models.IntegerField()
+    offer = models.IntegerField()
     location = models.CharField(max_length=128)
 
     # Specification of whether the task can be completed from a remote location

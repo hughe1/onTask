@@ -67,7 +67,7 @@ class TestTaskCreate(APITestCase):
         data = {
                   'title' : 'Task 1',
                   'description' : 'Desc 1',
-                  'points' : 50,
+                  'offer' : 50,
                   'location' : 'Loc 1',
                   'is_remote' : True,
                   'skills': [self.skill1.code, self.skill2.code]
@@ -79,7 +79,7 @@ class TestTaskCreate(APITestCase):
         # Check task details are correct
         self.assertEqual(task.title, 'Task 1')
         self.assertEqual(task.description, 'Desc 1')
-        self.assertEqual(task.points, 50)
+        self.assertEqual(task.offer, 50)
         self.assertEqual(task.location, 'Loc 1')
         self.assertEqual(task.is_remote, True)
         self.assertEqual(task.skills.count(), 2)

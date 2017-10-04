@@ -36,7 +36,7 @@ def create_task(owner_prof, task_num):
     task = Task.objects.create(
         title="Task {}".format(task_num),
         description="Desc {}".format(task_num),
-        points=0,
+        offer=0,
         location="Loc {}".format(task_num),
         owner=owner_prof
     )
