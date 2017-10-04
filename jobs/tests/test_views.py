@@ -108,7 +108,11 @@ class TestTaskCreate(APITestCase):
                 }
         response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Task.objects.count(), 1)
+        self.assertEqual(response.data["title"], "Task 1")
+        self.assertEqual(response.data["description"], "Desc 1")
+        self.assertEqual(response.data["points"], 50)
+        self.assertEqual(response.data["location"], "Loc 1")
+        self.assertEqual(len(response.data["skills"]), 2)
         
 class TestShortlist(APITestCase):
     
