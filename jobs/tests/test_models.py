@@ -257,3 +257,43 @@ class TestApplyTask(APITestCase):
         # Check profile task status is APPLIED
         self.assertEqual(profile_task.status, 'AP')
         
+class TestShortlistApplication(APITestCase):
+    
+    def setUp(self):
+        self.profile1 = create_profile(1)
+        self.profile2 = create_profile(2)
+        self.task = create_task(self.profile2, 1)
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.profile1,
+            task=self.task
+        )
+        self.profile_task.status = ProfileTask.APPLIED
+        self.profile_task.save()
+        self.task.status = Task.OPEN
+        self.task.save()
+    
+    def test_applicant_shortlist(self):
+        token = api_login(self.profile2.user)
+        url = reverse('task-shortlist_application')
+        data = {'profiletask_id': self.profile_task.id}
+        # Shortlist the application
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        # Get the profile task with updated status
+        profile_task = ProfileTask.objects.get(task=self.task, profile=self.profile1)
+        # Status of profile task should now be ASL
+        self.assertEqual(profile_task.status, ProfileTask.APPLICATION_SHORTLISTED)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        

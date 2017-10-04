@@ -65,7 +65,7 @@ class Profile(BaseModel):
     def get_rating():
         pass
     
-    def shortlist():
+    def shortlist(self):
         self.shortlists = self.shortlists + 1
         
 

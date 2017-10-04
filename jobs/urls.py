@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^tasks/shortlist_application/$', views.shortlist_application, name='task-shortlist_application'),
     url(r'^tasks/complete/$', views.complete_task, name='task-complete'),
     url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view(), name='profiletask-detail'),
+    url(r'^profiles/(?P<pk>[0-9]+)/$', views.ProfileDetail.as_view(), name='profile-detail'),
 ]
 
 # Format URLs to be consistent with the REST Framework standard
