@@ -378,6 +378,7 @@ def shortlist_application(request):
     if request.method == 'POST':
 
         profile_task = get_object_or_404(ProfileTask, pk=request.data["profiletask_id"])
+        profile = profile_task.profile
         task = profile_task.task
 
         # Permission check: Task owner is logged in user
@@ -387,6 +388,9 @@ def shortlist_application(request):
         # Integrity Check: ProfileTask must be applied and task must be open
         if not (profile_task.status == ProfileTask.APPLIED and task.status == 'O'):
             return Response({"error":"profileTask status must be Applied, and task status must be Open"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Increment number of shortlists on profile
+        profile.shortlist()
 
         # Set compulsory fields for the serializer
         request.data["status"] = ProfileTask.APPLICATION_SHORTLISTED
