@@ -54,15 +54,13 @@ class Profile(BaseModel):
     rating = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     shortlists = models.IntegerField(default=0)
 
-
-
     def __str__(self):
         return self.user.username
 
-    def get_offer():
-        pass
-
     def update_rating(self):
+        """ Gets all the ratings for a Profile from their ProfileTasks,
+            averages them and updates the rating attribute on Profile.
+        """
         profile_tasks = ProfileTask.objects.filter(profile=self)
         pt_list = []
         for profile_task in profile_tasks:
@@ -73,6 +71,8 @@ class Profile(BaseModel):
         self.save()
     
     def shortlist(self):
+        """ Increments the number of times a Profile has been shortlisted.
+        """
         self.shortlists = self.shortlists + 1
         self.save()
         

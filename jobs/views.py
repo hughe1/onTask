@@ -636,6 +636,7 @@ def rate_helper(request, task_id):
     serializer = ProfileTaskPostSerializer(profile_task, data=new_data)
     if serializer.is_valid():
         serializer.save()
+        # Update the applicants average rating
         applicant.update_rating()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
