@@ -284,19 +284,4 @@ class TestShortlistApplication(APITestCase):
         profile = Profile.objects.get(pk=self.profile1.id)
         # Status of profile task should now be ASL
         self.assertEqual(profile_task.status, ProfileTask.APPLICATION_SHORTLISTED)
-        self.assertEqual(profile.shortlists, 1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+        self.assertEqual(profile.shortlists, 1)    
