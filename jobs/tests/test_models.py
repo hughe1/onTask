@@ -280,8 +280,11 @@ class TestShortlistApplication(APITestCase):
         response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         # Get the profile task with updated status
         profile_task = ProfileTask.objects.get(task=self.task, profile=self.profile1)
+        # Get the profile of the profile task owner
+        profile = Profile.objects.get(pk=self.profile1.id)
         # Status of profile task should now be ASL
         self.assertEqual(profile_task.status, ProfileTask.APPLICATION_SHORTLISTED)
+        self.assertEqual(profile.shortlists, 1)
 
 
 
