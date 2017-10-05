@@ -64,7 +64,7 @@ class Profile(BaseModel):
         profile_tasks = ProfileTask.objects.filter(profile=self)
         pt_list = []
         for profile_task in profile_tasks:
-            if profile_task.rating:
+            if profile_task.rating is not None:
                 pt_list.append(profile_task.rating)
         average_rating = sum(pt_list) / float(len(pt_list))
         self.rating = average_rating
