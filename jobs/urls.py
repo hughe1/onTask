@@ -22,6 +22,7 @@ from django.conf.urls import include
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import authtoken
 from jobs import views
+from jobs.tests import test_helper
 
 urlpatterns = [
 
@@ -44,7 +45,12 @@ urlpatterns = [
     url(r'^tasks/reject/$', views.reject_application, name='task-reject_application'),
     url(r'^tasks/shortlist_application/$', views.shortlist_application, name='task-shortlist_application'),
     url(r'^tasks/complete/$', views.complete_task, name='task-complete'),
-    url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view(), name='profiletask-detail')
+    url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view(), name='profiletask-detail'),
+    
+    # Just for testing purposes
+    url(r'^profile/delete/$', test_helper.delete_user_profile, name='profile-delete'),
+    url(r'^profile_task/delete/$', test_helper.delete_profile_task, name='profile_task-delete'),
+    url(r'^tasks/unapply/$', test_helper.unapply, name='unapply'),
 ]
 
 # Format URLs to be consistent with the REST Framework standard
