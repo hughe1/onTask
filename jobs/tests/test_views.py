@@ -57,7 +57,7 @@ class TaskListTests(APITestCase):
         self.task1 = Task.objects.create(
             title="Test Task 1",
             description="Description 1",
-            points=0,
+            offer=0,
             location="Location 1",
             owner=self.profile1
         )
@@ -65,7 +65,7 @@ class TaskListTests(APITestCase):
         self.task2 = Task.objects.create(
             title="Test Task 2",
             description="Description 2",
-            points=20,
+            offer=20,
             location="Location 2",
             owner=self.profile2,
             helper=self.profile1
@@ -101,7 +101,7 @@ class TestTaskCreate(APITestCase):
         data = {
                   'title' : 'Task 1',
                   'description' : 'Desc 1',
-                  'points' : 50,
+                  'offer' : 50,
                   'location' : 'Loc 1',
                   'is_remote' : True,
                   'skills': [self.skill1.code, self.skill2.code]
@@ -110,7 +110,7 @@ class TestTaskCreate(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["title"], "Task 1")
         self.assertEqual(response.data["description"], "Desc 1")
-        self.assertEqual(response.data["points"], 50)
+        self.assertEqual(response.data["offer"], 50)
         self.assertEqual(response.data["location"], "Loc 1")
         self.assertEqual(len(response.data["skills"]), 2)
         

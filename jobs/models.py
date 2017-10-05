@@ -54,19 +54,27 @@ class Profile(BaseModel):
     rating = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     shortlists = models.IntegerField(default=0)
 
-
-
     def __str__(self):
         return self.user.username
 
-    def get_points():
-        pass
-
-    def get_rating():
-        pass
+    def update_rating(self):
+        """ Gets all the ratings for a Profile from their ProfileTasks,
+            averages them and updates the rating attribute on Profile.
+        """
+        profile_tasks = ProfileTask.objects.filter(profile=self)
+        pt_list = []
+        for profile_task in profile_tasks:
+            if profile_task.rating is not None:
+                pt_list.append(profile_task.rating)
+        average_rating = sum(pt_list) / float(len(pt_list))
+        self.rating = average_rating
+        self.save()
     
     def shortlist(self):
+        """ Increments the number of times a Profile has been shortlisted.
+        """
         self.shortlists = self.shortlists + 1
+        self.save()
         
 
 class Task(BaseModel):
@@ -89,7 +97,7 @@ class Task(BaseModel):
 
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2000)
-    points = models.IntegerField()
+    offer = models.IntegerField()
     location = models.CharField(max_length=128)
 
     # Specification of whether the task can be completed from a remote location

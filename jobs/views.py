@@ -178,7 +178,7 @@ def set_rank(task, request):
         else:
             rank -=1
 
-    # Add 3 points if same location as user
+    # Add 3 offer if same location as user
     if task.location.lower() == request.user.profile.location.lower():
         rank += 3
 
@@ -624,9 +624,8 @@ def rate_helper(request, task_id):
     # Integrity check: Check that the helper is assigned to the task
     if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
         (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.ASSIGNED)):
-        print(ProfileTask.objects.filter(profile=applicant, task=task)[0].status)
         return Response({"error":"Profile must be assigned to task to be rated"}, status=status.HTTP_400_BAD_REQUEST)
-
+    
     # Fill in compulsory fields for serializer
     profile_task = ProfileTask.objects.filter(profile=applicant, task=task)[0]
     old_serializer = ProfileTaskPostSerializer(profile_task)
@@ -637,5 +636,7 @@ def rate_helper(request, task_id):
     serializer = ProfileTaskPostSerializer(profile_task, data=new_data)
     if serializer.is_valid():
         serializer.save()
+        # Update the applicants average rating
+        applicant.update_rating()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

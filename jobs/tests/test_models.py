@@ -67,7 +67,7 @@ class TestTaskCreate(APITestCase):
         data = {
                   'title' : 'Task 1',
                   'description' : 'Desc 1',
-                  'points' : 50,
+                  'offer' : 50,
                   'location' : 'Loc 1',
                   'is_remote' : True,
                   'skills': [self.skill1.code, self.skill2.code]
@@ -79,7 +79,7 @@ class TestTaskCreate(APITestCase):
         # Check task details are correct
         self.assertEqual(task.title, 'Task 1')
         self.assertEqual(task.description, 'Desc 1')
-        self.assertEqual(task.points, 50)
+        self.assertEqual(task.offer, 50)
         self.assertEqual(task.location, 'Loc 1')
         self.assertEqual(task.is_remote, True)
         self.assertEqual(task.skills.count(), 2)
@@ -284,4 +284,53 @@ class TestShortlistApplication(APITestCase):
         profile = Profile.objects.get(pk=self.profile1.id)
         # Status of profile task should now be ASL
         self.assertEqual(profile_task.status, ProfileTask.APPLICATION_SHORTLISTED)
-        self.assertEqual(profile.shortlists, 1)    
+        self.assertEqual(profile.shortlists, 1)
+        
+class TestRating(APITestCase):
+    
+    def setUp(self):
+        self.poster1 = create_profile(1)
+        self.poster2 = create_profile(2)
+        self.helper = create_profile(3)
+        self.task1 = create_task(self.poster1, 1)
+        self.task2 = create_task(self.poster2, 2)
+        self.profile_task1 = ProfileTask.objects.create(
+            profile=self.helper,
+            task=self.task1
+        )
+        self.profile_task2 = ProfileTask.objects.create(
+            profile=self.helper,
+            task=self.task2
+        )
+        self.task1.status = Task.COMPLETE
+        self.task2.status = Task.COMPLETE
+        self.profile_task1.status = ProfileTask.ASSIGNED
+        self.profile_task2.status = ProfileTask.ASSIGNED
+        self.task1.helper = self.helper
+        self.task1.helper = self.helper
+        self.task1.save()
+        self.task2.save()
+        self.profile_task1.save()
+        self.profile_task2.save()
+        
+    def test_rating(self):
+        token1 = api_login(self.poster1.user)
+        token2 = api_login(self.poster2.user)
+        url1 = reverse('rate-helper', kwargs={'task_id': self.task1.id})
+        url2 = reverse('rate-helper', kwargs={'task_id': self.task2.id})
+        # Poster 1 rates the Helper a 5
+        data1 = {'profile': self.helper.id, 'rating': 5}
+        # Poster 2 rates the Helper a 3
+        data2 = {'profile': self.helper.id, 'rating': 3}
+        response1 = self.client.post(url1, data1, format="json", HTTP_AUTHORIZATION='Token {}'.format(token1))
+        response2 = self.client.post(url2, data2, format="json", HTTP_AUTHORIZATION='Token {}'.format(token2))
+        helper = Profile.objects.get(pk=self.helper.id)
+        # Average rating of helper should be a 4
+        self.assertEqual(helper.rating, 4.00)
+        
+        
+    
+    
+    
+    
+    
