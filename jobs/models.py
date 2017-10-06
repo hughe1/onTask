@@ -53,6 +53,7 @@ class Profile(BaseModel):
     photo = models.ImageField(upload_to='%Y/%m/%d/', blank=True, null=True)
     rating = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     shortlists = models.IntegerField(default=0)
+    tasks_completed = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username
@@ -74,6 +75,13 @@ class Profile(BaseModel):
         """ Increments the number of times a Profile has been shortlisted.
         """
         self.shortlists = self.shortlists + 1
+        self.save()
+    
+    def complete_task(self):
+        """ Updates the number of tasks that have been completed.
+        """
+        complete_tasks = Task.objects.filter(helper=self, status=Task.COMPLETE)
+        self.tasks_completed = len(complete_tasks)
         self.save()
         
 

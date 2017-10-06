@@ -469,6 +469,7 @@ def complete_task(request):
     if request.method == 'POST':
 
         task = get_object_or_404(Task, pk=request.data["task_id"])
+        helper = task.helper
 
         # Integrity Check: Task should be in progress
         if task.status != Task.IN_PROGRESS:
@@ -487,6 +488,8 @@ def complete_task(request):
         serializer = TaskPostSerializer(task,data=new_data)
         if serializer.is_valid():
             serializer.save()
+            # Update the number of tasks completed by helper
+            helper.complete_task()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

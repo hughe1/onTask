@@ -322,15 +322,41 @@ class TestRating(APITestCase):
         data1 = {'profile': self.helper.id, 'rating': 5}
         # Poster 2 rates the Helper a 3
         data2 = {'profile': self.helper.id, 'rating': 3}
-        response1 = self.client.post(url1, data1, format="json", HTTP_AUTHORIZATION='Token {}'.format(token1))
-        response2 = self.client.post(url2, data2, format="json", HTTP_AUTHORIZATION='Token {}'.format(token2))
+        self.client.post(url1, data1, format="json", HTTP_AUTHORIZATION='Token {}'.format(token1))
+        self.client.post(url2, data2, format="json", HTTP_AUTHORIZATION='Token {}'.format(token2))
         helper = Profile.objects.get(pk=self.helper.id)
         # Average rating of helper should be a 4
         self.assertEqual(helper.rating, 4.00)
         
         
+class TestComplete(APITestCase):
     
+    def setUp(self):
+        self.poster = create_profile(1)
+        self.helper = create_profile(2)
+        self.task = create_task(self.poster, 1)
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.helper,
+            task=self.task
+        )
+        self.task.status = Task.IN_PROGRESS
+        self.task.skills = [create_skill("python")]
+        self.profile_task.status = ProfileTask.ASSIGNED
+        self.task.helper = self.helper
+        self.task.save()
+        self.profile_task.save()
     
+    def test_complete(self):
+        token = api_login(self.poster.user)
+        url = reverse('task-complete')
+        data = {'task_id': self.task.id}
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        task = Task.objects.get(pk=self.task.id)
+        helper = Profile.objects.get(pk=self.helper.id)
+        self.assertEqual(task.status, Task.COMPLETE)
+        self.assertEqual(helper.tasks_completed, 1)
+        
+        
     
     
     
