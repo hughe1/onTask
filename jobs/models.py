@@ -132,6 +132,9 @@ class Task(BaseModel):
     # issues (the rank is never written or read from the database)
     display_rank = models.IntegerField(blank=True,null=True)
 
+    #optional field, specifying when the task should be completed
+    date_due = models.DateField(blank=True,null=True)
+
     def __str__(self):
         return self.title
 
