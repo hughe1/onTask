@@ -208,6 +208,9 @@ class ProfileTask(BaseModel):
     # Rating given by the Poster to the Helper for this Task.
     rating = models.IntegerField(blank=True, null=True)
 
+    # Datetime that status was first set to "Applied". Null if never applied
+    datetime_applied = models.DateTimeField(blank=True, null=True)
+
     def __str__(self):
         return "ProfileTask: "+self.task.title +" ("+ self.profile.user.username + ")"
 
