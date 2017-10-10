@@ -675,20 +675,30 @@ def under_application_limit(request,profile_id):
         of task applications
     """
     under_limit = True
+    profile = get_object_or_404(Profile, pk=profile_id)
 
     # Define the application limit for each (rounded down) average profile rating
+        # Key: rating threshold
+        # Value: Daily application limit
     rating_limits = {
+        5 : 20,
         4 : 20,
         3 : 15,
         2 : 10,
         1 : 5,
         0 : 2,
     }
-    # set the application limit, based on profile's rating
-    application_limit = 2
 
+    #rating_threshold is the profile's rounded down rating
+    rating_threshold = int(profile.rating)
 
-    # calculate whether today's applications exceed the limit
+    # set the application limit, based on rating_threshold
+    if rating_threshold in rating_limits.keys():
+        application_limit = rating_limits[rating_threshold]
+    else:
+        return Response({"error":"Invalid user rating!"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Calculate whether today's applications exceed the limit
     number_applications = number_applications_today(request,profile_id)
 
     if number_applications >= application_limit:
