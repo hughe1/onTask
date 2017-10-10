@@ -25,6 +25,7 @@ from django.core.files.base import ContentFile
 
 
 class SkillSerializer(serializers.ModelSerializer):
+    """ Serializer for Skill model"""
     class Meta:
         model = Skill
         fields = "__all__"
