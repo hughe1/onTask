@@ -36,6 +36,7 @@ from random import randint
 import operator
 from jobs.models import *
 from jobs.serializers import *
+import datetime
 
 
 class ProfileList(generics.ListAPIView):
@@ -311,6 +312,7 @@ def apply_task(request, task_id):
 
             # Set compulsory fields for the serializer
             request.data["status"] = ProfileTask.APPLIED
+            request.data["datetime_applied"] = datetime.datetime.now()
             request.data["task"] = profile_task.task.id
             request.data["profile"] = profile_task.profile.id
 
