@@ -231,8 +231,6 @@ def current_profile(request):
     """ Get profile information for the currently logged in user """
     serializer = ProfileUserSerializer(request.user.profile)
 
-    print(number_applications_today(request, request.user.pk))
-
     return Response(serializer.data)
 
 
@@ -670,4 +668,31 @@ def number_applications_today(request,profile_id):
             if now() - app.datetime_applied < interval:
                 recent_applications +=1
     return recent_applications
+
+@api_view(['GET'])
+def under_application_limit(request,profile_id):
+    """ Returns whether the given profile is under their daily limit 
+        of task applications
+    """
+    under_limit = True
+
+    # Define the application limit for each (rounded down) average profile rating
+    rating_limits = {
+        4 : 20,
+        3 : 15,
+        2 : 10,
+        1 : 5,
+        0 : 2,
+    }
+    # set the application limit, based on profile's rating
+    application_limit = 2
+
+
+    # calculate whether today's applications exceed the limit
+    number_applications = number_applications_today(request,profile_id)
+
+    if number_applications >= application_limit:
+        under_limit = False
+
+    return Response({"under_application_limit":str(under_limit)}, status=status.HTTP_200_OK)
 

@@ -51,7 +51,7 @@ class Profile(BaseModel):
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
     photo = models.ImageField(upload_to='%Y/%m/%d/', blank=True, null=True)
-    rating = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    rating = models.DecimalField(max_digits=5, decimal_places=2, default=3.0)
     shortlists = models.IntegerField(default=0)
     tasks_completed = models.IntegerField(default=0)
 
