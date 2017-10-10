@@ -36,6 +36,8 @@ from random import randint
 import operator
 from jobs.models import *
 from jobs.serializers import *
+import datetime
+from django.utils.timezone import now
 
 
 class ProfileList(generics.ListAPIView):
@@ -228,6 +230,7 @@ def shortlist_task(request):
 def current_profile(request):
     """ Get profile information for the currently logged in user """
     serializer = ProfileUserSerializer(request.user.profile)
+
     return Response(serializer.data)
 
 
@@ -311,6 +314,7 @@ def apply_task(request, task_id):
 
             # Set compulsory fields for the serializer
             request.data["status"] = ProfileTask.APPLIED
+            request.data["datetime_applied"] = now()
             request.data["task"] = profile_task.task.id
             request.data["profile"] = profile_task.profile.id
 
@@ -321,6 +325,7 @@ def apply_task(request, task_id):
         else:
             # Set compulsory fields for serializer
             request.data["task"] = task_id
+            request.data["datetime_applied"] = now()
             request.data["profile"] = profile
             request.data["status"] = ProfileTask.APPLIED
 
@@ -643,3 +648,61 @@ def rate_helper(request, task_id):
         applicant.update_rating()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def number_applications_today(request,profile_id):
+    """ Returns the number of applications made by the given profile
+        in the past 24 hours.
+    """
+
+    # Get all profiletasks by the user
+    profile = get_object_or_404(Profile, pk=profile_id)
+    applications = ProfileTask.objects.filter(profile=profile)
+
+    interval = datetime.timedelta(days=1)
+
+    recent_applications = 0
+
+    # Count the number of applications in the past day
+    for app in applications:
+        if app.datetime_applied is not None:
+            if now() - app.datetime_applied < interval:
+                recent_applications +=1
+    return recent_applications
+
+@api_view(['GET'])
+def under_application_limit(request,profile_id):
+    """ Returns whether the given profile is under their daily limit 
+        of task applications
+    """
+    under_limit = True
+    profile = get_object_or_404(Profile, pk=profile_id)
+
+    # Define the application limit for each (rounded down) average profile rating
+        # Key: rating threshold
+        # Value: Daily application limit
+    rating_limits = {
+        5 : 20,
+        4 : 20,
+        3 : 15,
+        2 : 10,
+        1 : 5,
+        0 : 2,
+    }
+
+    #rating_threshold is the profile's rounded down rating
+    rating_threshold = int(profile.rating)
+
+    # set the application limit, based on rating_threshold
+    if rating_threshold in rating_limits.keys():
+        application_limit = rating_limits[rating_threshold]
+    else:
+        return Response({"error":"Invalid user rating!"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Calculate whether today's applications exceed the limit
+    number_applications = number_applications_today(request,profile_id)
+
+    if number_applications >= application_limit:
+        under_limit = False
+
+    return Response({"under_application_limit":str(under_limit)}, status=status.HTTP_200_OK)
+

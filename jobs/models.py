@@ -51,7 +51,7 @@ class Profile(BaseModel):
     location = models.CharField(max_length=128, blank=True) # could update to choices
     description = models.TextField(max_length=2000, blank=True)
     photo = models.ImageField(upload_to='%Y/%m/%d/', blank=True, null=True)
-    rating = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    rating = models.DecimalField(max_digits=5, decimal_places=2, default=3.0)
     shortlists = models.IntegerField(default=0)
     tasks_completed = models.IntegerField(default=0)
 
@@ -207,6 +207,9 @@ class ProfileTask(BaseModel):
 
     # Rating given by the Poster to the Helper for this Task.
     rating = models.IntegerField(blank=True, null=True)
+
+    # Datetime that status was first set to "Applied". Null if never applied
+    datetime_applied = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return "ProfileTask: "+self.task.title +" ("+ self.profile.user.username + ")"

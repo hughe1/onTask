@@ -46,6 +46,7 @@ urlpatterns = [
     url(r'^tasks/shortlist_application/$', views.shortlist_application, name='task-shortlist_application'),
     url(r'^tasks/complete/$', views.complete_task, name='task-complete'),
     url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view(), name='profiletask-detail'),
+    url(r'^profiles/(?P<profile_id>[0-9]+)/under_application_limit/$', views.under_application_limit, name='under-application-limit'),
     
     # Just for testing purposes
     url(r'^profile/delete/$', test_helper.delete_user_profile, name='profile-delete'),
