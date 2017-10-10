@@ -24,6 +24,10 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 
 
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = "__all__"
 
 class UserSerializer(serializers.ModelSerializer):
     """ Serializer for User model"""
@@ -67,6 +71,7 @@ class TaskGetSerializer(serializers.ModelSerializer):
     """
     owner = ProfileUserSerializer()
     helper = ProfileUserSerializer(required=False)
+    skills = SkillSerializer(many=True)
 
     class Meta:
         model = Task
