@@ -256,6 +256,7 @@ class TestApplyTask(APITestCase):
         profile_task = ProfileTask.objects.get(profile=self.profile1, task=self.task2)
         # Check profile task status is APPLIED
         self.assertEqual(profile_task.status, 'AP')
+
         
 class TestShortlistApplication(APITestCase):
     
@@ -285,6 +286,19 @@ class TestShortlistApplication(APITestCase):
         # Status of profile task should now be ASL
         self.assertEqual(profile_task.status, ProfileTask.APPLICATION_SHORTLISTED)
         self.assertEqual(profile.shortlists, 1)
+        
+    def test_applicant_reject(self):
+        token = api_login(self.profile2.user)
+        url = reverse('task-reject_application')
+        data = {'profiletask_id': self.profile_task.id}
+        # Shortlist the application
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        # Get the profile task with updated status
+        profile_task = ProfileTask.objects.get(task=self.task, profile=self.profile1)
+        # Get the profile of the profile task owner
+        profile = Profile.objects.get(pk=self.profile1.id)
+        # Status of profile task should now be REJECTED
+        self.assertEqual(profile_task.status, ProfileTask.REJECTED)
         
 class TestRating(APITestCase):
     

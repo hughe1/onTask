@@ -113,6 +113,23 @@ class TestTaskCreate(APITestCase):
         self.assertEqual(response.data["offer"], 50)
         self.assertEqual(response.data["location"], "Loc 1")
         self.assertEqual(len(response.data["skills"]), 2)
+
+    # Test that a task can be created
+    def test_task_create_not_valid(self):
+        """
+        ID: UT03.01
+        """
+        token = api_login(self.user1)
+        url = reverse('task-create')
+        data = {
+                  'description' : 'Desc 1',
+                  'offer' : 50,
+                  'location' : 'Loc 1',
+                  'is_remote' : True,
+                  'skills': [self.skill1.code, self.skill2.code]
+                }
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
 class TestShortlist(APITestCase):
     
@@ -258,6 +275,51 @@ class TestApplyTask(APITestCase):
         #attempt to reapply - should fail
         response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    
+class TestRejectApplication(APITestCase):
+
+    def setUp(self):
+        self.poster = create_profile(1)
+        self.helper = create_profile(2)
+        self.not_poster = create_profile(3)
+        self.task = create_task(self.poster, 1)
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.helper,
+            task=self.task
+        )
+        self.profile_task.status = ProfileTask.APPLIED
+        self.profile_task.save()
+
+    def test_applicant_reject_not_task_owner(self):
+        token = api_login(self.not_poster.user)
+        url = reverse('task-reject_application')
+        data = {'profiletask_id': self.profile_task.id}
+        # Shortlist the application
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_applicant_reject_is_task_owner(self):
+        token = api_login(self.poster.user)
+        url = reverse('task-reject_application')
+        data = {'profiletask_id': self.profile_task.id}
+        # Shortlist the application
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_applicant_reject_hasnt_applied(self):
+        token = api_login(self.poster.user)
+        url = reverse('task-reject_application')
+        data = {'profiletask_id': self.profile_task.id}
+        self.profile_task.status = ProfileTask.SHORTLISTED
+        self.profile_task.save()
+        # Shortlist the application
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class TestViewApplicants(APITestCase):
+    
+    def setUp(self):
+        self.poster = create_profile(1)
         
-
-
