@@ -706,3 +706,8 @@ def under_application_limit(request,profile_id):
 
     return Response({"under_application_limit":str(under_limit)}, status=status.HTTP_200_OK)
 
+
+class SkillList(generics.ListAPIView):
+    """ List all skills """
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
