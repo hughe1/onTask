@@ -51,9 +51,7 @@ class TaskListTests(APITestCase):
         # Update profile info
         self.profile1 = update_profile(self.user1, 1)
         self.profile2 = update_profile(self.user2, 2)
-        
-        # TODO Try with an image field
-        # Create a task without a helper, is remote
+
         self.task1 = Task.objects.create(
             title="Test Task 1",
             description="Description 1",
@@ -113,6 +111,23 @@ class TestTaskCreate(APITestCase):
         self.assertEqual(response.data["offer"], 50)
         self.assertEqual(response.data["location"], "Loc 1")
         self.assertEqual(len(response.data["skills"]), 2)
+
+    # Test that a task can be created
+    def test_task_create_not_valid(self):
+        """
+        ID: UT03.01
+        """
+        token = api_login(self.user1)
+        url = reverse('task-create')
+        data = {
+                  'description' : 'Desc 1',
+                  'offer' : 50,
+                  'location' : 'Loc 1',
+                  'is_remote' : True,
+                  'skills': [self.skill1.code, self.skill2.code]
+                }
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
 class TestShortlist(APITestCase):
     
@@ -258,6 +273,127 @@ class TestApplyTask(APITestCase):
         #attempt to reapply - should fail
         response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    
+class TestRejectApplication(APITestCase):
+
+    def setUp(self):
+        self.poster = create_profile(1)
+        self.helper = create_profile(2)
+        self.not_poster = create_profile(3)
+        self.task = create_task(self.poster, 1)
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.helper,
+            task=self.task
+        )
+        self.profile_task.status = ProfileTask.APPLIED
+        self.profile_task.save()
+
+    def test_applicant_reject_not_task_owner(self):
+        token = api_login(self.not_poster.user)
+        url = reverse('task-reject_application')
+        data = {'profiletask_id': self.profile_task.id}
+        # Shortlist the application
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_applicant_reject_is_task_owner(self):
+        token = api_login(self.poster.user)
+        url = reverse('task-reject_application')
+        data = {'profiletask_id': self.profile_task.id}
+        # Shortlist the application
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_applicant_reject_hasnt_applied(self):
+        token = api_login(self.poster.user)
+        url = reverse('task-reject_application')
+        data = {'profiletask_id': self.profile_task.id}
+        self.profile_task.status = ProfileTask.SHORTLISTED
+        self.profile_task.save()
+        # Shortlist the application
+        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class TestViewApplicants(APITestCase):
+    
+    def setUp(self):
+        self.poster = create_profile(0)
+        self.task = create_task(self.poster, 0)
+        self.helper1 = create_profile(1)
+        self.helper2 = create_profile(2)
         
+    def test_view_0_applicants_applied(self):
+        token = api_login(self.poster.user)
+        base_url = reverse('task-view-applicants', kwargs={'task_id':self.task.id})
+        qstring = "?status={}".format(ProfileTask.APPLIED)
+        url = base_url + qstring
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.data, [])
+    
+    def test_view_1_applicants_applied(self):
+        token = api_login(self.poster.user)
+        base_url = reverse('task-view-applicants', kwargs={'task_id':self.task.id})
+        qstring = "?status={}".format(ProfileTask.APPLIED)
+        url = base_url + qstring
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.helper1,
+            task=self.task
+        )
+        self.profile_task.status = ProfileTask.APPLIED
+        self.profile_task.save()
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["status"], ProfileTask.APPLIED)
 
+    def test_view_1_applicants_shortlisted(self):
+        token = api_login(self.poster.user)
+        base_url = reverse('task-view-applicants', kwargs={'task_id':self.task.id})
+        qstring = "?status={}".format(ProfileTask.SHORTLISTED)
+        url = base_url + qstring
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.helper1,
+            task=self.task
+        )
+        self.profile_task.status = ProfileTask.SHORTLISTED
+        self.profile_task.save()
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["status"], ProfileTask.SHORTLISTED)
+        
+    def test_view_2_applicants_shortlisted(self):
+        token = api_login(self.poster.user)
+        base_url = reverse('task-view-applicants', kwargs={'task_id':self.task.id})
+        qstring = "?status={}".format(ProfileTask.SHORTLISTED)
+        url = base_url + qstring
+        self.profile_task1 = ProfileTask.objects.create(
+            profile=self.helper1,
+            task=self.task
+        )
+        self.profile_task2 = ProfileTask.objects.create(
+            profile=self.helper2,
+            task=self.task
+        )
+        self.profile_task1.status = ProfileTask.SHORTLISTED
+        self.profile_task2.status = ProfileTask.SHORTLISTED
+        self.profile_task1.save()
+        self.profile_task2.save()
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]["status"], ProfileTask.SHORTLISTED)
 
+    def test_view_1_applicants_assigned(self):
+        token = api_login(self.poster.user)
+        base_url = reverse('task-view-applicants', kwargs={'task_id':self.task.id})
+        qstring = "?status={}".format(ProfileTask.ASSIGNED)
+        url = base_url + qstring
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.helper1,
+            task=self.task
+        )
+        self.profile_task.status = ProfileTask.ASSIGNED
+        self.profile_task.save()
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["status"], ProfileTask.ASSIGNED)        

@@ -256,6 +256,7 @@ class TestApplyTask(APITestCase):
         profile_task = ProfileTask.objects.get(profile=self.profile1, task=self.task2)
         # Check profile task status is APPLIED
         self.assertEqual(profile_task.status, 'AP')
+
         
 class TestShortlistApplication(APITestCase):
     
@@ -277,7 +278,7 @@ class TestShortlistApplication(APITestCase):
         url = reverse('task-shortlist_application')
         data = {'profiletask_id': self.profile_task.id}
         # Shortlist the application
-        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         # Get the profile task with updated status
         profile_task = ProfileTask.objects.get(task=self.task, profile=self.profile1)
         # Get the profile of the profile task owner
@@ -286,6 +287,50 @@ class TestShortlistApplication(APITestCase):
         self.assertEqual(profile_task.status, ProfileTask.APPLICATION_SHORTLISTED)
         self.assertEqual(profile.shortlists, 1)
         
+    def test_applicant_reject(self):
+        token = api_login(self.profile2.user)
+        url = reverse('task-reject_application')
+        data = {'profiletask_id': self.profile_task.id}
+        # Shortlist the application
+        self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        # Get the profile task with updated status
+        profile_task = ProfileTask.objects.get(task=self.task, profile=self.profile1)
+        # Get the profile of the profile task owner
+        profile = Profile.objects.get(pk=self.profile1.id)
+        # Status of profile task should now be REJECTED
+        self.assertEqual(profile_task.status, ProfileTask.REJECTED)
+
+
+class TestAcceptApplication(APITestCase):
+    
+    def setUp(self):
+        self.profile1 = create_profile(1)
+        self.profile2 = create_profile(2)
+        self.task = create_task(self.profile2, 1)
+        skill = create_skill("Python")
+        self.task.skills = [skill]
+        self.task.save()
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.profile1,
+            task=self.task
+        )
+        self.profile_task.status = ProfileTask.APPLIED
+        self.profile_task.save()
+        self.task.status = Task.OPEN
+        self.task.save()
+    
+    def test_applicant_accept(self):
+        token = api_login(self.profile2.user)
+        url = reverse('task-accept-applicant', kwargs={'task_id':self.task.id})
+        data = {'profile': self.profile1.id}
+        # Shortlist the application
+        print(self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token)).data)
+        # Get the profile task with updated status
+        profile_task = ProfileTask.objects.get(task=self.task, profile=self.profile1)
+        # Status of profile task should now be REJECTED
+        self.assertEqual(profile_task.status, ProfileTask.ASSIGNED)     
+        
+
 class TestRating(APITestCase):
     
     def setUp(self):
@@ -350,13 +395,31 @@ class TestComplete(APITestCase):
         token = api_login(self.poster.user)
         url = reverse('task-complete')
         data = {'task_id': self.task.id}
-        response = self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         task = Task.objects.get(pk=self.task.id)
         helper = Profile.objects.get(pk=self.helper.id)
         self.assertEqual(task.status, Task.COMPLETE)
         self.assertEqual(helper.tasks_completed, 1)
-        
-        
+
+class TestDeleteTask(APITestCase):
     
+    def setUp(self):
+        self.poster = create_profile(1)
+        self.not_poster = create_profile(2)
+        self.task = create_task(self.poster, 1)
+    
+    def test_delete_task_owner(self):
+        self.assertEqual(len(Task.objects.all()), 1)
+        token = api_login(self.poster.user)
+        url = reverse('task-delete', kwargs={'task_id': self.task.id})
+        self.client.post(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(len(Task.objects.all()), 0)
+        
+    def test_delete_task_owner(self):
+        self.assertEqual(len(Task.objects.all()), 1)
+        token = api_login(self.not_poster.user)
+        url = reverse('task-delete', kwargs={'task_id': self.task.id})
+        self.client.post(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(len(Task.objects.all()), 1)    
     
     
