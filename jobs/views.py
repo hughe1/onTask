@@ -294,6 +294,11 @@ def apply_task(request, task_id):
         if profile == task.owner.id:
             return Response({"error":"A profile cannot apply to their own task!"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Integrity check: Offer cannot be below 0
+        if ('quote' in request.data.keys() and request.data['quote'] < 0):
+            return Response({"error":"Integrity check failed! Offer cannot be negative."}, status=status.HTTP_400_BAD_REQUEST)
+
+
         # Integrity check: More than 1 matching profileTasks should not exist
         if (ProfileTask.objects.filter(profile=profile, task=task_id).count()>1):
             return Response({"error":"Integrity check failed! There should only be one profileTask per profile per task."}, status=status.HTTP_400_BAD_REQUEST)
@@ -578,7 +583,8 @@ def accept_applicant(request, task_id):
     # Integrity Check: Check that the helper has submitted an application
     # for the task
     if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
-        (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.APPLIED)) :
+        (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.APPLIED and
+        ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.APPLICATION_SHORTLISTED)) :
         return Response({"error":"Profile must have applied for task to be accepted"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Set required fields for serializer, populating fro existing task
