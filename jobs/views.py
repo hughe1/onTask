@@ -583,7 +583,8 @@ def accept_applicant(request, task_id):
     # Integrity Check: Check that the helper has submitted an application
     # for the task
     if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
-        (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.APPLIED)) :
+        (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.APPLIED and
+        ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.APPLICATION_SHORTLISTED)) :
         return Response({"error":"Profile must have applied for task to be accepted"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Set required fields for serializer, populating fro existing task
