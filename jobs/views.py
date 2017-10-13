@@ -294,6 +294,11 @@ def apply_task(request, task_id):
         if profile == task.owner.id:
             return Response({"error":"A profile cannot apply to their own task!"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Integrity check: Offer cannot be below 0
+        if ('quote' in request.data.keys() and request.data['quote'] < 0):
+            return Response({"error":"Integrity check failed! Offer cannot be negative."}, status=status.HTTP_400_BAD_REQUEST)
+
+
         # Integrity check: More than 1 matching profileTasks should not exist
         if (ProfileTask.objects.filter(profile=profile, task=task_id).count()>1):
             return Response({"error":"Integrity check failed! There should only be one profileTask per profile per task."}, status=status.HTTP_400_BAD_REQUEST)
