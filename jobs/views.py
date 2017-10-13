@@ -636,8 +636,9 @@ def rate_helper(request, task_id):
         return Response({"error":"Task must be complete to rate user"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Integrity check: Check that the helper is assigned to the task
-    if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) or
-        (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.ASSIGNED)):
+    if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) 
+        or (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.ASSIGNED)
+        or task.helper != applicant):
         return Response({"error":"Profile must be assigned to task to be rated"}, status=status.HTTP_400_BAD_REQUEST)
     
     # Fill in compulsory fields for serializer

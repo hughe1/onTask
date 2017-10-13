@@ -352,7 +352,7 @@ class TestRating(APITestCase):
         self.profile_task1.status = ProfileTask.ASSIGNED
         self.profile_task2.status = ProfileTask.ASSIGNED
         self.task1.helper = self.helper
-        self.task1.helper = self.helper
+        self.task2.helper = self.helper
         self.task1.save()
         self.task2.save()
         self.profile_task1.save()
