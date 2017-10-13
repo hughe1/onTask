@@ -499,7 +499,8 @@ def complete_task(request):
         if serializer.is_valid():
             serializer.save()
             # Update the number of tasks completed by helper
-            helper.complete_task()
+            if helper:
+                helper.complete_task()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -639,7 +640,7 @@ def rate_helper(request, task_id):
     if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) 
         or (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.ASSIGNED)
         or task.helper != applicant):
-        return Response({"error":"Profile must be assigned to task to be rated"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error":"Profile must be assigned to task to be rated"}, status=status.HTTP_400_BAD_REQUEST)
     
     # Fill in compulsory fields for serializer
     profile_task = ProfileTask.objects.filter(profile=applicant, task=task)[0]
