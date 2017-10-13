@@ -144,4 +144,4 @@ class ApplicantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProfileTask
-        fields = ['profile','answer1','answer2','answer3','quote','status']
+        fields = ['id','profile','answer1','answer2','answer3','quote','status']
