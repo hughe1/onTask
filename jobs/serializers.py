@@ -22,6 +22,7 @@ from rest_framework import serializers
 from jobs.models import *
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
+from job_bilby import settings
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -31,7 +32,7 @@ class SkillSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if str(obj.image) is not '':
-            return self.context['view'].request.build_absolute_uri(obj.image.url)
+            return settings.BASE_URL + obj.image.url
         else:
             return None
 
@@ -72,7 +73,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_photo(self, obj):
         if str(obj.photo) is not '':
-            return self.context['view'].request.build_absolute_uri(obj.photo.url)
+            return settings.BASE_URL + obj.photo.url
         else:
             return None
 

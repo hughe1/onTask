@@ -14,7 +14,7 @@ Annie Zhou:                                     azhou@student.unimelb.edu.au
 David Barrell:                                   dbarrell@student.unimelb.edu.au
 Grace Johnson:                                  gjohnson1@student.unimelb.edu.au
 Hugh Edwards:                                   hughe@student.unimelb.edu.au
-Matt Perrot:                                    mperrott@student.unimelb.edu.au 
+Matt Perrot:                                    mperrott@student.unimelb.edu.au
 View our 'Project Overview' document on Confluence for more information about the project.
 Date project started: 6/8/2017
 Date project completed: 15/10/2017
@@ -30,7 +30,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_URL = os.environ['DJANGO_BASE_URL']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
