@@ -14,7 +14,7 @@ Annie Zhou:                                     azhou@student.unimelb.edu.au
 David Barrell:                                   dbarrell@student.unimelb.edu.au
 Grace Johnson:                                  gjohnson1@student.unimelb.edu.au
 Hugh Edwards:                                   hughe@student.unimelb.edu.au
-Matt Perrot:                                    mperrott@student.unimelb.edu.au 
+Matt Perrot:                                    mperrott@student.unimelb.edu.au
 View our 'Project Overview' document on Confluence for more information about the project.
 Date project started: 6/8/2017
 Date project completed: 15/10/2017
@@ -51,7 +51,7 @@ class ProfileDetail(generics.RetrieveUpdateAPIView):
     """ Get the information from one profile """
     queryset = Profile.objects.all()
     serializer_class = ProfileUserSerializer
-    
+
     def get_serializer(self, *args, **kwargs):
         kwargs['partial'] = True
         return super(ProfileDetail, self).get_serializer(*args, **kwargs)
@@ -300,7 +300,7 @@ def apply_task(request, task_id):
             return Response({"error":"A profile cannot apply to their own task!"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Integrity check: Offer cannot be below 0
-        if ('quote' in request.data.keys() and request.data['quote'] < 0):
+        if ('quote' in request.data.keys() and int(request.data['quote']) < 0):
             return Response({"error":"Integrity check failed! Offer cannot be negative."}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -315,7 +315,7 @@ def apply_task(request, task_id):
 
             # Integrity check: Make sure Task is open, and profiletask is
             # shortlisted
-            #       Note, this does not mean a profile must have 
+            #       Note, this does not mean a profile must have
             #shortlised a task to apply; if a user has not shortlisted the
             # task, then no profiletask will exist (and the other branch
             # of the `if` statement is taken))
