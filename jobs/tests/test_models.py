@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from jobs.models import Profile, User, Task, ProfileTask
+from jobs.models import Profile, User, Task, ProfileTask, ProfileSkill
 from jobs.serializers import TaskGetSerializer, TaskPostSerializer
 from jobs.tests.test_helper import *
 
@@ -421,5 +421,34 @@ class TestDeleteTask(APITestCase):
         url = reverse('task-delete', kwargs={'task_id': self.task.id})
         self.client.post(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(len(Task.objects.all()), 1)    
+
+
+class TestUpdateSkills(APITestCase):
     
+    def setUp(self):
+        self.profile = create_profile(0)
+        self.skill1 = create_skill("Python")
+        self.skill2 = create_skill("PHP")
+        self.skill3 = create_skill("HTML")
+        self.profile_skill1 = ProfileSkill.objects.create(
+            skill=self.skill1,
+            profile=self.profile
+        )
+        self.profile_skill2 = ProfileSkill.objects.create(
+            skill=self.skill2,
+            profile=self.profile
+        )
+    
+    def test_update_skills(self):
+        current_skills = ProfileSkill.objects.filter(profile=self.profile)
+        self.assertEqual(len(current_skills), 2)
+        token = api_login(self.profile.user)
+        data = {'skills': [self.skill3.id]}
+        url = reverse('update-skills')
+        self.client.put(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        current_skills = ProfileSkill.objects.filter(profile=self.profile)
+        self.assertEqual(len(current_skills), 1)
+        self.assertEqual(current_skills[0].skill.title, "HTML")
+        
+        
     

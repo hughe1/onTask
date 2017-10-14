@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from jobs.models import Profile, User, Task, ProfileTask
+from jobs.models import Profile, User, Task, ProfileTask, ProfileSkill
 from jobs.serializers import TaskGetSerializer, TaskPostSerializer
 from jobs.tests.test_helper import *
 from jobs.views import number_applications_today
@@ -467,6 +467,62 @@ class TestNumberApplications(APITestCase):
         self.profile_task2.status = ProfileTask.APPLIED
         self.profile_task2.save()
         response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
-        self.assertEqual(response.data["under_application_limit"], "False")    
+        self.assertEqual(response.data["under_application_limit"], "False")
+    
+    def test_under_application_limit_bad_rating(self):
+        token = api_login(self.poster.user)
+        self.helper.rating = 6
+        self.helper.save()
+        url = reverse('under-application-limit', kwargs={'profile_id':self.helper.id})
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+
+class TestUpdateSkills(APITestCase):
+    
+    def setUp(self):
+        self.profile = create_profile(0)
+        self.skill1 = create_skill("Python")
+        self.profile_skill1 = ProfileSkill.objects.create(
+            skill=self.skill1,
+            profile=self.profile
+        )
+    
+    def test_update_skills(self):
+        token = api_login(self.profile.user)
+        data = {'skills': [2]}
+        url = reverse('update-skills')
+        response = self.client.put(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
         
+class TestCurrentProfile(APITestCase):
+    
+    def setUp(self):
+        self.profile = create_profile(1)
+    
+    def test_current_profile(self):
+        token = api_login(self.profile.user)
+        url = reverse('profile-current')
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION="Token {}".format(token))
+        self.assertEqual(response.data["user"]["username"], "test1_user")
+        
+
+class TestUpdateProfile(APITestCase):
+    
+    def setUp(self):
+        self.profile = create_profile(1)
+        
+    def test_update_profile(self):
+        token = api_login(self.profile.user)
+        url = reverse('profile-detail', kwargs={"pk":self.profile.id})
+        data = {"location": "hobart"}
+        response = self.client.put(url, data, format="json", HTTP_AUTHORIZATION="Token {}".format(token))
+        self.assertEqual(response.data["location"], "hobart")
+        
+        
+        
+        
+        
+        
+                    
