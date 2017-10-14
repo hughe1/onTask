@@ -12,7 +12,7 @@ Annie Zhou:                                     azhou@student.unimelb.edu.au
 David Barrel:                                   dbarrell@student.unimelb.edu.au
 Grace Johnson:                                  gjohnson1@student.unimelb.edu.au
 Hugh Edwards:                                   hughe@student.unimelb.edu.au
-Matt Perrot:                                    mperrott@student.unimelb.edu.au 
+Matt Perrot:                                    mperrott@student.unimelb.edu.au
 View our 'Project Overview' document on Confluence for more information about the project.
 Date project started: 6/8/2017
 Date project completed: 15/10/2017
@@ -70,20 +70,20 @@ class Profile(BaseModel):
         average_rating = sum(pt_list) / float(len(pt_list))
         self.rating = average_rating
         self.save()
-    
+
     def shortlist(self):
         """ Increments the number of times a Profile has been shortlisted.
         """
         self.shortlists = self.shortlists + 1
         self.save()
-    
+
     def complete_task(self):
         """ Updates the number of tasks that have been completed.
         """
         complete_tasks = Task.objects.filter(helper=self, status=Task.COMPLETE)
         self.tasks_completed = len(complete_tasks)
         self.save()
-        
+
 
 class Task(BaseModel):
     """ Model for a Task """
@@ -123,7 +123,7 @@ class Task(BaseModel):
     question1 = models.CharField(max_length=300,blank=True)
     question2 = models.CharField(max_length=300,blank=True)
     question3 = models.CharField(max_length=300,blank=True)
-    
+
     skills = models.ManyToManyField('jobs.Skill')
 
     # display_rank is a blank field which is used as a placeholder
@@ -146,7 +146,7 @@ class Skill(BaseModel):
         They may also be listed as proficiencies on Profiles.
     """
     title = models.CharField(max_length=128)
-    image = models.ImageField(blank=True)
+    image = models.ImageField(upload_to='%Y/%m/%d/', blank=True, null=True)
     code = models.CharField(max_length=20)
 
     def __str__(self):
@@ -201,7 +201,7 @@ class ProfileTask(BaseModel):
     answer2 = models.CharField(max_length=300,blank=True)
     answer3 = models.CharField(max_length=300,blank=True)
 
-    # Monetary quote provided by the Helper 
+    # Monetary quote provided by the Helper
     # (optional, can be different to original odder)
     quote = models.IntegerField(blank=True,null=True)
 
