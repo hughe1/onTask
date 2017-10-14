@@ -149,7 +149,7 @@ class TestTaskCreate(APITestCase):
     def test_task_create_not_valid(self):
         """ Test creation of a task without all valid fields.
             This should not create a task.
-            ID: UT-V03.01
+            ID: UT-V03.02
         """
         token = api_login(self.user1)
         url = reverse('task-create')
