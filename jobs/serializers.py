@@ -194,7 +194,7 @@ class ApplicantSerializer(serializers.ModelSerializer):
         (including answers, quote, status, etc) relevant
         to applicants.
     """
-    profile = ProfileUserSerializer()
+    profile = ProfileUserGetSerializer()
     task = TaskGetSerializer()
 
     class Meta:
