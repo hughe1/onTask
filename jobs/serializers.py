@@ -195,7 +195,8 @@ class ApplicantSerializer(serializers.ModelSerializer):
         to applicants.
     """
     profile = ProfileUserSerializer()
+    task = TaskGetSerializer()
 
     class Meta:
         model = ProfileTask
-        fields = ['id','profile','answer1','answer2','answer3','quote','status']
+        fields = ['id','profile','answer1','answer2','answer3','quote','status','task']
