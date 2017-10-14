@@ -324,7 +324,7 @@ class TestAcceptApplication(APITestCase):
         url = reverse('task-accept-applicant', kwargs={'task_id':self.task.id})
         data = {'profile': self.profile1.id}
         # Shortlist the application
-        print(self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token)).data)
+        self.client.post(url, data, format="json", HTTP_AUTHORIZATION='Token {}'.format(token)).data
         # Get the profile task with updated status
         profile_task = ProfileTask.objects.get(task=self.task, profile=self.profile1)
         # Status of profile task should now be REJECTED
