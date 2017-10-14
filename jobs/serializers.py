@@ -82,7 +82,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class Base64ImageField(serializers.ImageField):
+class Base64ImageField(serializers.SerializerMethodField):
     """Custom image field - handles base 64 encoded images"""
     def to_internal_value(self, data):
         """ Encodes an image represented by data to be stored """
@@ -100,6 +100,12 @@ class ProfileUserSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     photo = Base64ImageField()
 
+    def get_photo(self, obj):
+        if str(obj.photo) is not '':
+            return settings.BASE_URL + obj.photo.url
+        else:
+            return None
+
     class Meta:
         model = Profile
         fields = "__all__"
@@ -111,6 +117,11 @@ class ProfileUserGetSerializer(serializers.ModelSerializer):
     photo = Base64ImageField()
     profile_skills = ProfileSkillGetSerializer(many=True, read_only=True)
 
+    def get_photo(self, obj):
+        if str(obj.photo) is not '':
+            return settings.BASE_URL + obj.photo.url
+        else:
+            return None
     class Meta:
         model = Profile
         fields = "__all__"
