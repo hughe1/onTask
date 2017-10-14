@@ -5,6 +5,8 @@ from rest_framework.test import APITestCase
 from jobs.models import Profile, User, Task, ProfileTask
 from jobs.serializers import TaskGetSerializer, TaskPostSerializer
 from jobs.tests.test_helper import *
+from jobs.views import number_applications_today
+from django.utils.timezone import now
 
 """
 Note: The coding style followed for these unit tests is deliberately very
@@ -41,6 +43,7 @@ class ProfileTests(APITestCase):
 
 
 class TaskListTests(APITestCase):
+    
     def setUp(self):
         """
         Create some task objects and users
@@ -48,15 +51,17 @@ class TaskListTests(APITestCase):
         # Create users
         self.user1 = create_user(1)
         self.user2 = create_user(2)
+        self.user3 = create_user(3)
         # Update profile info
         self.profile1 = update_profile(self.user1, 1)
         self.profile2 = update_profile(self.user2, 2)
-
+        self.profile3 = update_profile(self.user3, 3)
+        # Create a task without a helper
         self.task1 = Task.objects.create(
             title="Test Task 1",
             description="Description 1",
             offer=0,
-            location="Location 1",
+            location="Melbourne",
             owner=self.profile1
         )
         # Create a task with a helper
@@ -64,10 +69,15 @@ class TaskListTests(APITestCase):
             title="Test Task 2",
             description="Description 2",
             offer=20,
-            location="Location 2",
+            location="Sydney",
             owner=self.profile2,
             helper=self.profile1
         )
+        # Create a profile task
+        self.profile_task = ProfileTask.objects.create(
+            profile=self.profile3,
+            task=self.task1
+        )        
         
     def test_task_list(self):
         """
@@ -77,9 +87,30 @@ class TaskListTests(APITestCase):
         token = api_login(self.user1)
         url = reverse('task-list')
         response = self.client.get(url, format='json', HTTP_AUTHORIZATION='Token {}'.format(token))
-        tasks = Task.objects.all()
-        serializer = TaskGetSerializer(tasks, many=True)
-        self.assertEqual(len(response.data), len(serializer.data))
+        self.assertEqual(len(response.data), 2)
+
+    def test_task_list_qstring(self):
+        """
+        Test whether the right list of tasks is returned with a search term
+        ID: UT02.01
+        """
+        token = api_login(self.user1)
+        base_url = reverse('task-list')
+        qstring = "?search=Sydney"
+        url = base_url + qstring
+        response = self.client.get(url, format='json', HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["location"], "Sydney")
+
+    def test_task_list_has_shorlisted(self):
+        """
+        Test whether the right list of tasks is returned
+        ID: UT02.01
+        """
+        token = api_login(self.user3)
+        url = reverse('task-list')
+        response = self.client.get(url, format='json', HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(len(response.data), 1)
 
 
 class TestTaskCreate(APITestCase):
@@ -397,3 +428,45 @@ class TestViewApplicants(APITestCase):
         response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["status"], ProfileTask.ASSIGNED)        
+
+
+class TestNumberApplications(APITestCase):
+
+    def setUp(self):
+        self.poster = create_profile(0)
+        self.task1 = create_task(self.poster, 1)
+        self.task2 = create_task(self.poster, 2)
+        self.task3 = create_task(self.poster, 3)
+        self.helper = create_profile(1)
+        # Set rating to 0 to get lowest application limit
+        self.helper.rating = 0
+        self.helper.save()
+        # Create a profile task
+        self.profile_task1 = ProfileTask.objects.create(
+            profile=self.helper,
+            task=self.task1,
+            datetime_applied=now()
+        )
+        self.profile_task1.status = ProfileTask.APPLIED
+        self.profile_task1.save()
+        
+    def test_under_application_limit(self):
+        token = api_login(self.poster.user)
+        url = reverse('under-application-limit', kwargs={'profile_id':self.helper.id})
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.data["under_application_limit"], "True")
+    
+    def test_not_under_application_limit(self):
+        token = api_login(self.poster.user)
+        url = reverse('under-application-limit', kwargs={'profile_id':self.helper.id})
+        self.profile_task2 = ProfileTask.objects.create(
+        profile=self.helper,
+        task=self.task2,
+        datetime_applied=now()
+        )
+        self.profile_task2.status = ProfileTask.APPLIED
+        self.profile_task2.save()
+        response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.data["under_application_limit"], "False")    
+        
+        

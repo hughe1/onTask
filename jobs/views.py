@@ -660,7 +660,7 @@ def rate_helper(request, task_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def number_applications_today(request,profile_id):
+def number_applications_today(profile_id):
     """ Returns the number of applications made by the given profile
         in the past 24 hours.
     """
@@ -710,7 +710,7 @@ def under_application_limit(request,profile_id):
         return Response({"error":"Invalid user rating!"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Calculate whether today's applications exceed the limit
-    number_applications = number_applications_today(request,profile_id)
+    number_applications = number_applications_today(profile_id)
 
     if number_applications >= application_limit:
         under_limit = False
