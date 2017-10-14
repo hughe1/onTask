@@ -55,7 +55,7 @@ class ProfileTests(APITestCase):
 class TestTaskCreate(APITestCase):
     """ Model tests for create tasks """
     
-    def setUp(self):  
+    def setUp(self):
         """ Create some users and skills """
         self.user1 = create_user(1)
         self.skill1 = create_skill("Python")
@@ -403,7 +403,7 @@ class TestRating(APITestCase):
     def test_rating(self):
         """ Rate a user twice to check the average is correct.
             User rating should be the average of both ratings.
-            ID: UT-M08.01
+            ID: UT-M09.01
         """
         token1 = api_login(self.poster1.user)
         token2 = api_login(self.poster2.user)
@@ -443,7 +443,7 @@ class TestComplete(APITestCase):
         """ Complete a task that is in progress.
             This should change status to complete and increment the helpers
             number of tasks completed.
-            ID: UT-M09.01
+            ID: UT-M10.01
         """
         token = api_login(self.poster.user)
         url = reverse('task-complete')
@@ -466,7 +466,7 @@ class TestDeleteTask(APITestCase):
     def test_delete_task_owner(self):
         """ Delete a task when the task owner.
             This should remove the task.
-            ID: UT-M10.01
+            ID: UT-M11.01
         """
         self.assertEqual(len(Task.objects.all()), 1)
         token = api_login(self.poster.user)
@@ -477,7 +477,7 @@ class TestDeleteTask(APITestCase):
     def test_delete_task_not_owner(self):
         """ Delete a task when not the task owner.
             This should not delete the task.
-            ID: UT-M10.02
+            ID: UT-M11.02
         """
         self.assertEqual(len(Task.objects.all()), 1)
         token = api_login(self.not_poster.user)
@@ -507,7 +507,7 @@ class TestUpdateSkills(APITestCase):
     def test_update_skills(self):
         """ Update skills with new skill ids.
             This should override the current profileskills with the new ones.
-            ID: UT-M11.01
+            ID: UT-M12.01
         """
         current_skills = ProfileSkill.objects.filter(profile=self.profile)
         self.assertEqual(len(current_skills), 2)
