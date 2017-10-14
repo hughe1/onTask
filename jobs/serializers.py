@@ -47,6 +47,14 @@ class ProfileSkillSerializer(serializers.ModelSerializer):
         model = ProfileSkill
         fields = "__all__"
 
+class ProfileSkillGetSerializer(serializers.ModelSerializer):
+    """ Serializer for ProfileSkill Model """
+    skill = SkillSerializer()
+    
+    class Meta:
+        model = ProfileSkill
+        fields = "__all__"
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     """ Serializer for Profile model"""
@@ -83,7 +91,7 @@ class ProfileUserGetSerializer(serializers.ModelSerializer):
     """ Serializer for ProfileUser model"""
     user = UserSerializer()
     photo = Base64ImageField()
-    profile_skills = ProfileSkillSerializer(many=True, read_only=True)
+    profile_skills = ProfileSkillGetSerializer(many=True, read_only=True)
 
     class Meta:
         model = Profile
