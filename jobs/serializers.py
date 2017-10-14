@@ -30,6 +30,7 @@ class SkillSerializer(serializers.ModelSerializer):
         model = Skill
         fields = "__all__"
 
+
 class UserSerializer(serializers.ModelSerializer):
     """ Serializer for User model"""
     class Meta:
@@ -38,11 +39,22 @@ class UserSerializer(serializers.ModelSerializer):
         # Password excluded for security purposes
         exclude = ('password',)
 
+
+class ProfileSkillSerializer(serializers.ModelSerializer):
+    """ Serializer for ProfileSkill Model """
+    
+    class Meta:
+        model = ProfileSkill
+        fields = "__all__"
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     """ Serializer for Profile model"""
+    
     class Meta:
         model = Profile
         fields = "__all__"
+
 
 class Base64ImageField(serializers.ImageField):
     """Custom image field - handles base 64 encoded images"""
@@ -56,6 +68,7 @@ class Base64ImageField(serializers.ImageField):
             data = ContentFile(base64.b64decode(imgstr), name = id.urn[9:] + '.' + ext)
         return super(Base64ImageField, self).to_internal_value(data)
 
+
 class ProfileUserSerializer(serializers.ModelSerializer):
     """ Serializer for ProfileUser model"""
     user = UserSerializer()
@@ -64,6 +77,18 @@ class ProfileUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = "__all__"
+
+
+class ProfileUserGetSerializer(serializers.ModelSerializer):
+    """ Serializer for ProfileUser model"""
+    user = UserSerializer()
+    photo = Base64ImageField()
+    profile_skills = ProfileSkillSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = "__all__"
+
 
 class TaskGetSerializer(serializers.ModelSerializer):
     """ Serializer, used when GET-ing a task
@@ -77,6 +102,7 @@ class TaskGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = "__all__"
+
 
 class TaskPostSerializer(serializers.ModelSerializer):
     """ Serializer, used when POST-ing a task
@@ -126,6 +152,7 @@ class ProfileTaskGetSerializer(serializers.ModelSerializer):
         model = ProfileTask
         fields = "__all__"
 
+
 class ProfileTaskPostSerializer(serializers.ModelSerializer):
     """ Serializer, used when POST-ing a ProfileTask
         Contains all ProfileTask data
@@ -133,6 +160,7 @@ class ProfileTaskPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileTask
         fields = "__all__"
+
 
 class ApplicantSerializer(serializers.ModelSerializer):
     """ Serializer, for Task applicants (ie ProfileUsers)

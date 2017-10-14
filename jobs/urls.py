@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^tasks/complete/$', views.complete_task, name='task-complete'),
     url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view(), name='profiletask-detail'),
     url(r'^profiles/(?P<profile_id>[0-9]+)/under_application_limit/$', views.under_application_limit, name='under-application-limit'),
+    url(r'^profiles/update_skills/$', views.update_skills, name='update-skills'),
     url(r'^skills/$', views.SkillList.as_view(), name='skill-list'),
     
     # Just for testing purposes

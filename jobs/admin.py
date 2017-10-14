@@ -26,18 +26,26 @@ from jobs.models import *
 class TaskAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for Tasks """
 	list_display = ('title', 'pk')
+
+class SkillAdmin(admin.ModelAdmin):
+	""" defines admin display characteristics for Tasks """
+	list_display = ('title', 'pk')
     
 class ProfileTaskAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for ProfileTasks """
 	list_display = ('__str__','pk',)
-    
+
+class ProfileSkillAdmin(admin.ModelAdmin):
+	""" defines admin display characteristics for ProfileSkills """
+	list_display = ('__str__','pk',)
+
 class ProfileAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for Profiles """
 	list_display = ('user', 'pk')
 
 # Register models with the admin suite.
 admin.site.register(Task, TaskAdmin)
-admin.site.register(Skill)
-admin.site.register(ProfileSkill)
+admin.site.register(Skill, SkillAdmin)
+admin.site.register(ProfileSkill, ProfileSkillAdmin)
 admin.site.register(ProfileTask, ProfileTaskAdmin)
 admin.site.register(Profile, ProfileAdmin)

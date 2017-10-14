@@ -160,7 +160,7 @@ class ProfileSkill(BaseModel):
         in future builds.
     """
     skill = models.ForeignKey('jobs.Skill')
-    profile = models.ForeignKey('jobs.Profile')
+    profile = models.ForeignKey('jobs.Profile', related_name='profile_skills')
 
     def __str__(self):
         return "ProfileSkill: "+self.skill.title +" ("+ self.profile.user.username + ")"

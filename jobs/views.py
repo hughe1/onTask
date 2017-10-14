@@ -35,6 +35,7 @@ from rest_framework import filters
 from random import randint
 import operator
 from jobs.models import *
+from jobs.models import ProfileSkill as ProfileSkillModel
 from jobs.serializers import *
 import datetime
 from django.utils.timezone import now
@@ -166,7 +167,7 @@ def set_rank(task, request):
     task_skills = Skill.objects.filter(task__id=task.id)
 
     # List of skills listed by the logged in user
-    profileskill_objs = ProfileSkill.objects.filter(profile__id=request.user.profile.id)
+    profileskill_objs = ProfileSkillModel.objects.filter(profile__id=request.user.profile.id)
 
     # Add 1 point rank per common skill
     # Take 1 point off per missing skill in profile
@@ -229,7 +230,7 @@ def shortlist_task(request):
 @permission_classes((IsAuthenticated, ))
 def current_profile(request):
     """ Get profile information for the currently logged in user """
-    serializer = ProfileUserSerializer(request.user.profile)
+    serializer = ProfileUserGetSerializer(request.user.profile)
 
     return Response(serializer.data)
 
@@ -375,7 +376,6 @@ def reject_application(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        print(serializer.errors)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -413,7 +413,6 @@ def shortlist_application(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        print(serializer.errors)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -719,3 +718,42 @@ class SkillList(generics.ListAPIView):
     """ List all skills """
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
+    
+
+@api_view(['PUT'])
+def update_skills(request):
+    """ Takes a list of skills and updates the ProfileSkills with that
+        list of skills by deleting old skills first.
+    """
+    
+    profile = request.user.profile
+    skills = request.data["skills"]
+    profile_skills = ProfileSkillModel.objects.all()
+    # Gather info for new skills to be updated on profile
+    profile_skill_data = {}
+    profile_skill_data["profile"] = profile.id
+    
+    # Check that each skill in list is valid before deleting old ProfileSkills
+    for skill_id in skills:
+        try:
+            skill = Skill.objects.get(pk=skill_id)
+        except:
+            return Response({"error":"All skill id's must exist in database"},status=status.HTTP_400_BAD_REQUEST)  
+    
+    # Delete old profile skills
+    ProfileSkillModel.objects.filter(profile=profile).delete()
+    
+    # Update the ProfileSkill for each skill listed
+    for skill_id in skills:
+        # Try getting skill. If it can't be found try block fails.
+        skill = Skill.objects.get(pk=skill_id)
+        profile_skill_data["skill"] = skill_id
+        # Set new ProfileSkill serializer
+        serializer = ProfileSkillSerializer(data=profile_skill_data)
+        if serializer.is_valid():
+            serializer.save()
+    
+    # Updated user data to show updated skills
+    profile_serializer = ProfileUserGetSerializer(profile)
+    
+    return Response(profile_serializer.data,status=status.HTTP_200_OK)
