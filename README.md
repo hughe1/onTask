@@ -8,7 +8,7 @@ Annie Zhou:                                     azhou@student.unimelb.edu.au
 David Barrell:                                   dbarrell@student.unimelb.edu.au
 Grace Johnson:                                  gjohnson1@student.unimelb.edu.au
 Hugh Edwards:                                   hughe@student.unimelb.edu.au
-Matt Perrot:                                    mperrott@student.unimelb.edu.au 
+Matt Perrot:                                    mperrott@student.unimelb.edu.au
 View our 'Project Overview' document on Confluence for more information about the project.
 Date project started: 6/8/2017
 Date project completed: 15/10/2017
@@ -103,6 +103,7 @@ Presuming you're using virtualenvwrapper and have named your virtualenv `job-bil
     export DB_NAME='job_db'
     export DB_USERNAME='job_user'
     export DB_PASSWORD='bilby'
+    export DJANGO_BASE_URL='http://localhost:8000'
 
 ### Migrate Database
 

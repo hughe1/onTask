@@ -12,7 +12,7 @@ Annie Zhou:                                     azhou@student.unimelb.edu.au
 David Barrel:                                   dbarrell@student.unimelb.edu.au
 Grace Johnson:                                  gjohnson1@student.unimelb.edu.au
 Hugh Edwards:                                   hughe@student.unimelb.edu.au
-Matt Perrot:                                    mperrott@student.unimelb.edu.au 
+Matt Perrot:                                    mperrott@student.unimelb.edu.au
 View our 'Project Overview' document on Confluence for more information about the project.
 Date project started: 6/8/2017
 Date project completed: 15/10/2017
@@ -22,10 +22,20 @@ from rest_framework import serializers
 from jobs.models import *
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
+from job_bilby import settings
 
 
 class SkillSerializer(serializers.ModelSerializer):
     """ Serializer for Skill model"""
+
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        if str(obj.image) is not '':
+            return settings.BASE_URL + obj.image.url
+        else:
+            return None
+
     class Meta:
         model = Skill
         fields = "__all__"
@@ -42,7 +52,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileSkillSerializer(serializers.ModelSerializer):
     """ Serializer for ProfileSkill Model """
-    
+
     class Meta:
         model = ProfileSkill
         fields = "__all__"
@@ -50,7 +60,7 @@ class ProfileSkillSerializer(serializers.ModelSerializer):
 class ProfileSkillGetSerializer(serializers.ModelSerializer):
     """ Serializer for ProfileSkill Model """
     skill = SkillSerializer()
-    
+
     class Meta:
         model = ProfileSkill
         fields = "__all__"
@@ -58,7 +68,15 @@ class ProfileSkillGetSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     """ Serializer for Profile model"""
-    
+
+    photo = serializers.SerializerMethodField()
+
+    def get_photo(self, obj):
+        if str(obj.photo) is not '':
+            return settings.BASE_URL + obj.photo.url
+        else:
+            return None
+
     class Meta:
         model = Profile
         fields = "__all__"

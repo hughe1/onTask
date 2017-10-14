@@ -402,7 +402,7 @@ def shortlist_application(request):
         # Integrity Check: ProfileTask must be applied and task must be open
         if not (profile_task.status == ProfileTask.APPLIED and task.status == Task.OPEN):
             return Response({"error":"profileTask status must be Applied, and task status must be Open"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         # Increment number of shortlists on profile and save
         profile.shortlist()
         profile.save()
@@ -598,7 +598,7 @@ def accept_applicant(request, task_id):
     profile_serializer = ProfileSerializer(applicant)
     new_data["helper"] = applicant.pk
 
-    #Create and save new serializer 
+    #Create and save new serializer
     serializer = TaskPostSerializer(task, data=new_data)
     if serializer.is_valid():
         serializer.save()
@@ -625,11 +625,11 @@ def rate_helper(request, task_id):
 
     #Integrity check: Rating must be an integer
     if not isinstance(rating, int):
-        return Response ({"error": "Rating must be and integer value"})
+        return Response ({"error": "Rating must be and integer value"}, status=status.HTTP_400_BAD_REQUEST)
 
     #Integrity check: Rating must be between 0 and 5
     if not (rating >= 0 and rating <=5):
-        return Response ({"error": "Rating must be between 0 and 5"})
+        return Response ({"error": "Rating must be between 0 and 5"}, status=status.HTTP_400_BAD_REQUEST)
 
     #Permission check: Rater is task owner
     if task.owner.id != request.user.id:
@@ -640,11 +640,11 @@ def rate_helper(request, task_id):
         return Response({"error":"Task must be complete to rate user"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Integrity check: Check that the helper is assigned to the task
-    if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1) 
+    if ((ProfileTask.objects.filter(profile=applicant, task=task).count()<1)
         or (ProfileTask.objects.filter(profile=applicant, task=task)[0].status != ProfileTask.ASSIGNED)
         or task.helper != applicant):
             return Response({"error":"Profile must be assigned to task to be rated"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
     # Fill in compulsory fields for serializer
     profile_task = ProfileTask.objects.filter(profile=applicant, task=task)[0]
     old_serializer = ProfileTaskPostSerializer(profile_task)
@@ -682,7 +682,7 @@ def number_applications_today(profile_id):
 
 @api_view(['GET'])
 def under_application_limit(request,profile_id):
-    """ Returns whether the given profile is under their daily limit 
+    """ Returns whether the given profile is under their daily limit
         of task applications
     """
     under_limit = True
@@ -722,31 +722,31 @@ class SkillList(generics.ListAPIView):
     """ List all skills """
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
-    
+
 
 @api_view(['PUT'])
 def update_skills(request):
     """ Takes a list of skills and updates the ProfileSkills with that
         list of skills by deleting old skills first.
     """
-    
+
     profile = request.user.profile
     skills = request.data["skills"]
     profile_skills = ProfileSkillModel.objects.all()
     # Gather info for new skills to be updated on profile
     profile_skill_data = {}
     profile_skill_data["profile"] = profile.id
-    
+
     # Check that each skill in list is valid before deleting old ProfileSkills
     for skill_id in skills:
         try:
             skill = Skill.objects.get(pk=skill_id)
         except:
-            return Response({"error":"All skill id's must exist in database"},status=status.HTTP_400_BAD_REQUEST)  
-    
+            return Response({"error":"All skill id's must exist in database"},status=status.HTTP_400_BAD_REQUEST)
+
     # Delete old profile skills
     ProfileSkillModel.objects.filter(profile=profile).delete()
-    
+
     # Update the ProfileSkill for each skill listed
     for skill_id in skills:
         # Try getting skill. If it can't be found try block fails.
@@ -756,8 +756,8 @@ def update_skills(request):
         serializer = ProfileSkillSerializer(data=profile_skill_data)
         if serializer.is_valid():
             serializer.save()
-    
+
     # Updated user data to show updated skills
     profile_serializer = ProfileUserGetSerializer(profile)
-    
+
     return Response(profile_serializer.data,status=status.HTTP_200_OK)
