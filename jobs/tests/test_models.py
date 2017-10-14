@@ -16,11 +16,12 @@ https://stackoverflow.com/questions/6453235/what-does-damp-not-dry-mean-when-tal
 """
 
 class ProfileTests(APITestCase):
+    """ Tests for creating a profile """    
     
     def test_create_profile(self):
         """
         Ensure we can create a new Profile (and subsequently, User)
-        ID: UT01.01
+        ID: UT-M01.01
         """
         url = reverse('profile-create')
         data = {
