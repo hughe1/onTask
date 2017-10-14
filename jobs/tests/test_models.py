@@ -415,7 +415,7 @@ class TestDeleteTask(APITestCase):
         self.client.post(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(len(Task.objects.all()), 0)
         
-    def test_delete_task_owner(self):
+    def test_delete_task_not_owner(self):
         self.assertEqual(len(Task.objects.all()), 1)
         token = api_login(self.not_poster.user)
         url = reverse('task-delete', kwargs={'task_id': self.task.id})
