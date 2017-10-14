@@ -47,10 +47,14 @@ class ProfileList(generics.ListAPIView):
     serializer_class = ProfileUserSerializer
 
 
-class ProfileDetail(generics.RetrieveAPIView):
+class ProfileDetail(generics.RetrieveUpdateAPIView):
     """ Get the information from one profile """
     queryset = Profile.objects.all()
     serializer_class = ProfileUserSerializer
+    
+    def get_serializer(self, *args, **kwargs):
+        kwargs['partial'] = True
+        return super(ProfileDetail, self).get_serializer(*args, **kwargs)
 
 
 @permission_classes((IsAuthenticated, ))
