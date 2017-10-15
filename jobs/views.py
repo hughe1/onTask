@@ -47,6 +47,16 @@ class ProfileList(generics.ListAPIView):
     serializer_class = ProfileUserSerializer
 
 
+class UserUpdate(generics.UpdateAPIView):
+    """ Update the user information """
+    queryset = User.objects.all()
+    serializer_class = UserPutSerializer
+    
+    def get_serializer(self, *args, **kwargs):
+        kwargs['partial'] = True
+        return super(UserUpdate, self).get_serializer(*args, **kwargs)
+
+
 class ProfileDetail(generics.RetrieveUpdateAPIView):
     """ Get the information from one profile """
     queryset = Profile.objects.all()
@@ -445,6 +455,22 @@ def create_profile(request):
         profile_serializer.save()
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['PUT'])
+@permission_classes((IsAuthenticated, ))
+def password_reset(request):
+    """ Reset password """
+    user = request.user
+    password = request.data["password"]
+    print(password)
+    try:
+        user.set_password(password)
+        user.save()
+        return Response({"success":"Password changed successfully"}, status=status.HTTP_200_OK)
+    except:
+        return Response({"error":"Failed to update password"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))

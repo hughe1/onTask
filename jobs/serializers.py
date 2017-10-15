@@ -45,9 +45,14 @@ class UserSerializer(serializers.ModelSerializer):
     """ Serializer for User model"""
     class Meta:
         model = User
-
         # Password excluded for security purposes
         exclude = ('password',)
+
+class UserPutSerializer(serializers.ModelSerializer):
+    """ Serializer for User model"""
+    class Meta:
+        model = User
+        fields = '__all__'
 
 
 class ProfileSkillSerializer(serializers.ModelSerializer):
@@ -205,8 +210,9 @@ class ApplicantSerializer(serializers.ModelSerializer):
         (including answers, quote, status, etc) relevant
         to applicants.
     """
-    profile = ProfileUserSerializer()
+    profile = ProfileUserGetSerializer()
+    task = TaskGetSerializer()
 
     class Meta:
         model = ProfileTask
-        fields = ['id','profile','answer1','answer2','answer3','quote','status']
+        fields = ['id','profile','answer1','answer2','answer3','quote','status','task']

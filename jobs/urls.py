@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^profile/update_skills/$', views.update_skills, name='update-skills'),
     url(r'^profiles/create/$', views.create_profile, name='profile-create'),
     url(r'^profiles/(?P<pk>[0-9]+)/$', views.ProfileDetail.as_view(), name='profile-detail'),
+    url(r'^user/(?P<pk>[0-9]+)/$', views.UserUpdate.as_view(), name='user-update'),
     url(r'^tasks/$', views.TaskList.as_view(), name='task-list'),
     url(r'^tasks/(?P<pk>[0-9]+)/$', views.TaskDetail.as_view(), name='task-detail'),
     url(r'^tasks/create/$', views.create_task, name='task-create'),
@@ -49,6 +50,7 @@ urlpatterns = [
     url(r'^profiletasks/(?P<pk>[0-9]+)/$', views.ProfileTaskDetail.as_view(), name='profiletask-detail'),
     url(r'^profiles/(?P<profile_id>[0-9]+)/under_application_limit/$', views.under_application_limit, name='under-application-limit'),
     url(r'^skills/$', views.SkillList.as_view(), name='skill-list'),
+    url(r'^password_reset/$', views.password_reset, name='password-reset'),
     
     # Just for testing purposes
     url(r'^profile/delete/$', test_helper.delete_user_profile, name='profile-delete'),
