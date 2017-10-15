@@ -792,6 +792,7 @@ def update_skills(request):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def completed_tasks(request):
+    """ Gets the list of ProfileTasks a helper has completed """
     profile = request.user.profile
     profile_tasks = ProfileTask.objects.filter(profile=profile)
     completed_tasks = []
