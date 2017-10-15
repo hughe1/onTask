@@ -51,7 +51,7 @@ class UserUpdate(generics.UpdateAPIView):
     """ Update the user information """
     queryset = User.objects.all()
     serializer_class = UserPutSerializer
-    
+
     def get_serializer(self, *args, **kwargs):
         kwargs['partial'] = True
         return super(UserUpdate, self).get_serializer(*args, **kwargs)
@@ -131,8 +131,10 @@ class TaskList(generics.ListAPIView):
     serializer_class = TaskGetSerializer
 
     #set the view to be searchable and filterable
-    filter_backends = (filters.SearchFilter,DjangoFilterBackend)
-    search_fields = ('title','location','description','owner__user__first_name', 'owner__user__last_name')
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend)
+    search_fields = ('title','location','description','owner__user__first_name', 'owner__user__last_name', 'skills__title')
+    ordering = ('-created_at',)
+
 
     def get_queryset(self):
         """ Get the queryset for the view
@@ -153,18 +155,24 @@ class TaskList(generics.ListAPIView):
             task = profiletask.task.id
             queryset = queryset.exclude(id=task)
 
+        return queryset
+    
+
+    def filter_queryset(self, queryset):
+        # First sort by most recent
+        queryset = super(TaskList, self).filter_queryset(queryset)
         #sort the queryset (only if user logged in)
         if self.request.user.is_authenticated():
             for item in queryset:
 
                 # temporarily sets the display_rank of each task
                 set_rank(item, self.request)
+                pass
 
             # Firstly sort by most recent, then relevance
             # This means ties in display_rank are resolved by which is
             # more recent
-            #queryset = sorted(queryset, key=operator.attrgetter('updated_at'),reverse=True)
-            #queryset = sorted(queryset, key=operator.attrgetter('display_rank'),reverse=True)
+            queryset = sorted(queryset, key=operator.attrgetter('display_rank'), reverse=True)
 
         return queryset
 
