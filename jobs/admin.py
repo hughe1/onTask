@@ -46,33 +46,33 @@ class ProfileSkillAdmin(admin.ModelAdmin):
 
 
 class ProfileTaskInline(admin.TabularInline):
+    """ defines the inline for ProfileTasks to be added to Profile """
     model = ProfileTask
     verbose_name = "Associated Task"
     verbose_name_plural = "Associated Tasks"
 
 
 class ProfileSkillInline(admin.TabularInline):
+    """ defines the inline for ProfileSkillls to be added to Profile """
     model = ProfileSkill
     verbose_name = "Skill"
     verbose_name_plural = "Skills"
     
 
 class ProfileInline(admin.StackedInline):
+    """ defines the inline for Profile to be added to User """
     model = Profile
     verbose_name_plural = "Profile"
 
 
-class UserInline(admin.StackedInline):
-    model = User
-
-
 class ProfileAdmin(admin.ModelAdmin):
-    """ """
+    """ defines the ProfileAdmin section with inlines """
     list_display = ('user', 'pk')
     inlines = [ProfileTaskInline, ProfileSkillInline]
 
 
 class UserAdmin(admin.ModelAdmin):
+    """ defines the UserAdmin section with inlines """
     model = User
     inlines = [ProfileInline,]
     exclude = ['groups', 'user_permissions']
