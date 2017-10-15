@@ -45,9 +45,14 @@ class UserSerializer(serializers.ModelSerializer):
     """ Serializer for User model"""
     class Meta:
         model = User
-
         # Password excluded for security purposes
         exclude = ('password',)
+
+class UserPutSerializer(serializers.ModelSerializer):
+    """ Serializer for User model"""
+    class Meta:
+        model = User
+        fields = '__all__'
 
 
 class ProfileSkillSerializer(serializers.ModelSerializer):
