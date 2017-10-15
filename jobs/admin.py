@@ -21,27 +21,62 @@ Date project completed: 15/10/2017
 """
 
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from jobs.models import *
+
 
 class TaskAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for Tasks """
 	list_display = ('title', 'pk')
 
+
 class SkillAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for Tasks """
 	list_display = ('title', 'pk')
+
     
 class ProfileTaskAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for ProfileTasks """
 	list_display = ('__str__','pk',)
 
+
 class ProfileSkillAdmin(admin.ModelAdmin):
 	""" defines admin display characteristics for ProfileSkills """
 	list_display = ('__str__','pk',)
 
+
+class ProfileTaskInline(admin.TabularInline):
+    model = ProfileTask
+    verbose_name = "Associated Task"
+    verbose_name_plural = "Associated Tasks"
+
+
+class ProfileSkillInline(admin.TabularInline):
+    model = ProfileSkill
+    verbose_name = "Skill"
+    verbose_name_plural = "Skills"
+    
+
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    verbose_name_plural = "Profile"
+
+
+class UserInline(admin.StackedInline):
+    model = User
+
+
 class ProfileAdmin(admin.ModelAdmin):
-	""" defines admin display characteristics for Profiles """
-	list_display = ('user', 'pk')
+    """ """
+    list_display = ('user', 'pk')
+    inlines = [ProfileTaskInline, ProfileSkillInline]
+
+
+class UserAdmin(admin.ModelAdmin):
+    model = User
+    inlines = [ProfileInline,]
+    exclude = ['groups', 'user_permissions']
+
 
 # Register models with the admin suite.
 admin.site.register(Task, TaskAdmin)
@@ -49,3 +84,6 @@ admin.site.register(Skill, SkillAdmin)
 admin.site.register(ProfileSkill, ProfileSkillAdmin)
 admin.site.register(ProfileTask, ProfileTaskAdmin)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.unregister(User)
+admin.site.unregister(Group)
+admin.site.register(User, UserAdmin)
