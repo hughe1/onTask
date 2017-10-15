@@ -787,3 +787,17 @@ def update_skills(request):
     profile_serializer = ProfileUserGetSerializer(profile)
 
     return Response(profile_serializer.data,status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def completed_tasks(request):
+    profile = request.user.profile
+    profile_tasks = ProfileTask.objects.filter(profile=profile)
+    completed_tasks = []
+    for pt in profile_tasks:
+        if (pt.task.status == Task.COMPLETE and pt.status == ProfileTask.ASSIGNED):
+            completed_tasks.append(pt)
+    
+    serializer = ProfileTaskGetSerializer(completed_tasks, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
