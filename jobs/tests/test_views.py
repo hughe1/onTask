@@ -513,8 +513,8 @@ class TestNumberApplications(APITestCase):
             This should return true.
             ID: UT-V09.01
         """
-        token = api_login(self.poster.user)
-        url = reverse('under-application-limit', kwargs={'profile_id':self.helper.id})
+        token = api_login(self.helper.user)
+        url = reverse('under-application-limit')
         response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.data["under_application_limit"], "True")
     
@@ -523,8 +523,8 @@ class TestNumberApplications(APITestCase):
             This should return false.
             ID: UT-V09.02
         """
-        token = api_login(self.poster.user)
-        url = reverse('under-application-limit', kwargs={'profile_id':self.helper.id})
+        token = api_login(self.helper.user)
+        url = reverse('under-application-limit')
         self.profile_task2 = ProfileTask.objects.create(
         profile=self.helper,
         task=self.task2,
@@ -540,10 +540,10 @@ class TestNumberApplications(APITestCase):
             This should result in an error.
             ID: UT-V09.03
         """
-        token = api_login(self.poster.user)
+        token = api_login(self.helper.user)
         self.helper.rating = 6
         self.helper.save()
-        url = reverse('under-application-limit', kwargs={'profile_id':self.helper.id})
+        url = reverse('under-application-limit')
         response = self.client.get(url, format="json", HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
