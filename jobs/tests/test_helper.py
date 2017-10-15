@@ -1,4 +1,7 @@
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from jobs.models import Profile, User, Task, ProfileTask, Skill
 
@@ -36,7 +39,7 @@ def create_task(owner_prof, task_num):
     task = Task.objects.create(
         title="Task {}".format(task_num),
         description="Desc {}".format(task_num),
-        points=0,
+        offer=0,
         location="Loc {}".format(task_num),
         owner=owner_prof
     )
@@ -51,9 +54,49 @@ def create_skill(title):
 
     skill = Skill.objects.create(
         title=title,
-        description="{} description.".format(title),
         code=code
     )
     return skill
         
-        
+# Delete a user
+@api_view(['DELETE'])
+@permission_classes((IsAuthenticated, ))
+def delete_user_profile(request):
+    username = request.data["username"]
+    if not (request.user.username == 'job_user'):
+        # os.environ['DB_USERNAME']
+        return Response({"error":"Only admin can delete users"})
+    try:
+        user = User.objects.get(username=username)
+        profile = Profile.objects.get(user=user)
+    except:
+        return Response({"Error": "Not found"})
+    profile.delete()
+    user.delete()
+    return Response({"Success": "User and profile deleted successfully"})
+
+# Delete a profile task
+@api_view(['DELETE'])
+@permission_classes((IsAuthenticated, ))
+def delete_profile_task(request):
+    profile = request.user.profile
+    try:
+        task = Task.objects.get(pk=request.data["task_id"])
+        profile_task = ProfileTask.objects.get(profile=profile, task=task)
+    except:
+        return Response({"Error": "Not found"})
+    profile_task.delete()
+    return Response({"Sucess": "ProfileTask deleted successfully"})
+    
+# Delete a profile task
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def unapply(request):
+    try:
+        task = Task.objects.get(pk=request.data["task_id"])
+        profile_task = ProfileTask.objects.get(task=task, profile=request.user.profile)
+    except:
+        return Response({"Error": "Not found"})
+    profile_task.status = ProfileTask.SHORTLISTED
+    profile_task.save()
+    return Response({"Sucess": "ProfileTask unapplied successfully"})
