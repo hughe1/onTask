@@ -156,7 +156,7 @@ class TaskList(generics.ListAPIView):
             queryset = queryset.exclude(id=task)
 
         return queryset
-    
+
 
     def filter_queryset(self, queryset):
         # First sort by most recent
@@ -252,7 +252,7 @@ def shortlist_task(request):
 @permission_classes((IsAuthenticated, ))
 def current_profile(request):
     """ Get profile information for the currently logged in user """
-    serializer = ProfileUserGetSerializer(request.user.profile)
+    serializer = ProfileUserGetSerializer(request.user.profile, context={"request": request})
 
     return Response(serializer.data)
 
@@ -443,7 +443,7 @@ def create_profile(request):
     if request.method == 'POST':
 
         # Make the user. Django auto creates Profile here.
-        user_serializer = UserSerializer(data=request.data)
+        user_serializer = UserSerializer(data=request.data, context={"request": request})
         if not user_serializer.is_valid():
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         user = user_serializer.save()
@@ -456,7 +456,7 @@ def create_profile(request):
         # Update attached Profile with serializer data. Save serializer.
         request.data["user"] = user.id
         profile = Profile.objects.get(user=user.id)
-        profile_serializer = ProfileSerializer(profile,data=request.data)
+        profile_serializer = ProfileSerializer(profile, data=request.data, context={"request": request})
         if not profile_serializer.is_valid():
             user.delete()
             return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -573,7 +573,7 @@ def view_applicants(request, task_id):
         profile_tasks = sorted(profile_tasks, key=operator.attrgetter('profile.rating'),reverse=True)
 
         # Return serialized list of applicants
-        serializer = ApplicantSerializer(profile_tasks, many=True)
+        serializer = ApplicantSerializer(profile_tasks, many=True, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -788,12 +788,12 @@ def update_skills(request):
         skill = Skill.objects.get(pk=skill_id)
         profile_skill_data["skill"] = skill_id
         # Set new ProfileSkill serializer
-        serializer = ProfileSkillSerializer(data=profile_skill_data)
+        serializer = ProfileSkillSerializer(data=profile_skill_data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
 
     # Updated user data to show updated skills
-    profile_serializer = ProfileUserGetSerializer(profile)
+    profile_serializer = ProfileUserGetSerializer(profile, context={"request": request})
 
     return Response(profile_serializer.data,status=status.HTTP_200_OK)
 
@@ -808,6 +808,6 @@ def completed_tasks(request, profile_id):
     for pt in profile_tasks:
         if (pt.task.status == Task.COMPLETE and pt.status == ProfileTask.ASSIGNED):
             completed_tasks.append(pt)
-    
+
     serializer = ProfileTaskGetSerializer(completed_tasks, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
