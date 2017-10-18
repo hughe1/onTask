@@ -87,7 +87,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class Base64ImageField(serializers.SerializerMethodField):
+class Base64ImageField(serializers.ImageField):
     """Custom image field - handles base 64 encoded images"""
     def to_internal_value(self, data):
         """ Encodes an image represented by data to be stored """
